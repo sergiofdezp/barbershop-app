@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,6 @@ Route::middleware([
     })->name('dashboard');
 
     Route::resource('/orders', OrderController::class)->names('orders');
+    
+    Route::resource('/services', ServiceController::class)->names('services');
 });

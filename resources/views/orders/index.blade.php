@@ -13,20 +13,13 @@
                     <th scope="col" class="text-center">Estado del pago</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody >
                 @foreach ($orders as $order)
                 <tr>
                     <th scope="row">1</th>
-                    <td>{{$order->order_date}}</td>
+                    <td class="text-center">{{$order->order_date}}</td>
                     <td>{{$order->user->name}}</td>
-                    <!-- <td>
-                        @if($order->is_hair == 1 && $order->is_beard == 0) Pelo
-
-                        @elseif($order->is_hair == 0 && $order->is_beard == 1) Barba
-                        
-                        @endif
-                    </td> -->
-                    <td>{{$order->service->name}}</td>
+                    <td>{{$order->service->type}}</td>
                     <td>
                         @if($order->is_online == 0) Barbería 
 

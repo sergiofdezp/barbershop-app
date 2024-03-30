@@ -1,3 +1,18 @@
+/* RESERVAS */
+.cancelada{
+    background-color: red !important;
+    color: white;
+}
+
+/* SERVICIOS */
+
+/* tamaño de las imagenes de los servicios */
 .card-img-top{
     max-width: 15%;
+}
+
+/* efecto de transicion en el hover de las cards de la pestaña de servicios */
+.card:hover{
+    transform:scale(1.025);
+    transition: 0.3s;
 }

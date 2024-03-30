@@ -4,7 +4,8 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col" class="text-center">Fecha de reserva</th>
+                    <th scope="col" class="text-center">Fecha</th>
+                    <th scope="col" class="text-center">Hora</th>
                     <th scope="col" class="text-center">Nombre</th>
                     <th scope="col" class="text-center">Servicio</th>
                     <th scope="col" class="text-center">Lugar de reserva</th>
@@ -18,6 +19,7 @@
                 <tr>
                     <th scope="row">1</th>
                     <td class="text-center">{{$order->order_date}}</td>
+                    <td class="text-center">{{$order->order_session}}</td>
                     <td>{{$order->user->name}}</td>
                     <td>{{$order->service->type}}</td>
                     <td>
@@ -27,7 +29,7 @@
                         
                         @endif
                     </td>
-                    <td>
+                    <td class="order_status rounded" value="{{$order->order_status}}">
                         @if($order->order_status == 0) Próxima
 
                         @elseif($order->order_status == 1) Terminada
@@ -72,4 +74,18 @@
             },
         },
     });
+
+    document.body.onload = function() {
+        order_status();
+    }
+
+    // esta funcion colorea de diferentes colores dependiendo del estado de la reserva
+    function order_status(){
+        var element = document.getElementsByClassName("order_status");
+
+        for(var i = 0; i < element.length; i++){
+            if(element[i].outerText == 'Cancelada')
+                element[i].classList.add('cancelada');
+        }
+    }
 </script>

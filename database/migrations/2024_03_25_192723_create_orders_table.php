@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             // datos principales de la reserva (id y fecha de esta)
             $table->id();
-            $table->date('order_date');
+            $table->string('order_date');
+            $table->string('order_hour');
             // datos de la persona
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             // tipo de servicio (si es pelo o barba)

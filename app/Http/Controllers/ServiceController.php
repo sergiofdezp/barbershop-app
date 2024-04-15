@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
 {
@@ -15,6 +16,19 @@ class ServiceController extends Controller
         $services = Service::all();
 
         return view('services.index', compact('services'));
+    }
+
+    public function services_prices(Request $service_id)
+    {
+        $service_id = $service_id->get('service_id');
+
+        $services = DB::table('services')
+            ->where('id', '=', $service_id)
+            ->get();
+
+        return response()->json([
+            'services'=>$services,
+        ]);
     }
 
     /**

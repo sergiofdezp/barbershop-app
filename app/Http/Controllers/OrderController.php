@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Service;
+use App\Models\Hour;
 use Illuminate\Http\Request;
+use Auth;
 
 class OrderController extends Controller
 {
@@ -21,8 +24,12 @@ class OrderController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        //
+    {        
+        $user = Auth::user();
+        $services = Service::all();
+        $hours = Hour::all();
+
+        return view('orders.create', compact('user', 'services', 'hours'));
     }
 
     /**
@@ -30,7 +37,11 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $order = $request->all();
+
+        Order::create($order);
+
+        return redirect()->route('orders.index')->banner('Reserva añadida correctamente.');
     }
 
     /**

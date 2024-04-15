@@ -1,5 +1,7 @@
 <x-app-layout>
     <div class="container pt-5">
+        <h1>Servicios</h1>
+        <hr>
         <div class="row">
             @foreach ($services as $service)
             <div class="col-sm-6">

@@ -18,8 +18,6 @@
                     <th scope="col" class="text-center">Hora</th>
                     <th scope="col" class="text-center">Nombre</th>
                     <th scope="col" class="text-center">Servicio</th>
-                    <th scope="col" class="text-center">Lugar de reserva</th>
-                    <th scope="col" class="text-center">Estado de la reserva</th>
                     <th scope="col" class="text-center">Precio</th>
                     <th scope="col" class="text-center">Estado del pago</th>
                 </tr>
@@ -32,24 +30,6 @@
                     <td class="text-center">{{$order->order_hour}}</td>
                     <td>{{$order->name}}</td>
                     <td>{{$order->service->type}}</td>
-                    <td>
-                        @if($order->is_online == 0) Barbería 
-
-                        @else Web
-                        
-                        @endif
-                    </td>
-                    <td class="order_status rounded" value="{{$order->order_status}}">
-                        @if($order->order_status == 0) Próxima
-
-                        @elseif($order->order_status == 1) Terminada
-
-                        @elseif($order->order_status == 2) Cancelada
-
-                        @elseif($order->order_status == 3) No asistido
-
-                        @endif
-                    </td>
                     <td class="text-center">{{$order->total_price}}€</td>
                     <td>
                         @if($order->pay_status == 0) Pendiente

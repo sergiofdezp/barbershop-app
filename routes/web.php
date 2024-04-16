@@ -34,4 +34,6 @@ Route::middleware([
     Route::resource('/services', ServiceController::class)->names('services');
 
     Route::get('/services_prices', [ServiceController::class, 'services_prices']);
+
+    Route::get('/new_order_ref', [OrderController::class, 'generarOrderRef']);
 });

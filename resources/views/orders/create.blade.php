@@ -11,6 +11,7 @@
                     <input type="text" name="is_online" id="is_online" class="form-control" value="0">
                     <input type="text" name="order_status" id="order_status" class="form-control" value="0">
                     <input type="text" name="user_id" id="user_id" value="{{$user->id}}" class="form-control">
+                    <input type="text" name="order_ref" id="order_ref" class="form-control">
                 </div>
 
                 <!-- Informacion del cliente -->
@@ -100,6 +101,16 @@
 </x-app-layout>
 <script>
     $(document).ready(function(){
+        $.ajax({
+            type: "GET",
+            url: "/new_order_ref",
+            dataType: "json",
+
+            success: function(response){
+                console.log(response.order_ref)
+                $('#order_ref').val(response.order_ref);
+            }
+        });
         $('#service_id').click(function(){
             var service_id = $('#service_id').val();
             
@@ -115,7 +126,7 @@
                     // console.log(response)
                     $.each(response.services, function (key, item){
                         // console.log(item.price)
-                        $('#total_price').val(item.price)
+                        $('#total_price').val(item.price);
                         $('.total_price').text(item.price + '€');
                     });
                 }

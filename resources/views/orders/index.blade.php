@@ -14,6 +14,7 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col" class="text-center">Referencia</th>
                     <th scope="col" class="text-center">Fecha</th>
                     <th scope="col" class="text-center">Hora</th>
                     <th scope="col" class="text-center">Nombre</th>
@@ -26,6 +27,7 @@
                 @foreach ($orders as $order)
                 <tr>
                     <th scope="row">{{$order->id}}</th>
+                    <td class="text-center">{{$order->order_ref}}</td>
                     <td class="text-center">{{$order->order_date}}</td>
                     <td class="text-center">{{$order->order_hour}}</td>
                     <td>{{$order->name}}</td>

@@ -38,8 +38,21 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $order = $request->all();
+        $validated = $request->validate([
+            'order_ref' => 'required | string',
+            'order_date' => 'required | date',
+            'order_hour' => 'required | string',
+            'user_id' => 'required',
+            'name' => 'required | string',
+            'phone' => 'required | integer',
+            'service_id' => 'required',
+            'is_online' => 'required',
+            'order_status' => 'required',
+            'total_price' => 'required',
+            'pay_status' => 'required',
+        ]);
 
+        $order = $request->all();
         Order::create($order);
 
         return redirect()->route('orders.index')->banner('Reserva añadida correctamente.');
@@ -70,6 +83,20 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
+        $validated = $request->validate([
+            'order_ref' => 'required | string',
+            'order_date' => 'required | date',
+            'order_hour' => 'required | string',
+            'user_id' => 'required',
+            'name' => 'required | string',
+            'phone' => 'required | integer',
+            'service_id' => 'required',
+            'is_online' => 'required',
+            'order_status' => 'required',
+            'total_price' => 'required',
+            'pay_status' => 'required',
+        ]);
+
         $new_order = $request->all();
         $order->update($new_order);
         

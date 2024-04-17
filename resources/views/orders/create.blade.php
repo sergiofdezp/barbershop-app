@@ -2,16 +2,25 @@
     <div class="container pt-5">
         <h1>Nueva reserva</h1>
         <hr>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="d-flex justify-content-center pt-5">
             <form action="{{ route('orders.store') }}" id="form_store" class="col-10" method="POST" enctype="multipart/form-data">
                 @csrf
                 
                 <div class="mb-3" hidden>
-                    <input type="text" name="total_price" id="total_price" class="form-control" value="0">
-                    <input type="text" name="is_online" id="is_online" class="form-control" value="0">
-                    <input type="text" name="order_status" id="order_status" class="form-control" value="0">
-                    <input type="text" name="user_id" id="user_id" value="{{$user->id}}" class="form-control">
-                    <input type="text" name="order_ref" id="order_ref" class="form-control">
+                    <input type="text" name="total_price" id="total_price" class="form-control" value="0" required>
+                    <input type="text" name="is_online" id="is_online" class="form-control" value="0" required>
+                    <input type="text" name="order_status" id="order_status" class="form-control" value="0" required>
+                    <input type="text" name="user_id" id="user_id" value="{{$user->id}}" class="form-control" required>
+                    <input type="text" name="order_ref" id="order_ref" class="form-control" required>
                 </div>
 
                 <!-- Informacion del cliente -->
@@ -20,13 +29,13 @@
                     <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="name" class="form-label">Nombre</label>
-                            <input type="text" name="name" id="name" class="form-control" placeholder="Introduce el nombre del cliente">
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Introduce el nombre del cliente" required>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="phone" class="form-label">Teléfono de contacto</label>
-                            <input type="text" name="phone" id="phone" class="form-control" placeholder="Introduce el teléfono del cliente">
+                            <input type="text" name="phone" id="phone" class="form-control" placeholder="Introduce el teléfono del cliente" required>
                         </div>
                     </div>
                 </div>
@@ -37,13 +46,13 @@
                     <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="order_date" class="form-label">Día de la reserva</label>
-                            <input type="date" name="order_date" id="order_date" class="form-control">
+                            <input type="date" name="order_date" id="order_date" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="order_hour" class="form-label">Hora de la reserva</label>
-                            <select name="order_hour" id="order_hour" class="form-control">
+                            <select name="order_hour" id="order_hour" class="form-control" required>
                                 <option value="0" selected disabled>Selecciona una hora</option>
                                 @foreach ($hours as $hour)
                                     <option value="{{$hour->order_hour}}">{{$hour->order_hour}}</option>
@@ -57,7 +66,7 @@
                     <div class="col-6 mb-3">
                         <div class="border rounded p-3">
                             <label for="service_id" class="form-label">Servicio</label>
-                            <select name="service_id" id="service_id" class="form-control">
+                            <select name="service_id" id="service_id" class="form-control" required>
                                 <option value="0" selected disabled>Selecciona un servicio</option>
                                 @foreach ($services as $service)
                                 <option value="{{$service->id}}">{{$service->type}}</option>
@@ -72,13 +81,13 @@
                 <div class="row">
                     <div class="col-6 mb-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="pay_status" id="flexRadioDefault1" value="0" checked>
+                            <input class="form-check-input" type="radio" name="pay_status" id="flexRadioDefault1" value="0" checked required>
                             <label class="form-check-label" for="flexRadioDefault1">
                                 Sin pagar
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="pay_status" id="flexRadioDefault2" value="1">
+                            <input class="form-check-input" type="radio" name="pay_status" id="flexRadioDefault2" value="1" required>
                             <label class="form-check-label" for="flexRadioDefault2">
                                 Pago realizado
                             </label>

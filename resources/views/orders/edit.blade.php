@@ -1,17 +1,23 @@
 <x-app-layout>
     <div class="container pt-5">
-        <h1>Nueva reserva</h1>
+        <div class="row">
+            <div class="d-flex justify-content-between align-items-end">
+                <h1>Editar reserva</h1>
+                <p><span class="fw-bold">Referencia:</span> {{$order->order_ref}}</p>
+            </div>
+        </div>
         <hr>
         <div class="d-flex justify-content-center pt-5">
-            <form action="{{ route('orders.store') }}" id="form_store" class="col-10" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('orders.update', $order->id) }}" id="form_update" class="col-10" method="POST" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 
                 <div class="mb-3" hidden>
-                    <input type="text" name="total_price" id="total_price" class="form-control" value="0">
-                    <input type="text" name="is_online" id="is_online" class="form-control" value="0">
-                    <input type="text" name="order_status" id="order_status" class="form-control" value="0">
-                    <input type="text" name="user_id" id="user_id" value="{{$user->id}}" class="form-control">
-                    <input type="text" name="order_ref" id="order_ref" class="form-control">
+                    <input type="text" name="total_price" id="total_price" class="form-control" value="{{$order->total_price}}">
+                    <input type="text" name="is_online" id="is_online" class="form-control" value="{{$order->is_online}}">
+                    <input type="text" name="order_status" id="order_status" class="form-control" value="{{$order->order_status}}">
+                    <input type="text" name="user_id" id="user_id" value="{{$order->user_id}}" class="form-control">
+                    <input type="text" name="order_ref" id="order_ref" value="{{$order->order_ref}}" class="form-control">
                 </div>
 
                 <!-- Informacion del cliente -->
@@ -20,13 +26,13 @@
                     <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="name" class="form-label">Nombre</label>
-                            <input type="text" name="name" id="name" class="form-control" placeholder="Introduce el nombre del cliente">
+                            <input type="text" name="name" id="name" class="form-control" value="{{$order->name}}" placeholder="Introduce el nombre del cliente">
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="phone" class="form-label">Teléfono de contacto</label>
-                            <input type="text" name="phone" id="phone" class="form-control" placeholder="Introduce el teléfono del cliente">
+                            <input type="text" name="phone" id="phone" class="form-control" value="{{$order->phone}}" placeholder="Introduce el teléfono del cliente">
                         </div>
                     </div>
                 </div>
@@ -37,16 +43,15 @@
                     <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="order_date" class="form-label">Día de la reserva</label>
-                            <input type="date" name="order_date" id="order_date" class="form-control">
+                            <input type="date" name="order_date" id="order_date" value="{{$order->order_date}}" class="form-control">
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="order_hour" class="form-label">Hora de la reserva</label>
                             <select name="order_hour" id="order_hour" class="form-control">
-                                <option value="0" selected disabled>Selecciona una hora</option>
                                 @foreach ($hours as $hour)
-                                    <option value="{{$hour->order_hour}}">{{$hour->order_hour}}</option>
+                                    <option value="{{$hour->order_hour}}" @if($order->order_hour == $hour->order_hour)selected @endif>{{$hour->order_hour}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -58,9 +63,8 @@
                         <div class="border rounded p-3">
                             <label for="service_id" class="form-label">Servicio</label>
                             <select name="service_id" id="service_id" class="form-control">
-                                <option value="0" selected disabled>Selecciona un servicio</option>
                                 @foreach ($services as $service)
-                                <option value="{{$service->id}}">{{$service->type}}</option>
+                                    <option value="{{$service->id}}" @if($order->service_id == $service->id)selected @endif>{{$service->type}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -72,13 +76,13 @@
                 <div class="row">
                     <div class="col-6 mb-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="pay_status" id="flexRadioDefault1" value="0" checked>
+                            <input class="form-check-input" type="radio" name="pay_status" id="flexRadioDefault1" value="0" @if($order->pay_status == 0)checked @endif>
                             <label class="form-check-label" for="flexRadioDefault1">
                                 Sin pagar
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="pay_status" id="flexRadioDefault2" value="1">
+                            <input class="form-check-input" type="radio" name="pay_status" id="flexRadioDefault2" value="1" @if($order->pay_status == 1)checked @endif>
                             <label class="form-check-label" for="flexRadioDefault2">
                                 Pago realizado
                             </label>
@@ -106,11 +110,14 @@
 </x-app-layout>
 <script>
     $(document).ready(function(){
-        newOrderRef();
+        // Ejecutamos la función nada más cargar la página para mostrar el precio del servicio elegido anteriormente.
+        servicesPrices();
+        // Volvemos a ejecutar la función si se decide editar el servicio y así obtener el precio del nuevo servicio.
         $('#service_id').click(function(){
             servicesPrices();
         });
     });
+
     /**
      * Esta función obtiene el precio del servicio que le enviamos al controlador.
      *
@@ -134,23 +141,6 @@
                     $('#total_price').val(item.price);
                     $('.total_price').text(item.price + '€');
                 });
-            }
-        });
-    }
-    /**
-     * Esta función genera una referencia única para la nueva reserva.
-     *
-     * @return void
-     */
-    function newOrderRef(){
-        $.ajax({
-            type: "GET",
-            url: "/new_order_ref",
-            dataType: "json",
-
-            success: function(response){
-                console.log(response.order_ref)
-                $('#order_ref').val(response.order_ref);
             }
         });
     }

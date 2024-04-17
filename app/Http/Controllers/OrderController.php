@@ -58,7 +58,11 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        $user = Auth::user();
+        $services = Service::all();
+        $hours = Hour::all();
+
+        return view('orders.edit', compact('order', 'user', 'services', 'hours'));
     }
 
     /**
@@ -66,7 +70,10 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $new_order = $request->all();
+        $order->update($new_order);
+        
+        return redirect()->route('orders.index')->banner('Reserva editada correctamente.');
     }
 
     /**

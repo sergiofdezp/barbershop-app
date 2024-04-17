@@ -16,6 +16,7 @@ class ServiceSeeder extends Seeder
         DB::table('services')->insert([
             'type' => "Corte de pelo",
             'price' => "10",
+            'image' => "pelo.png",
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -23,6 +24,7 @@ class ServiceSeeder extends Seeder
         DB::table('services')->insert([
             'type' => "Arreglo de barba",
             'price' => "7",
+            'image' => "barba.png",
             'created_at' => now(),
             'updated_at' => now(),
         ]);

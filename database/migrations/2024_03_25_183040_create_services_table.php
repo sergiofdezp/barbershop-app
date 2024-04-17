@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            // el tipo será pelo o barba
+            // el tipo será pelo o barba (inicialmente)
             $table->string('type');
             $table->integer('price');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

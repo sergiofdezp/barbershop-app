@@ -9,7 +9,7 @@ class Service extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type', 'price'];
+    protected $fillable = ['type', 'price', 'image'];
 
     public function orders(){
         return $this->hasMany(Order::class, 'id');

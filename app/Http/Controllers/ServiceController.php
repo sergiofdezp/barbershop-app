@@ -36,7 +36,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        //
+        return view('services.create');
     }
 
     /**
@@ -44,7 +44,18 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $service = $request->all();
+        
+        if($image = $request->file('image')) {
+            $rutaGuardarImg = 'images/services/';
+            $imagenService = $service['type']. "." . $image->getClientOriginalExtension();
+            $image->move($rutaGuardarImg, $imagenService);
+            $service['image'] = "$imagenService";             
+        }
+
+        Service::create($service);
+
+        return redirect()->route('services.index')->banner('Servicio añadido correctamente.');
     }
 
     /**

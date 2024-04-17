@@ -14,7 +14,10 @@
             @foreach ($services as $service)
             <div class="col-sm-6">
                 <div class="card d-flex align-items-center text-center rounded">
-                    <img src="{{asset('/images/' . $service->type . '.png')}}" class="card-img-top" alt="...">
+                    <!-- <img src="{{asset('/images/' . $service->type . '.png')}}" class="card-img-top" alt="..."> -->
+                    <td>
+                        <img src="{{asset('/images/services/' . $service->image)}}" class="card-img-top" alt="...">
+                    </td>
                     <div class="card-body">
                         <h5 class="card-title">{{$service->type}}</h5>
                         <p class="card-text">Precio: {{$service->price}}€</p>

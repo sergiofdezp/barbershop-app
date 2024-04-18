@@ -71,7 +71,7 @@ class ServiceController extends Controller
      */
     public function edit(Service $service)
     {
-        //
+        return view('services.edit', compact('service'));
     }
 
     /**
@@ -79,7 +79,20 @@ class ServiceController extends Controller
      */
     public function update(Request $request, Service $service)
     {
-        //
+        $serv = $request->all();
+
+        if($imagen = $request->file('imagen')){
+           $rutaGuardarImg = 'images/services/';
+           $imagenService = $service['type']. "." . $imagen->getClientOriginalExtension(); 
+           $imagen->move($rutaGuardarImg, $imagenService);
+           $serv['image'] = "$imagenService";
+        }else{
+           unset($serv['image']);
+        }
+
+        $service->update($serv);
+        
+        return redirect()->route('services.index')->banner('Servicio editado correctamente.');
     }
 
     /**

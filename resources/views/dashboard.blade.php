@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row pt-5">
             <div class="col-sm-6">
-                <div class="card d-flex align-items-center text-center rounded">
+                <div class="card rounded">
                     <div class="card-body">
                         <h5 class="card-title">Bienvenido, Admin</h5>
                     </div>

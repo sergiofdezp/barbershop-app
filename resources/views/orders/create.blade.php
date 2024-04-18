@@ -49,16 +49,8 @@
                             <input type="date" name="order_date" id="order_date" class="form-control" required>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="border rounded p-3">
-                            <label for="order_hour" class="form-label">Hora de la reserva</label>
-                            <select name="order_hour" id="order_hour" class="form-control" required>
-                                <option value="0" selected disabled>Selecciona una hora</option>
-                                @foreach ($hours as $hour)
-                                    <option value="{{$hour->order_hour}}">{{$hour->order_hour}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="col-6" id="order_hours">
+                        
                     </div>
                 </div>
     
@@ -119,6 +111,9 @@
         $('#service_id').click(function(){
             servicesPrices();
         });
+        $('#order_date').change(function(){
+            bloqueosHoras();
+        });
     });
     /**
      * Esta función obtiene el precio del servicio que le enviamos al controlador.
@@ -158,8 +153,58 @@
             dataType: "json",
 
             success: function(response){
-                console.log(response.order_ref)
                 $('#order_ref').val(response.order_ref);
+            }
+        });
+    }
+
+    /**
+     * Esta función bloqueará las sesiones donde ya hay una reserva.
+     *
+     * @return void
+     */
+    function bloqueosHoras(){
+        var order_date = $('#order_date').val();
+
+        // Reiniciamos el estado del div, limpiamos el div (order_hours) para despues regenerarlo.
+        var test = '';
+        document.getElementById('order_hours').innerHTML = test;
+            
+        $.ajax({
+            type: "GET",
+            url: "/bloqueos_horas",
+            data: {
+                order_date : order_date,
+            },
+            dataType: "json",
+
+            success: function(response){
+                // Creamos el div donde generaremos el select.
+                test = '<div class="border rounded p-3">'
+                                +'<label for="order_hour" class="form-label">Hora de la reserva</label>'
+                                +'<select name="order_hour" id="order_hour" class="form-control" required>'
+                                    +'<option value="0" selected disabled>Selecciona una hora</option>'
+                                +'</select>'
+                            +'</div>';
+                document.getElementById('order_hours').innerHTML += test;
+
+                // Seleccionamos el select y recorriendo la respuesta del AJAX generaremos las options.
+                var select = document.getElementById('order_hour');
+
+                $.each(response.hours, function (key_h, hour){
+                    var opt = document.createElement('option');
+                    opt.value = hour.order_hour;
+                    opt.innerHTML = hour.order_hour;
+
+                    $.each(response.orders, function (key_o, order){
+                        if(order.order_hour == hour.order_hour){
+                            opt.disabled = true;
+                            opt.innerHTML += ' - Reservada';
+                        }
+                    });
+
+                    select.appendChild(opt);
+                });
             }
         });
     }

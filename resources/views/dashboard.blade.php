@@ -5,11 +5,74 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <x-welcome />
+    <div class="container">
+        <div class="row pt-5">
+            <div class="col-sm-6">
+                <div class="card d-flex align-items-center text-center rounded">
+                    <div class="card-body">
+                        <h5 class="card-title">Bienvenido, Admin</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card d-flex align-items-center text-center rounded">
+                    <div class="card-body">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-4">
+            <div class="col-sm-6">
+                <div class="card d-flex align-items-center text-center rounded">
+                    <div class="card-body">
+                        <a href="{{ route('orders.index')}}">Reservas</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card d-flex align-items-center text-center rounded">
+                    <div class="card-body">
+                        <a href="{{ route('orders.create')}}">Nueva reserva</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="col-sm-6">
+                <div class="card d-flex align-items-center text-center rounded">
+                    <div class="card-body">
+                        <a href="{{ route('services.index')}}">Servicios</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card d-flex align-items-center text-center rounded">
+                    <div class="card-body">
+                        <a href="{{ route('services.create')}}">Nuevo servicio</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row pt-4">
+            <div class="col-sm-6">
+                <div class="card rounded">
+                    <div class="card-body">
+                        <p class="card-text">Reservas totales</p>
+                        <h5 class="card-title">0</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card rounded">
+                    <div class="card-body">
+                        <p class="card-text">Dinero total</p>
+                        <h5 class="card-title">0€</h5>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <!-- <x-welcome /> -->
 </x-app-layout>

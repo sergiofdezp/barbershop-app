@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CouponController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,4 +38,6 @@ Route::middleware([
     Route::get('/services_prices', [ServiceController::class, 'services_prices']);
 
     Route::resource('/users', UserController::class)->names('users');
+
+    Route::resource('/coupons', CouponController::class)->names('coupons');
 });

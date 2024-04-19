@@ -21,6 +21,9 @@
                     <x-nav-link href="{{ route('services.index') }}" :active="request()->routeIs('services.index')">
                         {{ __('Servicios') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('coupons.index') }}" :active="request()->routeIs('coupons.index')">
+                        {{ __('Cupones') }}
+                    </x-nav-link>
                     <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
                         {{ __('Usuarios') }}
                     </x-nav-link>

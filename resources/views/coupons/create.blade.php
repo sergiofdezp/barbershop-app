@@ -12,9 +12,8 @@
             </div>
         @endif
         <div class="d-flex justify-content-center pt-5">
-            <form action="{{ route('coupons.update', $coupon->id) }}" id="form_store" class="col-10" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('coupons.store') }}" id="form_store" class="col-10" method="POST" enctype="multipart/form-data">
                 @csrf
-                @method('PUT')
                 
                 <div class="mb-3" hidden>
                     
@@ -26,11 +25,11 @@
                     <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="code" class="form-label">Código</label>
-                            <input type="text" name="code" id="code" class="form-control" value="{{$coupon->code}}" required>
+                            <input type="text" name="code" id="code" class="form-control" placeholder="Introduce un código" required>
                         </div>
                     </div>
                     <div class="col-6 d-flex align-items-end">
-                            <button class="btn btn-success">Generar código</button>
+                        <!-- <button class="btn btn-success">Generar código</button> -->
                     </div>
                 </div>
 
@@ -38,16 +37,16 @@
                     <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="discount" class="form-label">Descuento</label>
-                            <input type="number" name="discount" id="discount" class="form-control" value="{{$coupon->discount}}" required>
+                            <input type="number" name="discount" id="discount" class="form-control" placeholder="Introduce el descuento" required>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="service" class="form-label">Servicios</label>
                             <select name="service" id="service" class="form-control" required>
-                                <option value="0">Todos los servicios</option>
+                                <option value="0" selected>Todos los servicios</option>
                                 @foreach ($services as $service)
-                                <option value="{{$service->id}}" @if($coupon->service == $service->id)selected @endif>{{$service->type}}</option>
+                                <option value="{{$service->id}}">{{$service->type}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -60,13 +59,13 @@
                     <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="start_date" class="form-label">Fecha de inicio</label>
-                            <input type="date" name="start_date" id="start_date" class="form-control" value="{{$coupon->start_date}}" required>
+                            <input type="date" name="start_date" id="start_date" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="end_date" class="form-label">Fecha de fin</label>
-                            <input type="date" name="end_date" id="end_date" class="form-control" value="{{$coupon->end_date}}" required>
+                            <input type="date" name="end_date" id="end_date" class="form-control" required>
                         </div>
                     </div>
                 </div>

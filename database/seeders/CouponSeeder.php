@@ -14,7 +14,7 @@ class CouponSeeder extends Seeder
     public function run(): void
     {
         DB::table('coupons')->insert([
-            'code' => "08:00",
+            'code' => "AJSHDGBAJH",
             'discount' => 50,
             'start_date' => "2024-01-01",
             'end_date' => "2024-12-31",

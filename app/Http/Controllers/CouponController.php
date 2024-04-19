@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coupon;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class CouponController extends Controller
@@ -12,7 +13,9 @@ class CouponController extends Controller
      */
     public function index()
     {
-        //
+        $coupons = Coupon::all();
+
+        return view('coupons.index', compact('coupons'));
     }
 
     /**
@@ -20,7 +23,8 @@ class CouponController extends Controller
      */
     public function create()
     {
-        //
+        $services = Service::all();
+        return view('coupons.create', compact('services'));
     }
 
     /**
@@ -28,7 +32,18 @@ class CouponController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'code' => 'required | string',
+            'discount' => 'required | integer',
+            'start_date' => 'required | date',
+            'end_date' => 'required | date',
+            'service' => 'required | integer',
+        ]);
+
+        $coupon = $request->all();
+        Coupon::create($coupon);
+
+        return redirect()->route('coupons.index')->banner('Cupón añadido correctamente.');
     }
 
     /**
@@ -44,7 +59,8 @@ class CouponController extends Controller
      */
     public function edit(Coupon $coupon)
     {
-        //
+        $services = Service::all();
+        return view('coupons.edit', compact('coupon', 'services'));
     }
 
     /**
@@ -52,7 +68,18 @@ class CouponController extends Controller
      */
     public function update(Request $request, Coupon $coupon)
     {
-        //
+        $validated = $request->validate([
+            'code' => 'required | string',
+            'discount' => 'required | integer',
+            'start_date' => 'required | date',
+            'end_date' => 'required | date',
+            'service' => 'required | integer',
+        ]);
+        
+        $new_coupon = $request->all();
+        $coupon->update($new_coupon);
+        
+        return redirect()->route('coupons.index')->banner('Cupón editado correctamente.');
     }
 
     /**

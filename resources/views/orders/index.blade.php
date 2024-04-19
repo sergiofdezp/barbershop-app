@@ -24,7 +24,7 @@
                     <th scope="col" class="text-end">Acciones</th>
                 </tr>
             </thead>
-            <tbody >
+            <tbody>
                 @foreach ($orders as $order)
                 <tr>
                     <th scope="row">{{$order->id}}</th>

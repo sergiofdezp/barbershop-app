@@ -13,8 +13,7 @@
         <div class="row">
             @foreach ($services as $service)
             <div class="col-sm-6">
-                <div class="card d-flex align-items-center text-center rounded">
-                    <!-- <img src="{{asset('/images/' . $service->type . '.png')}}" class="card-img-top" alt="..."> -->
+                <div class="card service-hover d-flex align-items-center text-center rounded">
                     <td>
                         <img src="{{asset('/images/services/' . $service->image)}}" class="card-img-top" alt="...">
                     </td>

@@ -30,6 +30,7 @@ return new class extends Migration
             // precio y estado del pago de la reserva (sin pagar, pagada)
             $table->string('total_price');
             $table->integer('pay_status')->nullable();
+            $table->foreignId('coupon_id')->constrained('coupons')->onDelete('cascade');
             // informacion adicional de creacion y edicion
             $table->timestamps();
         });

@@ -25,6 +25,7 @@ class OrderSeeder extends Seeder
             'order_status' => 0,
             'total_price' => 10,
             'pay_status' => "0",
+            'coupon_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -41,6 +42,7 @@ class OrderSeeder extends Seeder
             'order_status' => 0,
             'total_price' => 7,
             'pay_status' => "0",
+            'coupon_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -57,6 +59,7 @@ class OrderSeeder extends Seeder
             'order_status' => 0,
             'total_price' => 10,
             'pay_status' => "0",
+            'coupon_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

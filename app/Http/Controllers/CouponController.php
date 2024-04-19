@@ -6,6 +6,9 @@ use App\Models\Coupon;
 use App\Models\Service;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+
+
 class CouponController extends Controller
 {
     /**
@@ -88,5 +91,53 @@ class CouponController extends Controller
     public function destroy(Coupon $coupon)
     {
         //
+    }
+
+    public function generarCodigo($longitud){
+        $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $codigo = '';
+    
+        for ($i = 0; $i < $longitud; $i++) {
+            $codigo .= $caracteres[rand(0, strlen($caracteres) - 1)];
+        }
+    
+        return $codigo;
+    }
+
+    public function verificarCodUnico($coupon_code){
+        $cod_dispo = DB::table('coupons')
+            ->where('code', '=', $coupon_code)
+            ->count(); // Contar el número de registros con el mismo order_ref
+
+        return $cod_dispo > 0;
+    }
+
+    public function generarDiscountCode(){
+        do {
+            $long_ref = 7;
+            $coupon_code = $this->generarCodigo($long_ref);
+        } while ($this->verificarCodUnico($coupon_code));
+
+        return response()->json([
+            'coupon_code'=>$coupon_code,
+        ]);
+    }
+
+    public function verificarCodManualUnico(Request $code){
+        $code = $code->get('code');
+
+        $coupons = DB::table('coupons')
+            ->where('code', '=', $code)
+            ->count();
+
+        if($coupons > 0){
+            return response()->json([
+                'result'=>1,
+            ]);
+        } else{
+            return response()->json([
+                'result'=>0,
+            ]);
+        }
     }
 }

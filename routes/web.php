@@ -40,4 +40,7 @@ Route::middleware([
     Route::resource('/users', UserController::class)->names('users');
 
     Route::resource('/coupons', CouponController::class)->names('coupons');
+
+    Route::get('/new_discount_code', [CouponController::class, 'generarDiscountCode']);
+    Route::get('/verif_manual_code', [CouponController::class, 'verificarCodManualUnico']);
 });

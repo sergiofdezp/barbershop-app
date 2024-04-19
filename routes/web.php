@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,17 +26,12 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('/orders', OrderController::class)->names('orders');
+    Route::get('/new_order_ref', [OrderController::class, 'generarOrderRef']);
+    Route::get('/bloqueos_horas', [OrderController::class, 'bloqueosHoras']);
     
     Route::resource('/services', ServiceController::class)->names('services');
-
     Route::get('/services_prices', [ServiceController::class, 'services_prices']);
-
-    Route::get('/new_order_ref', [OrderController::class, 'generarOrderRef']);
-
-    Route::get('/bloqueos_horas', [OrderController::class, 'bloqueosHoras']);
 });

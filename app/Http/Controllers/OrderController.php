@@ -157,4 +157,25 @@ class OrderController extends Controller
             'order_ref'=>$order_ref,
         ]);
     }
+
+    /**
+     * Esta función es llamada por un ajax de la vista crear reserva. Bloquea las horas del dia seleccionado que ya están reservadas.
+     *
+     * @param Request $order_date
+     * @return void
+     */
+    public function bloqueosHoras(Request $order_date){
+        $order_date = $order_date->get('order_date');
+
+        $orders = DB::table('orders')
+            ->where('order_date', '=', $order_date)
+            ->get();
+
+        $hours = Hour::all();
+
+        return response()->json([
+            'orders'=>$orders,
+            'hours'=>$hours,
+        ]);
+    }
 }

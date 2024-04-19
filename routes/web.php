@@ -37,5 +37,5 @@ Route::middleware([
 
     Route::get('/new_order_ref', [OrderController::class, 'generarOrderRef']);
 
-    Route::get('/bloqueos_horas', [ServiceController::class, 'bloqueosHoras']);
+    Route::get('/bloqueos_horas', [OrderController::class, 'bloqueosHoras']);
 });

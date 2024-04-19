@@ -103,19 +103,4 @@ class ServiceController extends Controller
     {
         //
     }
-
-    public function bloqueosHoras(Request $order_date){
-        $order_date = $order_date->get('order_date');
-
-        $orders = DB::table('orders')
-            ->where('order_date', '=', $order_date)
-            ->get();
-
-        $hours = Hour::all();
-
-        return response()->json([
-            'orders'=>$orders,
-            'hours'=>$hours,
-        ]);
-    }
 }

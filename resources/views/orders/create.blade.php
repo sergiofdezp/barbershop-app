@@ -167,8 +167,8 @@
         var order_date = $('#order_date').val();
 
         // Reiniciamos el estado del div, limpiamos el div (order_hours) para despues regenerarlo.
-        var test = '';
-        document.getElementById('order_hours').innerHTML = test;
+        var order_hours = '';
+        document.getElementById('order_hours').innerHTML = order_hours;
             
         $.ajax({
             type: "GET",
@@ -180,13 +180,13 @@
 
             success: function(response){
                 // Creamos el div donde generaremos el select.
-                test = '<div class="border rounded p-3">'
+                order_hours = '<div class="border rounded p-3">'
                                 +'<label for="order_hour" class="form-label">Hora de la reserva</label>'
                                 +'<select name="order_hour" id="order_hour" class="form-control" required>'
                                     +'<option value="0" selected disabled>Selecciona una hora</option>'
                                 +'</select>'
                             +'</div>';
-                document.getElementById('order_hours').innerHTML += test;
+                document.getElementById('order_hours').innerHTML += order_hours;
 
                 // Seleccionamos el select y recorriendo la respuesta del AJAX generaremos las options.
                 var select = document.getElementById('order_hour');

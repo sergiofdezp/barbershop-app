@@ -15,10 +15,6 @@
         <div class="d-flex justify-content-center pt-5">
             <form action="{{ route('coupons.store') }}" id="form_store" class="col-10" method="POST" enctype="multipart/form-data">
                 @csrf
-                
-                <div class="mb-3" hidden>
-                    
-                </div>
 
                 <!-- Informacion del cliente -->
                 <h2>Información del cupón</h2>
@@ -30,7 +26,6 @@
                         </div>
                     </div>
                     <div class="col-6 d-flex align-items-end">
-                        <!-- <button class="btn btn-success" id="generar_cod">Generar código</button> -->
                         <input type="button" class="btn btn-success" id="generar_cod" value="Generar código">
                     </div>
                 </div>

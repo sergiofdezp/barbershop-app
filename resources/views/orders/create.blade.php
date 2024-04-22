@@ -70,7 +70,7 @@
                     <div class="col-4">
                         <div class="border rounded p-3">
                             <label for="discount" class="form-label">Cupón de descuento</label>
-                            <input type="text" name="discount" id="discount" class="form-control" placeholder="Introduce un código de descuento">
+                            <input type="button" name="discount" id="discount" class="form-control" placeholder="Introduce un código de descuento">
                         </div>
                     </div>
                     <div class="col-2 d-flex align-items-end">

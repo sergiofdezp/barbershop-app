@@ -21,7 +21,7 @@
                     <input type="text" name="order_status" id="order_status" class="form-control" value="0" required>
                     <input type="text" name="user_id" id="user_id" value="{{$user->id}}" class="form-control" required>
                     <input type="text" name="order_ref" id="order_ref" class="form-control" required>
-                    <input type="text" name="coupon_id" id="coupon_id" class="form-control" required>
+                    <input type="text" name="coupon_id" id="coupon_id" class="form-control">
                 </div>
 
                 <!-- Informacion del cliente -->

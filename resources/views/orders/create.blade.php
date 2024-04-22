@@ -279,7 +279,7 @@
                             var final_price = (total_price * coupon.discount) / 100;
         
                             $('#coupon_id').val(coupon.id);
-                            $('#final_price').val();
+                            $('#total_price').val(final_price);
                             $('.total_price').text(final_price + '€');
                         });
                     }

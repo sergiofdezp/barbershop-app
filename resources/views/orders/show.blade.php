@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="row border p-5">
+        <div class="row border p-4">
             <div class="col-6">
                 <h5>Detalles de la reserva</h5>
                 <hr>
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="row border p-5 mt-3">
+        <div class="row border p-4 mt-3">
             <div class="col-6">
                 <h5>Otros detalles</h5>
                 <hr>
@@ -63,6 +63,7 @@
                 </p>
                 <p class="fw-bold">Fecha de creación de la reserva: <span class="fw-normal">{{$order->created_at}}.</span></p>
                 <p class="fw-bold">Última actualización: <span class="fw-normal">{{$order->updated_at}}.</span></p>
+                <p class="fw-bold">Cupón de descuento: <span class="fw-normal">{{$order->coupon->code}}.</span></p>
             </div>
             <div class="col-6">
                 <h5>Detalles del pago</h5>

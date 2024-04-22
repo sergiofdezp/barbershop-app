@@ -178,4 +178,62 @@ class OrderController extends Controller
             'hours'=>$hours,
         ]);
     }
+
+    public function checkDiscountCode(Request $request){
+        $code = $request->coupon_code;
+        $service_id = $request->service_id;
+        $order_date = $request->order_date;
+
+        // Verificar si llega id del servicio seleccionado
+        if($service_id == null){
+            return response()->json([
+                'coupon'=>"noservice",
+            ]);
+        }
+
+        // Verificar si llega la fecha seleccionada
+        if($order_date == null){
+            return response()->json([
+                'coupon'=>"noorderdate",
+            ]);
+        }
+
+        $coupon = DB::table('coupons')
+            ->where('code', '=', $code)
+            ->get();
+
+        $coupon_service = DB::table('coupons')
+            ->where('code', '=', $code)
+            ->value('service');
+
+        $coupon_dates = DB::table('coupons')
+            ->where('code', '=', $code)
+            ->where('start_date', '<=', $order_date)
+            ->where('end_date', '>=', $order_date)
+            ->get();
+
+        // Verificación de existencia del cupón, si existe, pasamos a la siguiente comprobación, si no existe devolveremos 0
+        if($coupon->count() > 0){
+            // Verificamos si el cupon->service está en 0 o coincide, de esta manera sabremos si se puede aplicar al servicio elegido.
+            if($coupon_service == 0 || $coupon_service == $service_id){
+                if($coupon_dates->count() > 0){
+                    return response()->json([
+                        'coupon'=>$coupon,
+                    ]);
+                } else{
+                    return response()->json([
+                        'coupon'=>"nodates",
+                    ]);
+                }
+            } else{
+                return response()->json([
+                    'coupon'=>"noservice",
+                ]);
+            }
+        } else { 
+            return response()->json([
+                'coupon'=>0,
+            ]);
+        }
+    }
 }

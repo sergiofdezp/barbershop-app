@@ -21,6 +21,7 @@
                     <input type="text" name="order_status" id="order_status" class="form-control" value="0" required>
                     <input type="text" name="user_id" id="user_id" value="{{$user->id}}" class="form-control" required>
                     <input type="text" name="order_ref" id="order_ref" class="form-control" required>
+                    <input type="text" name="coupon_id" id="coupon_id" class="form-control" required>
                 </div>
 
                 <!-- Informacion del cliente -->
@@ -54,8 +55,8 @@
                     </div>
                 </div>
     
-                <div class="row gx-4">
-                    <div class="col-6 mb-3">
+                <div class="row gx-4 mb-3">
+                    <div class="col-6">
                         <div class="border rounded p-3">
                             <label for="service_id" class="form-label">Servicio</label>
                             <select name="service_id" id="service_id" class="form-control" required>
@@ -65,7 +66,16 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div> 
+                    </div>
+                    <div class="col-4">
+                        <div class="border rounded p-3">
+                            <label for="discount" class="form-label">Cupón de descuento</label>
+                            <input type="text" name="discount" id="discount" class="form-control" placeholder="Introduce un código de descuento">
+                        </div>
+                    </div>
+                    <div class="col-2 d-flex align-items-end">
+                        <input type="button" class="btn btn-success" id="aplicar_cod" value="Aplicar cupón">
+                    </div>
                 </div>
 
                 <!-- Información del pago -->
@@ -108,11 +118,14 @@
 <script>
     $(document).ready(function(){
         newOrderRef();
-        $('#service_id').click(function(){
+        $('#service_id').change(function(){
             servicesPrices();
         });
         $('#order_date').change(function(){
             bloqueosHoras();
+        });
+        $('#aplicar_cod').click(function(){
+            checkDiscountCode();
         });
     });
     /**
@@ -137,6 +150,8 @@
                     // console.log(item.price)
                     $('#total_price').val(item.price);
                     $('.total_price').text(item.price + '€');
+                    // Debemos resetear el input del código descuento al cambiar el servicio
+                    $('#coupon_id').val("");
                 });
             }
         });
@@ -205,6 +220,52 @@
 
                     select.appendChild(opt);
                 });
+            }
+        });
+    }
+
+    function checkDiscountCode(){
+        var coupon_code = $('#discount').val();
+        var service_id = $('#service_id').val();
+        var total_price = $('#total_price').val();
+        var order_date = $('#order_date').val();
+
+        $.ajax({
+            type: "GET",
+            url: "/check_discount_code",
+            data: {
+                coupon_code : coupon_code,
+                service_id : service_id,
+                order_date : order_date,
+            },
+            dataType: "json",
+
+            success: function(response){
+                // Verificar que se ha elegido una fecha y un servicio
+                if(response.coupon == "noorderdate"){
+                    console.log('debes introducir una fecha');
+                } else if(response.coupon == "noservice"){
+                    console.log('debes elegir un servicio');
+                } else{
+                    // Verificación de existencia de cupón
+                    if(response.coupon == 0){
+                        console.log('este cupon no existe')
+                    } else if(response.coupon == "noservice"){
+                        console.log('el cupón existe pero no se puede utilizar con este servicio');
+                    } else if(response.coupon == "nodates"){
+                        console.log('el cupón existe pero no se puede utilizar en esta fecha');
+                    } else{
+                        console.log('este cupon existe')
+    
+                        $.each(response.coupon, function (key_c, coupon){
+                            var final_price = (total_price * coupon.discount) / 100;
+        
+                            $('#coupon_id').val(coupon.id);
+                            $('#final_price').val();
+                            $('.total_price').text(final_price + '€');
+                        });
+                    }
+                }
             }
         });
     }

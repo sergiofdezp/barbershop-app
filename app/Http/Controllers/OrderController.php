@@ -187,7 +187,7 @@ class OrderController extends Controller
         // Verificar si llega id del servicio seleccionado
         if($service_id == null){
             return response()->json([
-                'coupon'=>"noservice",
+                'coupon'=>"noserviceid",
             ]);
         }
 

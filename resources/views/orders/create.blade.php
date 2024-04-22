@@ -78,6 +78,12 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-12">
+                        <p id="error-message" class="bg-danger text-white rounded"></p>
+                    </div>
+                </div>
+
                 <!-- Información del pago -->
                 <h2>Información del pago</h2>
                 <div class="row">
@@ -225,6 +231,9 @@
     }
 
     function checkDiscountCode(){
+        $('#error-message').html('');
+        $('#error-message').removeClass('p-2');
+
         var coupon_code = $('#discount').val();
         var service_id = $('#service_id').val();
         var total_price = $('#total_price').val();
@@ -241,22 +250,31 @@
             dataType: "json",
 
             success: function(response){
+                $("#error-message").show();
                 // Verificar que se ha elegido una fecha y un servicio
                 if(response.coupon == "noorderdate"){
-                    console.log('debes introducir una fecha');
-                } else if(response.coupon == "noservice"){
-                    console.log('debes elegir un servicio');
+                    // $("#error-message").show();
+                    $('#error-message').html('Debes elegir una fecha antes de aplicar un código.');
+                    $('#error-message').addClass('p-2');
+                } else if(response.coupon == "noserviceid"){
+                    // $("#error-message").show();
+                    $('#error-message').html('Debes elegir un servicio antes de aplicar un código.');
+                    $('#error-message').addClass('p-2');
                 } else{
                     // Verificación de existencia de cupón
                     if(response.coupon == 0){
-                        console.log('este cupon no existe')
+                        // $("#error-message").show();
+                        $('#error-message').html('¡Este cupón no existe! Por favor introduce un código válido.');
+                        $('#error-message').addClass('p-2');
                     } else if(response.coupon == "noservice"){
-                        console.log('el cupón existe pero no se puede utilizar con este servicio');
+                        // $("#error-message").show();
+                        $('#error-message').html('Este cupón no puede aplicarse a este servicio.');
+                        $('#error-message').addClass('p-2');
                     } else if(response.coupon == "nodates"){
-                        console.log('el cupón existe pero no se puede utilizar en esta fecha');
+                        // $("#error-message").show();
+                        $('#error-message').html('Este cupón no puede aplicarse para esta fecha.');
+                        $('#error-message').addClass('p-2');
                     } else{
-                        console.log('este cupon existe')
-    
                         $.each(response.coupon, function (key_c, coupon){
                             var final_price = (total_price * coupon.discount) / 100;
         

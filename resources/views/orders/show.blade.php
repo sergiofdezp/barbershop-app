@@ -83,5 +83,26 @@
                 </p>
             </div>
         </div>
+        <div class="row border p-4 mt-3">
+            <div class="accordion" id="accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Últimas Actualizaciones de la reserva
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordion">
+                        <div class="accordion-body">
+                            @foreach($logs as $log)
+                                <div class="d-flex justify-content-between">
+                                    <p>{{$log->message}}</p>
+                                    <p>{{$log->updated_at}}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </x-app-layout>

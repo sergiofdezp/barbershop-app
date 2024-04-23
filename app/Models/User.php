@@ -62,4 +62,8 @@ class User extends Authenticatable
     public function orders(){
         return $this->hasMany(Order::class, 'id');
     }
+
+    public function logs(){
+        return $this->hasMany(Log::class, 'id');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\Hour;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\DB;
@@ -83,7 +84,12 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return view('orders.show', compact('order'));
+        $logs = DB::table('logs')
+            ->where('order_id', $order->id)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        return view('orders.show', compact('order', 'logs'));
     }
 
     /**
@@ -116,6 +122,38 @@ class OrderController extends Controller
             'total_price' => 'required',
             'pay_status' => 'required',
         ]);
+
+        /**
+         * Implementación de sistema de logs en actualización de reservas
+         */
+
+        // Array de traducción de claves
+        $keyTranslations = [
+            'order_date' => 'La fecha de la reserva',
+            'order_hour' => 'La hora de la reserva',
+            'name' => 'El nombre',
+            'phone' => 'El teléfono',
+            'service_id' => 'El servicio',
+            'is_online' => 'El lugar de reserva',
+            'order_status' => 'El estado',
+            'total_price' => 'El precio',
+            'pay_status' => 'El pago',
+        ];
+
+        foreach ($validated as $key => $value) {
+            if ($order->$key != $value) {
+                $translatedKey = $keyTranslations[$key] ?? $key; // Obtener la traducción de la clave o usar la clave original si no hay traducción
+                $message = "$translatedKey ha cambiado de '{$order->$key}' a '$value'. ";
+
+                $log = array(
+                    "order_id" => $order->id,
+                    "message" => $message,
+                    "user_id" => $order->user_id,
+                );
+            
+                Log::create($log);
+            }
+        }
 
         $new_order = $request->all();
         $order->update($new_order);

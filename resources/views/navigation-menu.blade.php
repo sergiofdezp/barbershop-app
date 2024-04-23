@@ -107,8 +107,15 @@
                         <x-slot name="content">
                             <!-- Account Management -->
                             <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Manage Account') }}
+                                {{ __('Mi cuenta') }}
                             </div>
+
+                            <x-dropdown-link href="{{ route('dashboard') }}">
+                                {{ __('Dashboard') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('user_orders') }}">
+                                {{ __('Mis reservas') }}
+                            </x-dropdown-link>
 
                             <x-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}

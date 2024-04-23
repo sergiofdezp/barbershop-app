@@ -27,12 +27,19 @@
                     </div>
                 </div>
             </div>
+            <div class="col-sm-6">
+                <div class="card service-hover d-flex align-items-center text-center rounded h-100">
+                    <div class="card-body d-flex align-items-center text-center">
+                        <a href="{{ route('orders.index')}}" class="text-decoration-none link-dark">Todas las reservas</a>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row pt-4">
             <div class="col-sm-6">
                 <div class="card service-hover d-flex align-items-center text-center rounded">
                     <div class="card-body">
-                        <a href="{{ route('orders.index')}}" class="text-decoration-none link-dark">Reservas</a>
+                        <a href="{{ route('user_orders')}}" class="text-decoration-none link-dark">Mis reservas</a>
                     </div>
                 </div>
             </div>

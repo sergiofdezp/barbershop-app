@@ -21,6 +21,19 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
+    public function userOrders(){
+        $user = Auth::user();
+
+        if($user->name == 'Admin'){
+            $orders = Order::all();
+        }
+        else{
+            $orders = Order::where('user_id', auth()->id())->get();
+        }
+
+        return view('orders.user_orders', compact('orders'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -38,6 +51,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
+        
         $validated = $request->validate([
             'order_ref' => 'required | string',
             'order_date' => 'required | date',
@@ -55,7 +70,12 @@ class OrderController extends Controller
         $order = $request->all();
         Order::create($order);
 
-        return redirect()->route('orders.index')->banner('Reserva añadida correctamente.');
+        if($user->name == 'Admin'){
+            return redirect()->route('orders.index')->banner('Reserva añadida correctamente.');
+        }
+        else{
+            return redirect()->route('orders.user_orders')->banner('Reserva añadida correctamente.');
+        }
     }
 
     /**

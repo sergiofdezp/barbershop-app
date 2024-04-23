@@ -34,6 +34,7 @@ Route::middleware([
     Route::get('/new_order_ref', [OrderController::class, 'generarOrderRef']);
     Route::get('/bloqueos_horas', [OrderController::class, 'bloqueosHoras']);
     Route::get('/check_discount_code', [OrderController::class, 'checkDiscountCode']);
+    Route::get('/user_orders', [OrderController::class, 'userOrders'])->name('user_orders');
     
     Route::resource('/services', ServiceController::class)->names('services');
     Route::get('/services_prices', [ServiceController::class, 'services_prices']);

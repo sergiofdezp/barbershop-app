@@ -63,7 +63,9 @@
                 </p>
                 <p class="fw-bold">Fecha de creación de la reserva: <span class="fw-normal">{{$order->created_at}}.</span></p>
                 <p class="fw-bold">Última actualización: <span class="fw-normal">{{$order->updated_at}}.</span></p>
-                <p class="fw-bold">Cupón de descuento: <span class="fw-normal">{{$order->coupon->code}}.</span></p>
+                @if($order->coupon)
+                    <p class="fw-bold">Cupón de descuento: <span class="fw-normal">{{$order->coupon->code}}.</span></p>
+                @endif
             </div>
             <div class="col-6">
                 <h5>Detalles del pago</h5>

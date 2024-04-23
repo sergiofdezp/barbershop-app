@@ -1,12 +1,13 @@
 <x-app-layout>
-    <div class="container pt-5">
-        <div class="row">
-            <div class="d-flex justify-content-between align-items-end">
-                <h1>Visualización de reserva</h1>
-                <p><span class="fw-bold">Referencia:</span> {{$order->order_ref}}</p>
-            </div>
+    <x-slot name="header">
+        <div class="d-flex justify-content-between align-items-baseline">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Visualización de reserva') }}
+            </h2>
+            <p><span class="fw-bold">Referencia:</span> {{$order->order_ref}}</p>
         </div>
-        <hr>
+    </x-slot>
+    <div class="container pt-5">
         <div class="row pb-3">
             <div class="text-end">
                 <a href="{{ route('orders.edit', $order->id)}}" class="btn btn-success" style="background-color: #2019FF; border: none;">

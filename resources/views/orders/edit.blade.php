@@ -1,12 +1,13 @@
 <x-app-layout>
-    <div class="container pt-5">
-        <div class="row">
-            <div class="d-flex justify-content-between align-items-end">
-                <h1>Editar reserva</h1>
-                <p><span class="fw-bold">Referencia:</span> {{$order->order_ref}}</p>
-            </div>
+    <x-slot name="header">
+        <div class="d-flex justify-content-between align-items-baseline">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Editar reserva') }}
+            </h2>
+            <p><span class="fw-bold">Referencia:</span> {{$order->order_ref}}</p>
         </div>
-        <hr>
+    </x-slot>
+    <div class="container pt-5">
         <div class="d-flex justify-content-center pt-5">
             <form action="{{ route('orders.update', $order->id) }}" id="form_update" class="col-10" method="POST" enctype="multipart/form-data">
                 @csrf

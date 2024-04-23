@@ -1,7 +1,10 @@
 <x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Nuevo servicio') }}
+        </h2>
+    </x-slot>
     <div class="container pt-5">
-        <h1>Nuevo servicio</h1>
-        <hr>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>

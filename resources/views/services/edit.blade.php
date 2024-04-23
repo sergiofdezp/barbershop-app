@@ -15,43 +15,47 @@
             </div>
         @endif
         <div class="d-flex justify-content-center pt-5">
-            <form action="{{ route('services.update', $service->id) }}" id="form_store" class="col-10" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('services.update', $service->id) }}" id="form_store" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
                 <!-- Informacion del cliente -->
                 <h2>Información del servicio</h2>
                 <div class="row mb-4">
-                    <div class="col-4">
+                    <div>
                         <div class="border rounded p-3">
                             <label for="type" class="form-label">Servicio</label>
                             <input type="text" name="type" id="type" class="form-control" value="{{$service->type}}" required>
                         </div>
                     </div>
-                    <div class="col-4">
+                </div>
+                <div class="row mb-4">
+                    <div>
                         <div class="border rounded p-3">
                             <label for="price" class="form-label">Precio</label>
                             <input type="number" name="price" id="price" class="form-control" value="{{$service->price}}" required>
                         </div>
                     </div>
-                    <div class="col-4">
+                </div>
+                <div class="row mb-4">
+                    <div>
                         <!-- IMAGEN -->
                         <label for="imagen" class="block text-base font-medium text-[#07074D]">Imagen</label>
-                            <div class="">
-                                <img src="/images/services/{{ $service->image }}" id="imagenSeleccionada" style="max-height: 150px;" class="mx-auto d-block">
+                        <div class="">
+                            <img src="/images/services/{{ $service->image }}" id="imagenSeleccionada" style="max-height: 150px;" class="mx-auto d-block">
+                        </div>
+                        <div class="mb-4">
+                            <label class="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold mb-1">Subir Imagen</label>
+                            <div class='flex items-center justify-center w-full'>
+                                <label class='flex flex-col border-2 border-dashed w-full h-32 hover:bg-gray-100 hover:border-purple-300 group' style="border-color: #6875F5;">
+                                    <div class='flex flex-col items-center justify-center pt-7'>
+                                    <svg class="w-10 h-10" style="color: #6875F5;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    <p class='text-sm text-gray-400 pt-1 tracking-wider'>Seleccionar nueva imagen</p>
+                                    </div>
+                                <input name="imagen" id="imagen" type='file' class="hidden" />
+                                </label>
                             </div>
-                            <div class="mb-4">
-                                <label class="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold mb-1">Subir Imagen</label>
-                                <div class='flex items-center justify-center w-full'>
-                                    <label class='flex flex-col border-2 border-dashed w-full h-32 hover:bg-gray-100 hover:border-purple-300 group' style="border-color: #6875F5;">
-                                        <div class='flex flex-col items-center justify-center pt-7'>
-                                        <svg class="w-10 h-10" style="color: #6875F5;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                        <p class='text-sm text-gray-400 pt-1 tracking-wider'>Seleccionar imagen</p>
-                                        </div>
-                                    <input name="imagen" id="imagen" type='file' class="hidden" />
-                                    </label>
-                                </div>
-                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="text-end">

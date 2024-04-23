@@ -15,25 +15,29 @@
             </div>
         @endif
         <div class="d-flex justify-content-center pt-5">
-            <form action="{{ route('services.store') }}" id="form_store" class="col-10" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('services.store') }}" id="form_store" class="" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Informacion del cliente -->
                 <h2>Información del servicio</h2>
                 <div class="row mb-4">
-                    <div class="col-4">
+                    <div>
                         <div class="border rounded p-3">
                             <label for="type" class="form-label">Servicio</label>
                             <input type="text" name="type" id="type" class="form-control" placeholder="Introduce el nombre del servicio" required>
                         </div>
                     </div>
-                    <div class="col-4">
+                </div>
+                <div class="row mb-4">
+                    <div>
                         <div class="border rounded p-3">
                             <label for="price" class="form-label">Precio</label>
                             <input type="number" name="price" id="price" class="form-control" placeholder="Introduce el precio del servicio" required>
                         </div>
                     </div>
-                    <div class="col-4">
+                </div>
+                <div class="row mb-4">
+                    <div>
                         <div class="border rounded p-3">
                             <label for="image" class="form-label">Imagen</label>
                             <input name="image" class="form-control" id="image" type='file'>

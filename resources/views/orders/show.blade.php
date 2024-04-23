@@ -99,6 +99,10 @@
                                     <p>{{$log->updated_at}}</p>
                                 </div>
                             @endforeach
+                            <div class="d-flex justify-content-between">
+                                <p>La reserva se ha creado.</p>
+                                <p>{{$order->created_at}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>

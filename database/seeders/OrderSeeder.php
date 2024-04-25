@@ -22,7 +22,7 @@ class OrderSeeder extends Seeder
             'phone' => "000111222",
             'service_id' => 1,
             'is_online' => 0,
-            'order_status' => 0,
+            'order_status' => 1,
             'total_price' => 10,
             'pay_status' => "0",
             'coupon_id' => 1,

@@ -23,14 +23,10 @@ class OrderController extends Controller
     }
 
     public function userOrders(){
-        $user = Auth::user();
-
-        if($user->name == 'Admin'){
-            $orders = Order::all();
-        }
-        else{
-            $orders = Order::where('user_id', auth()->id())->get();
-        }
+        $orders = DB::table('orders')
+            ->where('user_id', auth()->id())
+            ->orderBy('order_status', 'asc')
+            ->get();
 
         return view('orders.user_orders', compact('orders'));
     }

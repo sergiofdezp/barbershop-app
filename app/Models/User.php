@@ -66,4 +66,8 @@ class User extends Authenticatable
     public function logs(){
         return $this->hasMany(Log::class, 'id');
     }
+
+    public function cards(){
+        return $this->hasMany(Card::class, 'id');
+    }
 }

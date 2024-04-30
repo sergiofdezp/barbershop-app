@@ -67,7 +67,7 @@ class OrderController extends Controller
         $order = $request->all();
         Order::create($order);
 
-        if($user->name == 'Admin'){
+        if($user->id == 1){
             return redirect()->route('orders.index')->banner('Reserva añadida correctamente.');
         }
         else{

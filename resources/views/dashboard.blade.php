@@ -41,8 +41,9 @@
                     </div>
                     <div class="col-12">
                         <div class="card service-hover d-flex align-items-center text-center rounded h-100">
-                            <div class="card-body d-flex align-items-center text-center">
+                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <a href="{{ route('user_orders')}}" class="text-decoration-none link-dark">Mis reservas</a>
+                                <p class="card-text text-muted text-sm">Consulta el estado de tus reservas o cancela tu reserva.</p>
                             </div>
                         </div>
                         <!-- <div class="card service-hover d-flex align-items-center text-center rounded h-100">

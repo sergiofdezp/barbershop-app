@@ -16,8 +16,14 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $orders = Order::orderBy('created_at', 'desc')->get();
-        $total_orders = DB::table('orders')->count();
+        $orders = Order::orderBy('created_at', 'desc')
+            ->where('order_status', 0)
+            ->get();
+
+        $total_orders = DB::table('orders')
+            ->where('order_status', 0)
+            ->count();
+
         $cards = DB::table('cards')
             ->where('user_id', auth()->id())
             ->get();

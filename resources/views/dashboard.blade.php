@@ -106,36 +106,44 @@
                 <div class="card rounded">
                     <div class="card-body">
                         <p class="card-text fw-bold">Últimas reservas</p>
-                        <table class="table" id="orders_table" class="display">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="text-sm text-muted">Hora de reserva</th>
-                                    <th scope="col" class="text-sm text-muted">Servicio</th>
-                                    <th scope="col" class="text-sm text-muted">Fecha</th>
-                                    <th scope="col" class="text-sm text-muted">Estado del pago</th>
-                                    <th scope="col" class="text-sm text-muted">Cliente</th>
-                                    <th scope="col" class="text-sm text-muted">Teléfono</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($orders as $order)
-                                <tr>
-                                    <td>{{$order->created_at}}</td>
-                                    <td>{{$order->service->type}}</td>
-                                    <td>{{$order->order_date}} {{$order->order_hour}}</td>
-                                    <td>
-                                        @if($order->pay_status == 0) Pendiente
+                        <?php
+                            if(!$orders->isEmpty()){
+                        ?>
+                                <table class="table" id="orders_table" class="display">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-sm text-muted">Hora de reserva</th>
+                                            <th scope="col" class="text-sm text-muted">Servicio</th>
+                                            <th scope="col" class="text-sm text-muted">Fecha</th>
+                                            <th scope="col" class="text-sm text-muted">Estado del pago</th>
+                                            <th scope="col" class="text-sm text-muted">Cliente</th>
+                                            <th scope="col" class="text-sm text-muted">Teléfono</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($orders as $order)
+                                        <tr>
+                                            <td>{{$order->created_at}}</td>
+                                            <td>{{$order->service->type}}</td>
+                                            <td>{{$order->order_date}} {{$order->order_hour}}</td>
+                                            <td>
+                                                @if($order->pay_status == 0) Pendiente
 
-                                        @elseif($order->pay_status == 1) Pagado
+                                                @elseif($order->pay_status == 1) Pagado
 
-                                        @endif
-                                    </td>
-                                    <td>{{$order->name}}</td>
-                                    <td>{{$order->phone}}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                                @endif
+                                            </td>
+                                            <td>{{$order->name}}</td>
+                                            <td>{{$order->phone}}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                        <?php
+                            } else{
+                                echo '<p class="text-muted text-sm">No hay reservas para mostrar.</p>';
+                            }
+                        ?>
                     </div>
                 </div>
             </div>

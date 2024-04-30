@@ -157,6 +157,14 @@ class OrderController extends Controller
         return redirect()->route('orders.index')->banner('Reserva editada correctamente.');
     }
 
+    public function cancel_order(Request $request, Order $order)
+    {
+        $new_order = $request->all();
+        $order->update($new_order);
+        
+        return redirect()->route('user_orders')->banner('Reserva "' . $request->order_ref . '" cancelada.');
+    }
+
     /**
      * Remove the specified resource from storage.
      */

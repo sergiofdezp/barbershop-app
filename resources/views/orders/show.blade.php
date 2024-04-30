@@ -28,13 +28,21 @@
                 <p class="fw-bold">Hora de la reserva: <span class="fw-normal">{{$order->order_hour}}h.</span></p>
                 <p class="fw-bold">Estado de la reserva: 
                     <span class="fw-normal">
-                        @if($order->order_status == 0) Próxima.
+                        <?php
+                            $today = date('Y-m-d');
+                        ?>
+                        @if($order->order_status == 0)
+                            @if($order->order_date > $today) 
+                                <p class="btn btn-dark btn-sm mb-0" style="background-color: #33BEFF; border: none;">En curso</p>
+                            @else 
+                                <p class="btn btn-dark btn-sm mb-0" style="background-color: #72CA34; border: none;">Terminada</p>
+                            @endif
 
-                        @elseif($order->order_status == 1) Terminada.
+                        @elseif($order->order_status == 1)
+                            <p class="btn btn-dark btn-sm mb-0" style="background-color: #EC3431; border: none;">Cancelada</p>
 
-                        @elseif($order->order_status == 2) Cancelada.
-
-                        @elseif($order->order_status == 3) No asistida.
+                        @elseif($order->order_status == 2)
+                            <p class="btn btn-dark btn-sm mb-0" style="background-color: #A9A9A9; border: none;">No asistida</p>
 
                         @endif
                     </span>

@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Service;
 use App\Models\Hour;
 use App\Models\Log;
+use App\Models\Card;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\DB;
@@ -66,6 +67,9 @@ class OrderController extends Controller
 
         $order = $request->all();
         Order::create($order);
+
+        $card_controller = new CardController;
+        $card_controller->update_num_services($request->user_id);
 
         if($user->id == 1){
             return redirect()->route('orders.index')->banner('Reserva añadida correctamente.');

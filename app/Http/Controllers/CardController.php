@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Card;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CardController extends Controller
 {
@@ -53,6 +54,17 @@ class CardController extends Controller
     public function update(Request $request, Card $card)
     {
         //
+    }
+
+    public function update_num_services($user_id)
+    {
+        $card = Card::where('user_id', '=', $user_id)->first();
+
+        return $card->update([
+            'num_services' => $card->num_services + 1,
+            'available' => 0,
+            'used' => 0,
+        ]);
     }
 
     /**

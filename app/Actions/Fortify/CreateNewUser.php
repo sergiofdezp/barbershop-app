@@ -9,6 +9,7 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 
 use App\Models\Card;
+use App\Http\Controllers\CardController;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -29,14 +30,8 @@ class CreateNewUser implements CreatesNewUsers
         ])->validate();
 
         // Implementación de tarjeta de fidelizacion
-        $user_id = User::latest('id')->first()->id + 1;
-        $card = array(
-            "user_id" => $user_id,
-            "num_services" => 0,
-            "used" => 0,
-        );
-
-        Card::create($card);
+        $new_card = new CardController;
+        $new_card->store_for_new_user();
 
         return User::create([
             'name' => $input['name'],

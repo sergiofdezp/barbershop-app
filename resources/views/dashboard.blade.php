@@ -87,7 +87,7 @@
                 <div class="card rounded">
                     <div class="card-body">
                         <p class="card-text text-muted text-sm">Reservas totales</p>
-                        <h5 class="card-title">{{$total_orders}} reservas.</h5>
+                        <h5 class="card-title">{{$total_orders}}</h5>
                     </div>
                 </div>
             </div>
@@ -95,7 +95,7 @@
                 <div class="card rounded">
                     <div class="card-body">
                         <p class="card-text text-muted text-sm">Dinero total</p>
-                        <h5 class="card-title">{{$total_money}}€.</h5>
+                        <h5 class="card-title">{{$total_money}}€</h5>
                     </div>
                 </div>
             </div>
@@ -103,7 +103,7 @@
                 <div class="card rounded">
                     <div class="card-body">
                         <p class="card-text text-muted text-sm">Cupones utilizados</p>
-                        <h5 class="card-title">{{$total_coupons}}.</h5>
+                        <h5 class="card-title">{{$total_coupons}}</h5>
                     </div>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                 <div class="card rounded">
                     <div class="card-body">
                         <p class="card-text text-muted text-sm">Servicio más demandado</p>
-                        <h5 class="card-title">{{$service_type}}.</h5>
+                        <h5 class="card-title">{{$service_type}}</h5>
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                 <div class="card rounded">
                     <div class="card-body">
                         <p class="card-text text-muted text-sm">Cupón más utilizado</p>
-                        <h5 class="card-title">{{$coupon_code}}.</h5>
+                        <h5 class="card-title">{{$coupon_code}}</h5>
                     </div>
                 </div>
             </div>

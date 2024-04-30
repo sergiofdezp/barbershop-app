@@ -88,6 +88,17 @@ class CardController extends Controller
         ]);
     }
 
+    public function cancel_order_update_num_services($user_id)
+    {
+        $card = Card::where('user_id', '=', $user_id)->where('available', '=', 0)->first();
+
+        return $card->update([
+            'num_services' => $card->num_services - 1,
+            'available' => $card->available,
+            'used' => $card->used,
+        ]);
+    }
+
     public function update_available_card($user_id)
     {
         $card = Card::where('user_id', '=', $user_id)->where('available', '=', 0)->first();

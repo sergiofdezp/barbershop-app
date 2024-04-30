@@ -182,6 +182,9 @@ class OrderController extends Controller
     {
         $new_order = $request->all();
         $order->update($new_order);
+
+        $card_controller = new CardController;
+        $card_controller->cancel_order_update_num_services($request->user_id);
         
         return redirect()->route('user_orders')->banner('Reserva "' . $request->order_ref . '" cancelada.');
     }

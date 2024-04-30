@@ -83,19 +83,43 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-2">
                 <div class="card rounded">
                     <div class="card-body">
-                        <p class="card-text text-sm">Reservas totales</p>
-                        <h5 class="card-title">{{$total_orders}}</h5>
+                        <p class="card-text text-muted text-sm">Reservas totales</p>
+                        <h5 class="card-title">{{$total_orders}} reservas.</h5>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-2">
                 <div class="card rounded">
                     <div class="card-body">
-                        <p class="card-text text-sm">Dinero total</p>
-                        <h5 class="card-title">{{$total_money}}€</h5>
+                        <p class="card-text text-muted text-sm">Dinero total</p>
+                        <h5 class="card-title">{{$total_money}}€.</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="card rounded">
+                    <div class="card-body">
+                        <p class="card-text text-muted text-sm">Cupones utilizados</p>
+                        <h5 class="card-title">{{$total_coupons}}.</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card rounded">
+                    <div class="card-body">
+                        <p class="card-text text-muted text-sm">Servicio más demandado</p>
+                        <h5 class="card-title">{{$service_type}}.</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card rounded">
+                    <div class="card-body">
+                        <p class="card-text text-muted text-sm">Cupón más utilizado</p>
+                        <h5 class="card-title">{{$coupon_code}}.</h5>
                     </div>
                 </div>
             </div>

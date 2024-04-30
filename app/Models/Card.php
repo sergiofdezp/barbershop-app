@@ -9,7 +9,7 @@ class Card extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'num_services', 'used'];
+    protected $fillable = ['user_id', 'num_services', 'available', 'used'];
 
     public function user(){
         return $this->belongsTo(User::class, 'user_id');

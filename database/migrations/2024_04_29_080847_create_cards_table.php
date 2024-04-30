@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('num_services');
+            $table->integer('available');
             $table->integer('used');
             $table->timestamps();
         });

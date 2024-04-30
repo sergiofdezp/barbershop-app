@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             HourSeeder::class,
             CouponSeeder::class,
             OrderSeeder::class,
+            CardSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 

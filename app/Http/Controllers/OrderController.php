@@ -68,8 +68,22 @@ class OrderController extends Controller
         $order = $request->all();
         Order::create($order);
 
+        // Implementación de sistema de fidelización.
         $card_controller = new CardController;
-        $card_controller->update_num_services($request->user_id);
+
+        // Obtenemos la tarjeta en curso.
+        $num_services = Card::where('user_id', '=', $request->user_id)->where('available', '=', 0)->first();
+
+        // Update de tarjeta en curso o creación de nueva tarjeta.
+        // Si la tarjeta no ha completado los 8 servicios se seguirán incrementando hasta ser 8.
+        if($num_services->num_services < 8) {
+            $card_controller->update_num_services($request->user_id);
+        }
+        // En el caso de que la tarjeta tenga 8 servicios, se cambiará su estado 'available' a 1 y se generará una nueva.
+        else{
+            $card_controller->update_available_card($request->user_id);
+            $card_controller->store($request->user_id);
+        }
 
         if($user->id == 1){
             return redirect()->route('orders.index')->banner('Reserva añadida correctamente.');

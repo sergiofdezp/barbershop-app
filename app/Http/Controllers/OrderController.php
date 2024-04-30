@@ -41,6 +41,9 @@ class OrderController extends Controller
         $services = Service::all();
         $hours = Hour::all();
 
+        // Para la futura implementación del pago con tarjeta de fidelización para clientes en el front
+        // $fid_card = Card::where('user_id', '=', $user->id)->where('available', '=', 1)->where('used', '=', 0)->count();
+
         return view('orders.create', compact('user', 'services', 'hours'));
     }
 

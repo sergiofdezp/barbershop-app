@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\PDFController;
+use App\Http\Controllers\CardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,4 +50,6 @@ Route::middleware([
     Route::get('/verif_manual_code', [CouponController::class, 'verificarCodManualUnico']);
 
     Route::get('/today_orders', [PDFController::class, 'today_orders'])->name('today_orders');
+
+    Route::resource('/cards', CardController::class)->names('cards');
 });

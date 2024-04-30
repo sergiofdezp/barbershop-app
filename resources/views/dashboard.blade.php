@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="container">
-        <div class="row pt-5">
+        <div class="row pt-5 pb-4">
             <div class="col-sm-6">
                 <div class="card rounded">
                     <div class="card-body d-flex align-items-center">
@@ -27,48 +27,61 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="card service-hover d-flex align-items-center text-center rounded h-100">
-                    <div class="card-body d-flex align-items-center text-center">
-                        <a href="{{ route('orders.index')}}" class="text-decoration-none link-dark">Todas las reservas</a>
-                    </div>
-                </div>
-            </div>
         </div>
-        <div class="row pt-4">
-            <div class="col-sm-6">
-                <div class="card service-hover d-flex align-items-center text-center rounded">
-                    <div class="card-body">
-                        <a href="{{ route('user_orders')}}" class="text-decoration-none link-dark">Mis reservas</a>
+
+        <div class="row pb-4">
+            <div class="col-6">
+                <div class="row h-100">
+                    <div class="col-12 pb-2">
+                        <div class="card service-hover d-flex align-items-center text-center rounded h-100">
+                            <div class="card-body d-flex align-items-center text-center">
+                                <a href="{{ route('orders.create')}}" class="text-decoration-none link-dark">Nueva reserva</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="card service-hover d-flex align-items-center text-center rounded h-100">
+                            <div class="card-body d-flex align-items-center text-center">
+                                <a href="{{ route('user_orders')}}" class="text-decoration-none link-dark">Mis reservas</a>
+                            </div>
+                        </div>
+                        <!-- <div class="card service-hover d-flex align-items-center text-center rounded h-100">
+                            <div class="card-body d-flex align-items-center text-center">
+                                <a href="{{ route('orders.index')}}" class="text-decoration-none link-dark">Todas las reservas</a>
+                            </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="card service-hover d-flex align-items-center text-center rounded">
-                    <div class="card-body">
-                        <a href="{{ route('orders.create')}}" class="text-decoration-none link-dark">Nueva reserva</a>
+            <div class="col-6">
+                @foreach($cards as $card)
+                    <div class="card col-12 p-2">
+                        <x-application-mark class="block h-9 w-auto"/>
+                        <div class="card-body">
+                            <h5 class="text-center pb-2">¡Completa 8 reservas y recibe 1 gratis!</h5>
+                            <div class="row px-5 pb-3">
+                                @for ($i = 0; $i < $max_services; $i++)
+                                    <div class="d-flex justify-content-center col-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="{{ $i < $card->num_services ? 'currentColor' : 'gray' }}" class="bi bi-scissors" viewBox="0 0 16 16">
+                                            <path d="M3.5 3.5c-.614-.884-.074-1.962.858-2.5L8 7.226 11.642 1c.932.538 1.472 1.616.858 2.5L8.81 8.61l1.556 2.661a2.5 2.5 0 1 1-.794.637L8 9.73l-1.572 2.177a2.5 2.5 0 1 1-.794-.637L7.19 8.61zm2.5 10a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0m7 0a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0"/>
+                                        </svg>
+                                    </div>
+                                @endfor
+                            </div>
+                            <?php
+                                if($max_services == $card->num_services){
+                                    echo '<p class="text-center">Has completado las 8 reservas. Ya puedes aplicar esta tarjeta en tu siguiente reserva.</p>';
+                                } else{
+                                    echo '<p class="text-center text-muted">Faltan ' . ($max_services - $card->num_services) . ' reservas para poder utilizar esta tarjeta.</p>';
+                                }
+                            ?>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="row pt-3">
-            <div class="col-sm-6">
-                <div class="card service-hover d-flex align-items-center text-center rounded">
-                    <div class="card-body">
-                        <a href="{{ route('services.index')}}" class="text-decoration-none link-dark">Servicios</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="card service-hover d-flex align-items-center text-center rounded">
-                    <div class="card-body">
-                        <a href="{{ route('services.create')}}" class="text-decoration-none link-dark">Nuevo servicio</a>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
 
-        <div class="row pt-4">
+        <div class="row">
             <div class="col-sm-6">
                 <div class="card rounded">
                     <div class="card-body">

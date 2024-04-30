@@ -18,12 +18,17 @@ class DashboardController extends Controller
     {
         $orders = Order::orderBy('created_at', 'desc')->get();
         $total_orders = DB::table('orders')->count();
+        $cards = DB::table('cards')
+            ->where('user_id', auth()->id())
+            ->get();
+
+        $max_services = 8;
         $total_money = 0;
 
         foreach($orders as $order){
             $total_money+=$order->total_price;
         }
 
-        return view('dashboard', compact('orders', 'total_orders', 'total_money'));
+        return view('dashboard', compact('orders', 'total_orders', 'cards', 'max_services', 'total_money'));
     }
 }

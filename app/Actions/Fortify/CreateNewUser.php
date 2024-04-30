@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 
+use App\Models\Card;
+
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -25,6 +27,16 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
+
+        // Implementación de tarjeta de fidelizacion
+        $user_id = User::latest('id')->first()->id + 1;
+        $card = array(
+            "user_id" => $user_id,
+            "num_services" => 0,
+            "used" => 0,
+        );
+
+        Card::create($card);
 
         return User::create([
             'name' => $input['name'],

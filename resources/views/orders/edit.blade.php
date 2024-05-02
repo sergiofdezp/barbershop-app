@@ -1,12 +1,11 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-baseline">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Editar reserva') }}
-            </h2>
-            <p><span class="fw-bold">Referencia:</span> {{$order->order_ref}}</p>
-        </div>
-    </x-slot>
+@extends('adminlte::page')
+
+@section('title', 'Dashboard')
+
+@section('content_header')
+    <h1><span class="fw-bold">Reserva:</span> {{$order->order_ref}}</h1>
+@stop
+@section('content')
     <div class="container pt-5">
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -117,41 +116,53 @@
             </form>
         </div>
     </div>
-</x-app-layout>
-<script>
-    $(document).ready(function(){
-        // Ejecutamos la función nada más cargar la página para mostrar el precio del servicio elegido anteriormente.
-        servicesPrices();
-        // Volvemos a ejecutar la función si se decide editar el servicio y así obtener el precio del nuevo servicio.
-        $('#service_id').click(function(){
+@stop
+
+@section('css')
+    @livewireStyles
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
+@stop
+
+@section('js')
+    <script>
+        $(document).ready(function(){
+            // Ejecutamos la función nada más cargar la página para mostrar el precio del servicio elegido anteriormente.
             servicesPrices();
+            // Volvemos a ejecutar la función si se decide editar el servicio y así obtener el precio del nuevo servicio.
+            $('#service_id').click(function(){
+                servicesPrices();
+            });
         });
-    });
 
-    /**
-     * Esta función obtiene el precio del servicio que le enviamos al controlador.
-     *
-     * @return void
-     */
-    function servicesPrices(){
-        var service_id = $('#service_id').val();
-            
-        $.ajax({
-            type: "GET",
-            url: "/services_prices",
-            data: {
-                service_id : service_id,
-            },
-            dataType: "json",
+        /**
+         * Esta función obtiene el precio del servicio que le enviamos al controlador.
+         *
+         * @return void
+         */
+        function servicesPrices(){
+            var service_id = $('#service_id').val();
+                
+            $.ajax({
+                type: "GET",
+                url: "/services_prices",
+                data: {
+                    service_id : service_id,
+                },
+                dataType: "json",
 
-            success: function(response){
-                // console.log(response)
-                $.each(response.services, function (key, item){
-                    // console.log(item.price)
-                    $('#total_price').val(item.price);
-                    $('.total_price').text(item.price + '€');
-                });
-            }
-        });
-    }
-</script>
+                success: function(response){
+                    // console.log(response)
+                    $.each(response.services, function (key, item){
+                        // console.log(item.price)
+                        $('#total_price').val(item.price);
+                        $('.total_price').text(item.price + '€');
+                    });
+                }
+            });
+        }
+    </script>
+
+@stop

@@ -1,9 +1,11 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Editar servicio') }}
-        </h2>
-    </x-slot>
+@extends('adminlte::page')
+
+@section('title', 'Dashboard')
+
+@section('content_header')
+    <h1><span class="fw-bold">Servicio:</span> {{$service->type}}</h1>
+@stop
+@section('content')
     <div class="container pt-5">
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -69,15 +71,31 @@
             </form>
         </div>
     </div>
-</x-app-layout>
-<script>   
-    $(document).ready(function (e) {   
-        $('#imagen').change(function(){            
-            let reader = new FileReader();
-            reader.onload = (e) => { 
-                $('#imagenSeleccionada').attr('src', e.target.result); 
-            }
-            reader.readAsDataURL(this.files[0]); 
+@stop
+
+@section('css')
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @livewireStyles
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
+@stop
+
+@section('js')
+    <script>   
+        $(document).ready(function (e) {   
+            $('#imagen').change(function(){            
+                let reader = new FileReader();
+                reader.onload = (e) => { 
+                    $('#imagenSeleccionada').attr('src', e.target.result); 
+                }
+                reader.readAsDataURL(this.files[0]); 
+            });
         });
-    });
-</script>
+    </script>
+@stop

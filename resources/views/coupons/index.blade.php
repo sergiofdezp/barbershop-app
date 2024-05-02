@@ -1,9 +1,11 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Cupones') }}
-        </h2>
-    </x-slot>
+@extends('adminlte::page')
+
+@section('title', 'Dashboard')
+
+@section('content_header')
+    <h1>Cupones</h1>
+@stop
+@section('content')
     <div class="container pt-5">
         <div class="text-end pb-2">
             <a href="{{ route('coupons.create')}}" class="btn btn-success">
@@ -54,25 +56,43 @@
             </tbody>
         </table>
     </div>
-</x-app-layout>
+@stop
 
-<!-- Datatables -->
-<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+@section('css')
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-<script>
-    let table = new DataTable('#coupons_table', {
-        responsive: true,
-        language: {
-            info: "Mostrando _START_ de _END_ de un total de _TOTAL_ registros.",
-            zeroRecords: 'No se encontraron registros.',
-            search: 'Buscar:',
-            lengthMenu: 'Mostrando _MENU_ registros.',
-            paginate: {
-                first: 'Primera pág.',
-                previous: 'Anterior',
-                next: 'Siguiente',
-                last: 'Última pág.'
+    @livewireStyles
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
+
+    <!-- Datatables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
+@stop
+
+@section('js')
+    <!-- Datatables -->
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+
+    <script>
+        let table = new DataTable('#coupons_table', {
+            responsive: true,
+            language: {
+                info: "Mostrando _START_ de _END_ de un total de _TOTAL_ registros.",
+                zeroRecords: 'No se encontraron registros.',
+                search: 'Buscar:',
+                lengthMenu: 'Mostrando _MENU_ registros.',
+                paginate: {
+                    first: 'Primera pág.',
+                    previous: 'Anterior',
+                    next: 'Siguiente',
+                    last: 'Última pág.'
+                },
             },
-        },
-    });
-</script>
+        });
+    </script>
+@stop

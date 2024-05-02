@@ -1,9 +1,11 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Nuevo cupón') }}
-        </h2>
-    </x-slot>
+@extends('adminlte::page')
+
+@section('title', 'Dashboard')
+
+@section('content_header')
+    <h1>Nuevo cupón</h1>
+@stop
+@section('content')
     <div class="container pt-5">
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -87,73 +89,89 @@
             </form>
         </div>
     </div>
-</x-app-layout>
-<script>
-    $(document).ready(function(){
-        $('#generar_cod').click(function(){
-            genDiscountCode();
-        });
+@stop
 
-        $('#submit_coupon').click(function(){
-            checkCode();            
-        });
+@section('css')
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        $('#code').mouseout(function(){
-            checkCode();            
-        });
+    @livewireStyles
 
-        $('#code').focusout(function(){
-            checkCode();            
-        });
-
-        /**
-         * Genera un código de caracteres y números aleatorio y único
-         *
-         * @return void
-         */
-        function genDiscountCode(){
-            $.ajax({
-                type: "GET",
-                url: "/new_discount_code",
-                dataType: "json",
-
-                success: function(response){
-                    $('#code').val(response.coupon_code);
-
-                    checkCode();  
-                }
-            });
-        }
-
-        /**
-         * Verifica si el código introducido manualmente ya existe en la bd, si existe muestra un msg de error.
-         *
-         * @return void
-         */
-        function checkCode(){
-            var code = $('#code').val();
-            $.ajax({
-                type: "GET",
-                url: "/verif_manual_code",
-                data: {
-                    code : code,
-                },
-                dataType: "json",
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     
-                success: function(response){
-                    console.log(response.result)
-                    if(response.result == 1){
-                        $("#error-message").show();
-                        $('#error-message').html('¡Este cupón ya existe! Por favor introduce otro código válido.');
-                        $('#error-message').addClass('p-2');
-                        $('#submit_coupon').prop("disabled", true);
-                    } else{
-                        $('#error-message').html('');
-                        $('#error-message').removeClass('p-2');
-                        $('#submit_coupon').prop("disabled", false);
-                    }
-                }
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
+@stop
+
+@section('js')
+    <script>
+        $(document).ready(function(){
+            $('#generar_cod').click(function(){
+                genDiscountCode();
             });
-        }
-    });
-</script>
+
+            $('#submit_coupon').click(function(){
+                checkCode();            
+            });
+
+            $('#code').mouseout(function(){
+                checkCode();            
+            });
+
+            $('#code').focusout(function(){
+                checkCode();            
+            });
+
+            /**
+             * Genera un código de caracteres y números aleatorio y único
+             *
+             * @return void
+             */
+            function genDiscountCode(){
+                $.ajax({
+                    type: "GET",
+                    url: "/new_discount_code",
+                    dataType: "json",
+
+                    success: function(response){
+                        $('#code').val(response.coupon_code);
+
+                        checkCode();  
+                    }
+                });
+            }
+
+            /**
+             * Verifica si el código introducido manualmente ya existe en la bd, si existe muestra un msg de error.
+             *
+             * @return void
+             */
+            function checkCode(){
+                var code = $('#code').val();
+                $.ajax({
+                    type: "GET",
+                    url: "/verif_manual_code",
+                    data: {
+                        code : code,
+                    },
+                    dataType: "json",
+        
+                    success: function(response){
+                        console.log(response.result)
+                        if(response.result == 1){
+                            $("#error-message").show();
+                            $('#error-message').html('¡Este cupón ya existe! Por favor introduce otro código válido.');
+                            $('#error-message').addClass('p-2');
+                            $('#submit_coupon').prop("disabled", true);
+                        } else{
+                            $('#error-message').html('');
+                            $('#error-message').removeClass('p-2');
+                            $('#submit_coupon').prop("disabled", false);
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+@stop

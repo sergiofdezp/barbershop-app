@@ -11,7 +11,9 @@
         <div class="row d-flex justify-content-center">
             <div class="col-6">
                 <div class="text-end pb-2">
-                    <a href="{{ route('services.create')}}" class="btn btn-success">
+                    <a href="{{ route('services.create')}}" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold
+                                text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                                focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         Nuevo servicio
                     </a>
                 </div>
@@ -24,14 +26,13 @@
                     <td>
                         <img src="{{asset('/images/services/' . $service->image)}}" class="card-img-top" alt="...">
                     </td>
-                    <div class="card-body">
-                        <h5 class="card-title">{{$service->type}}</h5>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-center">{{$service->type}}</h5>
                         <p class="card-text">Precio: {{$service->price}}€</p>
-                        <a href="{{ route('services.edit', $service->id)}}" class="btn btn-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                            </svg>
+                        <a href="{{ route('services.edit', $service->id)}}" class="inline-flex items-center px-4 py-2 bg-navy-600 border border-transparent rounded-md font-semibold
+                                text-xs text-white uppercase tracking-widest hover:bg-navy-700 focus:bg-navy-700 active:bg-navy-900
+                                focus:outline-none focus:ring-2 focus:ring-navy-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            Editar servicio
                         </a>
                     </div>
                 </div>

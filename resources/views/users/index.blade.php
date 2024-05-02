@@ -1,9 +1,11 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Usuarios') }}
-        </h2>
-    </x-slot>
+@extends('adminlte::page')
+
+@section('title', 'Dashboard')
+
+@section('content_header')
+    <h1>Usuarios</h1>
+@stop
+@section('content')
     <div class="container pt-5">
         <table class="table" id="users_table" class="display">
             <thead>
@@ -45,57 +47,75 @@
             </tbody>
         </table>
     </div>
-</x-app-layout>
+@stop
 
+@section('css')
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @livewireStyles
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
+
+    <!-- Datatables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
+@stop
+
+@section('js')
 <!-- Datatables -->
-<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
 
-<script>
-    let table = new DataTable('#users_table', {
-        responsive: true,
-        language: {
-            info: "Mostrando _START_ de _END_ de un total de _TOTAL_ registros.",
-            zeroRecords: 'No se encontraron registros.',
-            search: 'Buscar:',
-            lengthMenu: 'Mostrando _MENU_ registros.',
-            paginate: {
-                first: 'Primera pág.',
-                previous: 'Anterior',
-                next: 'Siguiente',
-                last: 'Última pág.'
+    <script>
+        let table = new DataTable('#users_table', {
+            responsive: true,
+            language: {
+                info: "Mostrando _START_ de _END_ de un total de _TOTAL_ registros.",
+                zeroRecords: 'No se encontraron registros.',
+                search: 'Buscar:',
+                lengthMenu: 'Mostrando _MENU_ registros.',
+                paginate: {
+                    first: 'Primera pág.',
+                    previous: 'Anterior',
+                    next: 'Siguiente',
+                    last: 'Última pág.'
+                },
             },
-        },
-    });
+        });
 
-    document.body.onload = function() {
-        user_status();
-    }
+        document.body.onload = function() {
+            user_status();
+        }
 
-    // Modal eliminar
-    (function () {
-        'use strict' 
-        var forms = document.querySelectorAll('.formEliminar')
-        Array.prototype.slice.call(forms)
-        .forEach(function (form) {
-            form.addEventListener('submit', function (event) {        
-                event.preventDefault()
-                event.stopPropagation()        
-                Swal.fire({
-                    title: '¿Seguro que quiere eliminar este usuario?',     
-                    text: 'Si lo elimina se eliminarán también sus reservas.',   
-                    icon: 'info',
-                    showCancelButton: true,
-                    confirmButtonColor: '#20c997',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Confirmar',
-                    cancelButtonText: 'Cancelar',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.submit();
-                        Swal.fire('¡Eliminado!', 'El registro ha sido eliminado exitosamente.','success');
-                    }
-                })                      
-            }, false)
-        })
-    })()
-</script>
+        // Modal eliminar
+        (function () {
+            'use strict' 
+            var forms = document.querySelectorAll('.formEliminar')
+            Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {        
+                    event.preventDefault()
+                    event.stopPropagation()        
+                    Swal.fire({
+                        title: '¿Seguro que quiere eliminar este usuario?',     
+                        text: 'Si lo elimina se eliminarán también sus reservas.',   
+                        icon: 'info',
+                        showCancelButton: true,
+                        confirmButtonColor: '#20c997',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Confirmar',
+                        cancelButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submit();
+                            Swal.fire('¡Eliminado!', 'El registro ha sido eliminado exitosamente.','success');
+                        }
+                    })                      
+                }, false)
+            })
+        })()
+    </script>
+@stop

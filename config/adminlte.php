@@ -321,6 +321,14 @@ return [
             'url' => '/dashboard',
             'icon' => 'far fa fa-book',
         ],
+        // Ajustes de cuenta
+        ['header' => 'MI CUENTA'],
+        [
+            'text' => 'Mi perfil',
+            'url' => 'user/profile',
+            'icon' => 'fas fa-fw fa-user',
+            'icon_color' => 'primary',
+        ],
         ['header' => 'RESERVAS'],
         [
             'text' => 'Nueva reserva',
@@ -329,14 +337,14 @@ return [
             'icon_color' => 'success',
         ],
         [
-            'text' => 'Reservas',
-            'url' => '/orders',
+            'text' => 'Mis reservas',
+            'url' => '/user_orders',
             'icon' => 'fa fa-folder-open',
         ],
         [
-            'text' => 'Cupones',
-            'url' => '/coupons',
-            'icon' => 'fa fa-tag',
+            'text' => 'Reservas',
+            'url' => '/orders',
+            'icon' => 'fa fa-folder-open',
         ],
         ['header' => 'SERVICIOS'],
         [
@@ -350,19 +358,17 @@ return [
             'url' => '/services',
             'icon' => 'fa fa-folder-open',
         ],
+        ['header' => 'CUPONES'],
+        [
+            'text' => 'Cupones',
+            'url' => '/coupons',
+            'icon' => 'fa fa-tag',
+        ],
         ['header' => 'USUARIOS'],
         [
             'text' => 'Usuarios',
             'url' => '/users',
             'icon' => 'fas fa-fw fa-user',
-        ],
-        // Ajustes de cuenta
-        ['header' => 'account_settings'],
-        [
-            'text' => 'Mi cuenta',
-            'url' => 'user/profile',
-            'icon' => 'fas fa-fw fa-user',
-            'icon_color' => 'primary',
         ],
         // [
         //     'text' => 'pages',

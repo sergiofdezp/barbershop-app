@@ -33,5 +33,10 @@ class UserSeeder extends Seeder
             'email' => "peluquero@peluquero.com",
             'password' => Hash::make('peluquero')
         ]);
+        DB::table('model_has_roles')->insert([
+            'role_id' => "2",
+            'model_type' => "App\Models\User",
+            'model_id' => "2"
+        ]);
     }
 }

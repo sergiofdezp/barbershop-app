@@ -11,15 +11,17 @@
         <?php
             $today = date('Y-m-d');
         ?>
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+
+        @if (session()->has('error')) {{-- comprueba si existe el valor en sesión --}}
+            <div class="error d-flex flex-row justify-content-center">
+                <div class="col-6">
+                    <p class="bg-danger text-white rounded p-2"> {{ session('error') }} </p> {{-- devuelve e imprime el valor de la sesión --}}
+                </div>
             </div>
+
+            {!! session()->forget('error') !!} {{-- borrar el error de sesión --}}
         @endif
+
         <div class="row d-flex justify-content-center">
             <div class="col-6">
                 <div class="text-end pb-2">

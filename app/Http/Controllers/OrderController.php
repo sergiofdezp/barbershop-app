@@ -9,6 +9,8 @@ use App\Models\Log;
 use App\Models\Card;
 use Illuminate\Http\Request;
 use Auth;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -180,13 +182,29 @@ class OrderController extends Controller
 
     public function cancel_order(Request $request, Order $order)
     {
-        $new_order = $request->all();
-        $order->update($new_order);
+        // Obtenemos la fecha y hora actual y la fecha y hora de la reserva.
+        $hora_actual = new DateTime();//fecha inicial
+        $hora_reserva = new DateTime($order->order_date . $order->order_hour);//fecha de cierre
 
-        $card_controller = new CardController;
-        $card_controller->cancel_order_update_num_services($request->user_id);
+        // Calculamos la diferencia y la formateamos.
+        $diff_horas = $hora_actual->diff($hora_reserva);
+        $diff_horas = $diff_horas->format('%d día %H horas');
+
+        // Verificamos que el resultado sea menos de 1 dia y 24 horas.
+        if($diff_horas < '1 día' && $diff_horas < '24 horas') {
+            $message = 'No se puede cancelar esta reserva porque faltan menos de 24h.';
+
+            return redirect()->route('user_orders')->with('error', $message);
+        } else{
+            $new_order = $request->all();
+            $order->update($new_order);
         
-        return redirect()->route('user_orders')->banner('Reserva "' . $request->order_ref . '" cancelada.');
+            $card_controller = new CardController;
+            $card_controller->cancel_order_update_num_services($request->user_id);
+            
+            return redirect()->route('user_orders')->banner('Reserva "' . $request->order_ref . '" cancelada.');
+        }
+
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -23,7 +24,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        $roles = Role::all();
+        return view('users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -35,8 +37,11 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $hors = $request->all();
-        $user->update($hors);
+        $user->roles()->sync($request->roles);
+        $user->permissions()->sync($request->permissions);
+
+        $updated_user = $request->all();
+        $user->update($updated_user);
         
         return redirect()->route('users.index')->banner('El usuario '. $user->name .' ha sido editado correctamente.');
     }

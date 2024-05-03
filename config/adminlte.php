@@ -319,7 +319,7 @@ return [
         [
             'text' => 'Dashboard',
             'url' => '/dashboard',
-            'icon' => 'far fa fa-book',
+            'icon' => 'fas fa-tachometer-alt',
         ],
         // Ajustes de cuenta
         ['header' => 'MI CUENTA'],

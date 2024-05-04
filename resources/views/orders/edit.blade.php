@@ -77,7 +77,25 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div> 
+                    </div>
+                    <div class="col-4">
+                        <div class="border rounded p-3">
+                            <label for="discount" class="form-label">Cupón de descuento</label>
+                            <input type="text" name="discount" id="discount" class="form-control" value="@if($order->coupon_id != null) $order->coupon->code @endif" placeholder="Introduce un código de descuento">
+                        </div>
+                    </div>
+                    <div class="col-2 d-flex align-items-end">
+                        <input type="button" class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
+                                text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                                id="aplicar_cod" value="Aplicar cupón">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <p id="error-message" class="bg-danger text-white rounded"></p>
+                    </div>
                 </div>
 
                 <!-- Información del pago -->
@@ -136,6 +154,10 @@
 @section('js')
     <script>
         $(document).ready(function(){
+            // Cargar el precio de la reserva
+            var total_price = $('#total_price').val();
+            $('.total_price').text(total_price + '€');
+
             // Volvemos a ejecutar la función si se decide editar el servicio y así obtener el precio del nuevo servicio.
             $('#service_id').change(function(){
                 servicesPrices();
@@ -146,9 +168,10 @@
                 bloqueosHoras();
             });
 
-            // Cargar el precio de la reserva
-            var total_price = $('#total_price').val();
-            $('.total_price').text(total_price + '€');
+            // Verificar el código del cupón al hacer click en el botón.
+            $('#aplicar_cod').click(function(){
+                checkDiscountCode();
+            });
         });
 
         /**
@@ -168,12 +191,13 @@
                 dataType: "json",
 
                 success: function(response){
-                    // console.log(response)
                     $.each(response.services, function (key, item){
-                        // console.log(item.price)
                         $('#total_price').val(item.price);
                         $('.total_price').text(item.price + '€');
                     });
+
+                    // Actualizamos el precio según el descuento que ya había antes aplicado en la reserva.
+                    checkDiscountCode();
                 }
             });
         }
@@ -228,6 +252,63 @@
                 }
             });
         }
-    </script>
 
+        function checkDiscountCode(){
+            $('#error-message').html('');
+            $('#error-message').removeClass('p-2');
+
+            var coupon_code = $('#discount').val();
+            var service_id = $('#service_id').val();
+            var total_price = $('#total_price').val();
+            var order_date = $('#order_date').val();
+
+            $.ajax({
+                type: "GET",
+                url: "/check_discount_code",
+                data: {
+                    coupon_code : coupon_code,
+                    service_id : service_id,
+                    order_date : order_date,
+                },
+                dataType: "json",
+
+                success: function(response){
+                    $("#error-message").show();
+                    // Verificar que se ha elegido una fecha y un servicio
+                    if(response.coupon == "noorderdate"){
+                        // $("#error-message").show();
+                        $('#error-message').html('Debes elegir una fecha antes de aplicar un código.');
+                        $('#error-message').addClass('p-2');
+                    } else if(response.coupon == "noserviceid"){
+                        // $("#error-message").show();
+                        $('#error-message').html('Debes elegir un servicio antes de aplicar un código.');
+                        $('#error-message').addClass('p-2');
+                    } else{
+                        // Verificación de existencia de cupón
+                        if(response.coupon == 0){
+                            // $("#error-message").show();
+                            $('#error-message').html('¡Este cupón no existe! Por favor introduce un código válido.');
+                            $('#error-message').addClass('p-2');
+                        } else if(response.coupon == "noservice"){
+                            // $("#error-message").show();
+                            $('#error-message').html('Este cupón no puede aplicarse a este servicio.');
+                            $('#error-message').addClass('p-2');
+                        } else if(response.coupon == "nodates"){
+                            // $("#error-message").show();
+                            $('#error-message').html('Este cupón no puede aplicarse para esta fecha.');
+                            $('#error-message').addClass('p-2');
+                        } else{
+                            $.each(response.coupon, function (key_c, coupon){
+                                var final_price = (total_price * coupon.discount) / 100;
+            
+                                $('#coupon_id').val(coupon.id);
+                                $('#total_price').val(final_price);
+                                $('.total_price').text(final_price + '€');
+                            });
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 @stop

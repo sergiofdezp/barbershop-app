@@ -142,6 +142,10 @@
             $('#service_id').click(function(){
                 servicesPrices();
             });
+            // Obtener los bloqueos de las horas que ya se han reservado.
+            $('#order_date').change(function(){
+                bloqueosHoras();
+            });
         });
 
         /**
@@ -166,6 +170,57 @@
                         // console.log(item.price)
                         $('#total_price').val(item.price);
                         $('.total_price').text(item.price + '€');
+                    });
+                }
+            });
+        }
+
+        /**
+         * Esta función bloqueará las sesiones donde ya hay una reserva.
+         *
+         * @return void
+         */
+        function bloqueosHoras(){
+            var order_date = $('#order_date').val();
+
+            // Reiniciamos el estado del div, limpiamos el div (order_hours) para despues regenerarlo.
+            var order_hours = '';
+            document.getElementById('order_hours').innerHTML = order_hours;
+                
+            $.ajax({
+                type: "GET",
+                url: "/bloqueos_horas",
+                data: {
+                    order_date : order_date,
+                },
+                dataType: "json",
+
+                success: function(response){
+                    // Creamos el div donde generaremos el select.
+                    order_hours = '<div class="border rounded p-3">'
+                                    +'<label for="order_hour" class="form-label">Hora de la reserva</label>'
+                                    +'<select name="order_hour" id="order_hour" class="form-control" required>'
+                                        +'<option value="0" selected disabled>Selecciona una hora</option>'
+                                    +'</select>'
+                                +'</div>';
+                    document.getElementById('order_hours').innerHTML += order_hours;
+
+                    // Seleccionamos el select y recorriendo la respuesta del AJAX generaremos las options.
+                    var select = document.getElementById('order_hour');
+
+                    $.each(response.hours, function (key_h, hour){
+                        var opt = document.createElement('option');
+                        opt.value = hour.order_hour;
+                        opt.innerHTML = hour.order_hour;
+
+                        $.each(response.orders, function (key_o, order){
+                            if(order.order_hour == hour.order_hour){
+                                opt.disabled = true;
+                                opt.innerHTML += ' - Reservada';
+                            }
+                        });
+
+                        select.appendChild(opt);
                     });
                 }
             });

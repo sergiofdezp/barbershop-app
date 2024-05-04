@@ -136,16 +136,19 @@
 @section('js')
     <script>
         $(document).ready(function(){
-            // Ejecutamos la función nada más cargar la página para mostrar el precio del servicio elegido anteriormente.
-            servicesPrices();
             // Volvemos a ejecutar la función si se decide editar el servicio y así obtener el precio del nuevo servicio.
-            $('#service_id').click(function(){
+            $('#service_id').change(function(){
                 servicesPrices();
             });
+
             // Obtener los bloqueos de las horas que ya se han reservado.
             $('#order_date').change(function(){
                 bloqueosHoras();
             });
+
+            // Cargar el precio de la reserva
+            var total_price = $('#total_price').val();
+            $('.total_price').text(total_price + '€');
         });
 
         /**

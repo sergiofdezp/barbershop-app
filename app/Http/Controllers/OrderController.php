@@ -31,7 +31,15 @@ class OrderController extends Controller
             ->orderBy('order_status', 'asc')
             ->get();
 
-        return view('orders.user_orders', compact('orders'));
+        $o_in_progress = DB::table('orders')
+            ->where('order_status', 0)
+            ->count();
+
+        $other_orders = DB::table('orders')
+            ->where('order_status', '!=', 0)
+            ->count();
+
+        return view('orders.user_orders', compact('orders', 'o_in_progress', 'other_orders'));
     }
 
     /**
@@ -204,7 +212,6 @@ class OrderController extends Controller
             
             return redirect()->route('user_orders')->banner('Reserva "' . $request->order_ref . '" cancelada.');
         }
-
     }
 
     /**

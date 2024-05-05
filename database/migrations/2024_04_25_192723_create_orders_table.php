@@ -26,7 +26,7 @@ return new class extends Migration
             // si la reserva fue hecha desde la peluqueria o desde la web
             $table->boolean('is_online')->default(false);
             // estado de la reserva (próxima - 0, terminada - 1, cancelada - 2, no asistido - 3)
-            $table->integer('order_status');
+            $table->foreignId('order_status_id')->constrained('order_status')->onDelete('cascade');
             // precio y estado del pago de la reserva (sin pagar, pagada)
             $table->string('total_price');
             $table->integer('pay_status')->nullable();

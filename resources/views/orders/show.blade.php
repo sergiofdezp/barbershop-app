@@ -26,30 +26,25 @@
                 <p class="fw-bold">Hora de la reserva: <span class="fw-normal">{{$order->order_hour}}h.</span></p>
                 <p class="fw-bold">Estado de la reserva: 
                     <span class="fw-normal">
-                        <?php
-                            $today = date('Y-m-d');
-                        ?>
-                        @if($order->order_status == 0)
-                            @if($order->order_date > $today) 
-                                <p class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
+                        @if($order->order_status_id == 1)
+                            <p class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
                                 text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
                                 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150" style="background-color: #33BEFF; border: none;">En curso</p>
-                            @else 
-                                <p class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
+
+                        @elseif($order->order_status_id == 2)
+                            <p class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
                                 text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
                                 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150" style="background-color: #72CA34; border: none;">Terminada</p>
-                            @endif
 
-                        @elseif($order->order_status == 1)
+                        @elseif($order->order_status_id == 3)
                             <p class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
                                 text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
                                 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150" style="background-color: #EC3431; border: none;">Cancelada</p>
 
-                        @elseif($order->order_status == 2)
+                        @elseif($order->order_status_id == 4)
                             <p class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
                                 text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
                                 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150" style="background-color: #A9A9A9; border: none;">No asistida</p>
-
                         @endif
                     </span>
                 </p>

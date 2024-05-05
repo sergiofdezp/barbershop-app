@@ -24,7 +24,7 @@
                 <div class="mb-3" hidden>
                     <input type="text" name="total_price" id="total_price" class="form-control" value="{{$order->total_price}}">
                     <input type="text" name="is_online" id="is_online" class="form-control" value="{{$order->is_online}}">
-                    <input type="text" name="order_status" id="order_status" class="form-control" value="{{$order->order_status}}">
+                    <input type="text" name="order_status_id" id="order_status_id" class="form-control" value="{{$order->order_status_id}}">
                     <input type="text" name="user_id" id="user_id" value="{{$order->user_id}}" class="form-control">
                     <input type="text" name="order_ref" id="order_ref" value="{{$order->order_ref}}" class="form-control">
                 </div>

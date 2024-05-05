@@ -28,18 +28,9 @@ class OrderController extends Controller
     public function userOrders(){
         $orders = DB::table('orders')
             ->where('user_id', auth()->id())
-            ->orderBy('order_status', 'asc')
             ->get();
 
-        $o_in_progress = DB::table('orders')
-            ->where('order_status', 0)
-            ->count();
-
-        $other_orders = DB::table('orders')
-            ->where('order_status', '!=', 0)
-            ->count();
-
-        return view('orders.user_orders', compact('orders', 'o_in_progress', 'other_orders'));
+        return view('orders.user_orders', compact('orders'));
     }
 
     /**
@@ -73,7 +64,7 @@ class OrderController extends Controller
             'phone' => 'required | integer',
             'service_id' => 'required',
             'is_online' => 'required',
-            'order_status' => 'required',
+            'order_status_id' => 'required',
             'total_price' => 'required',
             'pay_status' => 'required',
         ]);
@@ -145,7 +136,7 @@ class OrderController extends Controller
             'phone' => 'required | integer',
             'service_id' => 'required',
             'is_online' => 'required',
-            'order_status' => 'required',
+            'order_status_id' => 'required',
             'total_price' => 'required',
             'pay_status' => 'required',
         ]);
@@ -162,7 +153,7 @@ class OrderController extends Controller
             'phone' => 'El teléfono',
             'service_id' => 'El servicio',
             'is_online' => 'El lugar de reserva',
-            'order_status' => 'El estado',
+            'order_status_id' => 'El estado',
             'total_price' => 'El precio',
             'pay_status' => 'El pago',
         ];

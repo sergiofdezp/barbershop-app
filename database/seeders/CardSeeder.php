@@ -13,12 +13,12 @@ class CardSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('cards')->insert([
-            'user_id' => 1,
-            'num_services' => 0,
-            'available' => 0,
-            'used' => 0,
-            'created_at' => now(),
-        ]);
+        // DB::table('cards')->insert([
+        //     'user_id' => 1,
+        //     'num_services' => 0,
+        //     'available' => 0,
+        //     'used' => 0,
+        //     'created_at' => now(),
+        // ]);
     }
 }

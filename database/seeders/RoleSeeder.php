@@ -20,12 +20,15 @@ class RoleSeeder extends Seeder
 
         // Todos los permisos.
         $orders_index = Permission::create(['name' => 'orders.index']);
+        $orders_create = Permission::create(['name' => 'orders.create']);
         $orders_edit = Permission::create(['name' => 'orders.edit']);
 
         $services_index = Permission::create(['name' => 'services.index']);
+        $services_create = Permission::create(['name' => 'services.create']);
         $services_edit = Permission::create(['name' => 'services.edit']);
 
         $coupons_index = Permission::create(['name' => 'coupons.index']);
+        $coupons_create = Permission::create(['name' => 'coupons.create']);
         $coupons_edit = Permission::create(['name' => 'coupons.edit']);
 
         $users_index = Permission::create(['name' => 'users.index']);
@@ -34,12 +37,15 @@ class RoleSeeder extends Seeder
 
         // Permisos del rol 'admin'.
         $admin->givePermissionTo($orders_index);
+        $admin->givePermissionTo($orders_create);
         $admin->givePermissionTo($orders_edit);
 
         $admin->givePermissionTo($services_index);
+        $admin->givePermissionTo($services_create);
         $admin->givePermissionTo($services_edit);
 
         $admin->givePermissionTo($coupons_index);
+        $admin->givePermissionTo($coupons_create);
         $admin->givePermissionTo($coupons_edit);
 
         $admin->givePermissionTo($users_index);

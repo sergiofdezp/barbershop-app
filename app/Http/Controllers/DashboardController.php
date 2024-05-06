@@ -19,12 +19,12 @@ class DashboardController extends Controller
     {
         // Reservas.
         $orders = Order::orderBy('created_at', 'desc')
-            ->where('order_status', 0)
+            ->where('order_status_id', 0)
             ->get();
             
         // Número total de reservas
         $total_orders = DB::table('orders')
-            ->where('order_status', 0)
+            ->where('order_status_id', 0)
             ->count();
     
         // Dinero total generado.
@@ -44,7 +44,7 @@ class DashboardController extends Controller
         $services = DB::table('orders')
             ->join('services', 'orders.service_id', '=', 'services.id')
             ->select('services.type')
-            ->where('orders.order_status', 0)
+            ->where('orders.order_status_id', 0)
             ->get();
 
         if(!$services->isEmpty()){
@@ -58,14 +58,14 @@ class DashboardController extends Controller
         // Cupón más utilizado y número total de cupones utilizados.
         $total_coupons = Order::orderBy('coupon_id', 'desc')
             ->where('coupon_id', '!=', null)
-            ->where('order_status', 0)
+            ->where('order_status_id', 0)
             ->groupBy('coupon_id')
             ->count();
 
         $coupons = DB::table('orders')
             ->join('coupons', 'orders.coupon_id', '=', 'coupons.id')
             ->select('coupons.code')
-            ->where('orders.order_status', 0)
+            ->where('orders.order_status_id', 0)
             ->get();
 
         if(!$coupons->isEmpty()){

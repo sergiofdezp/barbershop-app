@@ -8,10 +8,6 @@
 
 @section('content')
     <div class="container pt-5">
-        <?php
-            $today = date('Y-m-d');
-        ?>
-
         @if (session()->has('error')) {{-- comprueba si existe el valor en sesión --}}
             <div class="error d-flex flex-row justify-content-center">
                 <div class="col-6">
@@ -39,7 +35,7 @@
             </div>
         </div>
         @foreach ($orders as $order)
-            @if($order->order_status == 0 && $order->order_date >= $today)
+            @if($order->order_status_id == 1)
                 <div class="row d-flex justify-content-center pt-1">
                     <div class="col-6">
                         <div class="card">
@@ -48,7 +44,7 @@
                                     <a href="{{ route('orders.show', $order->id)}}" class="card-title btn btn-dark btn-sm" style="background-color: #33BEFF; border: none;">
                                         Referencia: {{$order->order_ref}}
                                     </a>
-                                    <div class="order_status">
+                                    <div class="order_status_id">
                                         <form action="{{ route('orders.cancel_order', $order->id) }}" id="form_update" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             @method('PUT')
@@ -62,7 +58,7 @@
                                                 <input type="text" name="phone" id="phone" class="form-control" value="{{$order->phone}}" placeholder="Introduce el teléfono del cliente">
                                                 <input type="number" name="service_id" id="service_id" class="form-control" value="{{$order->service_id}}">
                                                 <input type="number" name="is_online" id="is_online" class="form-control" value="{{$order->is_online}}">
-                                                <input type="number" name="order_status" id="order_status" class="form-control" value="1">
+                                                <input type="number" name="order_status_id" id="order_status_id" class="form-control" value="3">
                                                 <input type="number" name="total_price" id="total_price" class="form-control" value="{{$order->total_price}}">
                                                 <input type="number" name="pay_status" id="pay_status" class="form-control" value="{{$order->pay_status}}">
                                                 <input type="number" name="coupon_id" id="coupon_id" class="form-control" value="{{$order->coupon_id}}">
@@ -76,6 +72,12 @@
                         </div>
                     </div>
                 </div>
+            @else
+                <div class="row d-flex justify-content-center pt-1">
+                    <div class="col-6">
+                        <p>No hay reservas en curso.</p>
+                    </div>
+                </div>
             @endif
         @endforeach
 
@@ -86,20 +88,20 @@
             </div>
         </div>
         @foreach ($orders as $order)
-            @if(($order->order_status == 0 && $order->order_date < $today) || $order->order_status == 1 || $order->order_status == 2)
+            @if(($order->order_status_id == 2) || $order->order_status_id == 3 || $order->order_status_id == 4)
                 <div class="row d-flex justify-content-center pt-1">
                     <div class="col-6">
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <a href="{{ route('orders.show', $order->id)}}" class="card-title btn btn-dark btn-sm" style="background-color: #33BEFF; border: none;">
-                                        Referencia: {{$order->order_ref}}
+                                        Ver reserva: {{$order->order_ref}}
                                     </a>
-                                    @if($order->order_status == 0 && $order->order_status < $today)
+                                    @if($order->order_status_id == 2)
                                         <p class="card-title btn btn-dark btn-sm" style="background-color: #72CA34; border: none;">Terminada</p>
-                                    @elseif($order->order_status == 1)
+                                    @elseif($order->order_status_id == 3)
                                         <p class="card-title btn btn-dark btn-sm" style="background-color: #EC3431; border: none;">Cancelada</p>
-                                    @elseif($order->order_status == 2)
+                                    @elseif($order->order_status_id == 4)
                                         <p class="card-title btn btn-dark btn-sm" style="background-color: #A9A9A9; border: none;">No asistida</p>
                                     @endif
                                 </div>

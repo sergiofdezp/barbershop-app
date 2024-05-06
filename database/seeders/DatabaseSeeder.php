@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             CouponSeeder::class,
             OrderSeeder::class,
             CardSeeder::class,
+            OrderStatusSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 

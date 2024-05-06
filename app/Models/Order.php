@@ -9,7 +9,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['order_ref', 'order_date', 'order_hour', 'user_id', 'name', 'phone', 'service_id', 'is_online', 'order_status', 'total_price', 'pay_status', 'coupon_id'];
+    protected $fillable = ['order_ref', 'order_date', 'order_hour', 'user_id', 'name', 'phone', 'service_id', 'is_online', 'order_status_id', 'total_price', 'pay_status', 'coupon_id'];
 
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
@@ -25,5 +25,9 @@ class Order extends Model
 
     public function logs(){
         return $this->hasMany(Log::class, 'id');
+    }
+
+    public function order_status(){
+        return $this->belongsTo(OrderStatus::class, 'order_status_id');
     }
 }

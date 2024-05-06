@@ -28,7 +28,6 @@ class OrderController extends Controller
     public function userOrders(){
         $orders = DB::table('orders')
             ->where('user_id', auth()->id())
-            ->orderBy('order_status', 'asc')
             ->get();
 
         return view('orders.user_orders', compact('orders'));
@@ -65,7 +64,7 @@ class OrderController extends Controller
             'phone' => 'required | integer',
             'service_id' => 'required',
             'is_online' => 'required',
-            'order_status' => 'required',
+            'order_status_id' => 'required',
             'total_price' => 'required',
             'pay_status' => 'required',
         ]);
@@ -137,7 +136,7 @@ class OrderController extends Controller
             'phone' => 'required | integer',
             'service_id' => 'required',
             'is_online' => 'required',
-            'order_status' => 'required',
+            'order_status_id' => 'required',
             'total_price' => 'required',
             'pay_status' => 'required',
         ]);
@@ -154,7 +153,7 @@ class OrderController extends Controller
             'phone' => 'El teléfono',
             'service_id' => 'El servicio',
             'is_online' => 'El lugar de reserva',
-            'order_status' => 'El estado',
+            'order_status_id' => 'El estado',
             'total_price' => 'El precio',
             'pay_status' => 'El pago',
         ];
@@ -204,7 +203,6 @@ class OrderController extends Controller
             
             return redirect()->route('user_orders')->banner('Reserva "' . $request->order_ref . '" cancelada.');
         }
-
     }
 
     /**

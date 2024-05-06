@@ -24,7 +24,7 @@
                 <div class="mb-3" hidden>
                     <input type="text" name="total_price" id="total_price" class="form-control" value="{{$order->total_price}}">
                     <input type="text" name="is_online" id="is_online" class="form-control" value="{{$order->is_online}}">
-                    <input type="text" name="order_status" id="order_status" class="form-control" value="{{$order->order_status}}">
+                    <input type="text" name="order_status_id" id="order_status_id" class="form-control" value="{{$order->order_status_id}}">
                     <input type="text" name="user_id" id="user_id" value="{{$order->user_id}}" class="form-control">
                     <input type="text" name="order_ref" id="order_ref" value="{{$order->order_ref}}" class="form-control">
                 </div>
@@ -77,7 +77,25 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div> 
+                    </div>
+                    <div class="col-4">
+                        <div class="border rounded p-3">
+                            <label for="discount" class="form-label">Cupón de descuento</label>
+                            <input type="text" name="discount" id="discount" class="form-control" value="@if($order->coupon_id != null) $order->coupon->code @endif" placeholder="Introduce un código de descuento">
+                        </div>
+                    </div>
+                    <div class="col-2 d-flex align-items-end">
+                        <input type="button" class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
+                                text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                                id="aplicar_cod" value="Aplicar cupón">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <p id="error-message" class="bg-danger text-white rounded"></p>
+                    </div>
                 </div>
 
                 <!-- Información del pago -->
@@ -136,11 +154,23 @@
 @section('js')
     <script>
         $(document).ready(function(){
-            // Ejecutamos la función nada más cargar la página para mostrar el precio del servicio elegido anteriormente.
-            servicesPrices();
+            // Cargar el precio de la reserva
+            var total_price = $('#total_price').val();
+            $('.total_price').text(total_price + '€');
+
             // Volvemos a ejecutar la función si se decide editar el servicio y así obtener el precio del nuevo servicio.
-            $('#service_id').click(function(){
+            $('#service_id').change(function(){
                 servicesPrices();
+            });
+
+            // Obtener los bloqueos de las horas que ya se han reservado.
+            $('#order_date').change(function(){
+                bloqueosHoras();
+            });
+
+            // Verificar el código del cupón al hacer click en el botón.
+            $('#aplicar_cod').click(function(){
+                checkDiscountCode();
             });
         });
 
@@ -161,15 +191,124 @@
                 dataType: "json",
 
                 success: function(response){
-                    // console.log(response)
                     $.each(response.services, function (key, item){
-                        // console.log(item.price)
                         $('#total_price').val(item.price);
                         $('.total_price').text(item.price + '€');
+                    });
+
+                    // Actualizamos el precio según el descuento que ya había antes aplicado en la reserva.
+                    checkDiscountCode();
+                }
+            });
+        }
+
+        /**
+         * Esta función bloqueará las sesiones donde ya hay una reserva.
+         *
+         * @return void
+         */
+        function bloqueosHoras(){
+            var order_date = $('#order_date').val();
+
+            // Reiniciamos el estado del div, limpiamos el div (order_hours) para despues regenerarlo.
+            var order_hours = '';
+            document.getElementById('order_hours').innerHTML = order_hours;
+                
+            $.ajax({
+                type: "GET",
+                url: "/bloqueos_horas",
+                data: {
+                    order_date : order_date,
+                },
+                dataType: "json",
+
+                success: function(response){
+                    // Creamos el div donde generaremos el select.
+                    order_hours = '<div class="border rounded p-3">'
+                                    +'<label for="order_hour" class="form-label">Hora de la reserva</label>'
+                                    +'<select name="order_hour" id="order_hour" class="form-control" required>'
+                                        +'<option value="0" selected disabled>Selecciona una hora</option>'
+                                    +'</select>'
+                                +'</div>';
+                    document.getElementById('order_hours').innerHTML += order_hours;
+
+                    // Seleccionamos el select y recorriendo la respuesta del AJAX generaremos las options.
+                    var select = document.getElementById('order_hour');
+
+                    $.each(response.hours, function (key_h, hour){
+                        var opt = document.createElement('option');
+                        opt.value = hour.order_hour;
+                        opt.innerHTML = hour.order_hour;
+
+                        $.each(response.orders, function (key_o, order){
+                            if(order.order_hour == hour.order_hour){
+                                opt.disabled = true;
+                                opt.innerHTML += ' - Reservada';
+                            }
+                        });
+
+                        select.appendChild(opt);
                     });
                 }
             });
         }
-    </script>
 
+        function checkDiscountCode(){
+            $('#error-message').html('');
+            $('#error-message').removeClass('p-2');
+
+            var coupon_code = $('#discount').val();
+            var service_id = $('#service_id').val();
+            var total_price = $('#total_price').val();
+            var order_date = $('#order_date').val();
+
+            $.ajax({
+                type: "GET",
+                url: "/check_discount_code",
+                data: {
+                    coupon_code : coupon_code,
+                    service_id : service_id,
+                    order_date : order_date,
+                },
+                dataType: "json",
+
+                success: function(response){
+                    $("#error-message").show();
+                    // Verificar que se ha elegido una fecha y un servicio
+                    if(response.coupon == "noorderdate"){
+                        // $("#error-message").show();
+                        $('#error-message').html('Debes elegir una fecha antes de aplicar un código.');
+                        $('#error-message').addClass('p-2');
+                    } else if(response.coupon == "noserviceid"){
+                        // $("#error-message").show();
+                        $('#error-message').html('Debes elegir un servicio antes de aplicar un código.');
+                        $('#error-message').addClass('p-2');
+                    } else{
+                        // Verificación de existencia de cupón
+                        if(response.coupon == 0){
+                            // $("#error-message").show();
+                            $('#error-message').html('¡Este cupón no existe! Por favor introduce un código válido.');
+                            $('#error-message').addClass('p-2');
+                        } else if(response.coupon == "noservice"){
+                            // $("#error-message").show();
+                            $('#error-message').html('Este cupón no puede aplicarse a este servicio.');
+                            $('#error-message').addClass('p-2');
+                        } else if(response.coupon == "nodates"){
+                            // $("#error-message").show();
+                            $('#error-message').html('Este cupón no puede aplicarse para esta fecha.');
+                            $('#error-message').addClass('p-2');
+                        } else{
+                            $.each(response.coupon, function (key_c, coupon){
+                                var final_price = (total_price * coupon.discount) / 100;
+            
+                                $('#coupon_id').val(coupon.id);
+                                $('#total_price').val(final_price);
+                                $('.total_price').text(final_price + '€');
+                            });
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 @stop

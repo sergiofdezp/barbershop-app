@@ -91,96 +91,98 @@
             @endrole
         </div>
 
-        <div class="row">
-            <div class="col-sm-2">
-                <div class="card rounded">
-                    <div class="card-body">
-                        <p class="card-text text-muted text-sm">Reservas totales</p>
-                        <h5 class="card-title">{{$total_orders}}</h5>
+        @role('Peluquero')
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="card rounded">
+                        <div class="card-body">
+                            <p class="card-text text-muted text-sm">Reservas totales</p>
+                            <h5 class="card-title">{{$total_orders}}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="card rounded">
+                        <div class="card-body">
+                            <p class="card-text text-muted text-sm">Dinero total</p>
+                            <h5 class="card-title">{{$total_money}}€</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="card rounded">
+                        <div class="card-body">
+                            <p class="card-text text-muted text-sm">Cupones utilizados</p>
+                            <h5 class="card-title">{{$total_coupons}}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="card rounded">
+                        <div class="card-body">
+                            <p class="card-text text-muted text-sm">Servicio más demandado</p>
+                            <h5 class="card-title">{{$service_type}}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="card rounded">
+                        <div class="card-body">
+                            <p class="card-text text-muted text-sm">Cupón más utilizado</p>
+                            <h5 class="card-title">{{$coupon_code}}</h5>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-2">
-                <div class="card rounded">
-                    <div class="card-body">
-                        <p class="card-text text-muted text-sm">Dinero total</p>
-                        <h5 class="card-title">{{$total_money}}€</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2">
-                <div class="card rounded">
-                    <div class="card-body">
-                        <p class="card-text text-muted text-sm">Cupones utilizados</p>
-                        <h5 class="card-title">{{$total_coupons}}</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="card rounded">
-                    <div class="card-body">
-                        <p class="card-text text-muted text-sm">Servicio más demandado</p>
-                        <h5 class="card-title">{{$service_type}}</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="card rounded">
-                    <div class="card-body">
-                        <p class="card-text text-muted text-sm">Cupón más utilizado</p>
-                        <h5 class="card-title">{{$coupon_code}}</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="row pt-4">
-            <div class="col-12">
-                <div class="card rounded">
-                    <div class="card-body">
-                        <p class="card-text fw-bold">Últimas reservas</p>
-                        <?php
-                            if(!$orders->isEmpty()){
-                        ?>
-                                <table class="table" id="orders_table" class="display">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" class="text-sm text-muted">Hora de reserva</th>
-                                            <th scope="col" class="text-sm text-muted">Servicio</th>
-                                            <th scope="col" class="text-sm text-muted">Fecha</th>
-                                            <th scope="col" class="text-sm text-muted">Estado del pago</th>
-                                            <th scope="col" class="text-sm text-muted">Cliente</th>
-                                            <th scope="col" class="text-sm text-muted">Teléfono</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($orders as $order)
-                                        <tr>
-                                            <td>{{$order->created_at}}</td>
-                                            <td>{{$order->service->type}}</td>
-                                            <td>{{$order->order_date}} {{$order->order_hour}}</td>
-                                            <td>
-                                                @if($order->pay_status == 0) Pendiente
+            <div class="row pt-4">
+                <div class="col-12">
+                    <div class="card rounded">
+                        <div class="card-body">
+                            <p class="card-text fw-bold">Últimas reservas</p>
+                            <?php
+                                if(!$orders->isEmpty()){
+                            ?>
+                                    <table class="table" id="orders_table" class="display">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="text-sm text-muted">Hora de reserva</th>
+                                                <th scope="col" class="text-sm text-muted">Servicio</th>
+                                                <th scope="col" class="text-sm text-muted">Fecha</th>
+                                                <th scope="col" class="text-sm text-muted">Estado del pago</th>
+                                                <th scope="col" class="text-sm text-muted">Cliente</th>
+                                                <th scope="col" class="text-sm text-muted">Teléfono</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($orders as $order)
+                                            <tr>
+                                                <td>{{$order->created_at}}</td>
+                                                <td>{{$order->service->type}}</td>
+                                                <td>{{$order->order_date}} {{$order->order_hour}}</td>
+                                                <td>
+                                                    @if($order->pay_status == 0) Pendiente
 
-                                                @elseif($order->pay_status == 1) Pagado
+                                                    @elseif($order->pay_status == 1) Pagado
 
-                                                @endif
-                                            </td>
-                                            <td>{{$order->name}}</td>
-                                            <td>{{$order->phone}}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                        <?php
-                            } else{
-                                echo '<p class="text-muted text-sm">No hay reservas para mostrar.</p>';
-                            }
-                        ?>
+                                                    @endif
+                                                </td>
+                                                <td>{{$order->name}}</td>
+                                                <td>{{$order->phone}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                            <?php
+                                } else{
+                                    echo '<p class="text-muted text-sm">No hay reservas para mostrar.</p>';
+                                }
+                            ?>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endrole
     </div>
 @stop
 

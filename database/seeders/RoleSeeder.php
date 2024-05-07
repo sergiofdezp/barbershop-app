@@ -19,21 +19,26 @@ class RoleSeeder extends Seeder
         $peluquero = Role::create(['name' => 'Peluquero']);
 
         // Todos los permisos.
-        $orders_index = Permission::create(['name' => 'orders.index']);
-        $orders_create = Permission::create(['name' => 'orders.create']);
-        $orders_edit = Permission::create(['name' => 'orders.edit']);
+        $orders_index = Permission::create(['name' => 'orders.index', 'description' => 'Ver todas las reservas.']);
+        $orders_create = Permission::create(['name' => 'orders.create', 'description' => 'Crear una nueva reserva desde el admin.']);
+        $orders_edit = Permission::create(['name' => 'orders.edit', 'description'=> 'Editar una reserva.']);
 
-        $services_index = Permission::create(['name' => 'services.index']);
-        $services_create = Permission::create(['name' => 'services.create']);
-        $services_edit = Permission::create(['name' => 'services.edit']);
+        $services_index = Permission::create(['name' => 'services.index', 'description'=> 'Ver todos los servicios.']);
+        $services_create = Permission::create(['name' => 'services.create', 'description'=> 'Crear un nuevo servicio.']);
+        $services_edit = Permission::create(['name' => 'services.edit', 'description'=> 'Editar un servicio.']);
 
-        $coupons_index = Permission::create(['name' => 'coupons.index']);
-        $coupons_create = Permission::create(['name' => 'coupons.create']);
-        $coupons_edit = Permission::create(['name' => 'coupons.edit']);
+        $coupons_index = Permission::create(['name' => 'coupons.index', 'description'=> 'Ver todos los cupones.']);
+        $coupons_create = Permission::create(['name' => 'coupons.create', 'description'=> 'Crear un nuevo cupón.']);
+        $coupons_edit = Permission::create(['name' => 'coupons.edit', 'description'=> 'Editar un cupón.']);
 
-        $users_index = Permission::create(['name' => 'users.index']);
-        $users_edit = Permission::create(['name' => 'users.edit']);
-        $users_destroy = Permission::create(['name' => 'users.destroy']);
+        $users_index = Permission::create(['name' => 'users.index', 'description'=> 'Ver todos los usuarios del sistema.']);
+        $users_edit = Permission::create(['name' => 'users.edit', 'description'=> 'Editar un usuario.']);
+        $users_destroy = Permission::create(['name' => 'users.destroy', 'description'=> 'Eliminar un usuario.']);
+
+        $roles_index = Permission::create(['name' => 'roles.index', 'description'=> 'Ver todos los roles.']);
+        $roles_create = Permission::create(['name' => 'roles.create', 'description'=> 'Crear un nuevo rol.']);
+        $roles_edit = Permission::create(['name' => 'roles.edit', 'description'=> 'Editar un rol.']);
+        $roles_destroy = Permission::create(['name' => 'roles.destroy', 'description'=> 'Eliminar roles.']);
 
         // Permisos del rol 'admin'.
         $admin->givePermissionTo($orders_index);
@@ -51,6 +56,11 @@ class RoleSeeder extends Seeder
         $admin->givePermissionTo($users_index);
         $admin->givePermissionTo($users_edit);
         $admin->givePermissionTo($users_destroy);
+
+        $admin->givePermissionTo($roles_index);
+        $admin->givePermissionTo($roles_create);
+        $admin->givePermissionTo($roles_edit);
+        $admin->givePermissionTo($roles_destroy);
 
         // Permisos del rol 'peluquero'.
         $peluquero->givePermissionTo($orders_index);

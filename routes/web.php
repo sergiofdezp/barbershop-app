@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,4 +53,6 @@ Route::middleware([
     Route::get('/today_orders', [PDFController::class, 'today_orders'])->name('today_orders');
 
     Route::resource('/cards', CardController::class)->names('cards');
+
+    Route::resource('/roles', RoleController::class)->names('roles');
 });

@@ -364,6 +364,13 @@ return [
         ],
         ['header' => 'CUPONES', 'can' => 'coupons.index'],
         [
+            'text' => 'Nuevo cupón',
+            'url' => '/coupons/create',
+            'icon' => 'fa fa-plus-circle',
+            'icon_color' => 'success',
+            'can' => 'coupons.create',
+        ],
+        [
             'text' => 'Cupones',
             'url' => '/coupons',
             'icon' => 'fa fa-tag',
@@ -375,6 +382,20 @@ return [
             'url' => '/users',
             'icon' => 'fas fa-fw fa-user',
             'can' => 'users.index',
+        ],
+        ['header' => 'ROLES', 'can' => 'roles.index'],
+        [
+            'text' => 'Nuevo rol',
+            'url' => '/roles/create',
+            'icon' => 'fa fa-plus-circle',
+            'icon_color' => 'success',
+            'can' => 'roles.create',
+        ],
+        [
+            'text' => 'Roles',
+            'url' => '/roles',
+            'icon' => 'fas fa-fw fa-user',
+            'can' => 'roles.index',
         ],
         // [
         //     'text' => 'pages',

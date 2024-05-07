@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 class CouponController extends Controller
 {
+    public function __construct(){
+        $this->middleware('can:coupons.index')->only('index');
+        $this->middleware('can:coupons.create')->only('create');
+        $this->middleware('can:coupons.edit')->only('edit', 'update');
+    }
+
     /**
      * Display a listing of the resource.
      */

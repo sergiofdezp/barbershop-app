@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
 {
+    public function __construct(){
+        $this->middleware('can:services.index')->only('index');
+        $this->middleware('can:services.create')->only('create');
+        $this->middleware('can:services.edit')->only('edit', 'update');
+    }
     /**
      * Display a listing of the resource.
      */

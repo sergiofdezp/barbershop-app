@@ -37,6 +37,24 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-6">
+                    <div class="border rounded p-3">
+                        <label for="role" class="form-label">Rol</label>
+                        <div class="form-check mb-4">
+                            @foreach ($roles as $role)
+                                <input class="form-check-input" type="checkbox" name="roles[]" value="{{$role->id}}" 
+                                    @foreach($user->roles as $permissions)
+                                        @if ($permissions->id == $role->id)
+                                            checked
+                                        @endif
+                                    @endforeach
+                                id="roles">
+                                <label class="form-check-label">{{ $role->name }}</label>
+                                <br>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
                 <div class="text-end">
                     <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold
                                 text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900

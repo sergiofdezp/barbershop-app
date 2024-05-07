@@ -21,12 +21,29 @@ class UserSeeder extends Seeder
             'email' => "admin@admin.com",
             'password' => Hash::make('admin')
         ]);
+        DB::table('model_has_roles')->insert([
+            'role_id' => "1",
+            'model_type' => "App\Models\User",
+            'model_id' => "1"
+        ]);
 
         // usuario para peluquero
         DB::table('users')->insert([
             'name' => "Peluquero",
             'email' => "peluquero@peluquero.com",
             'password' => Hash::make('peluquero')
+        ]);
+        DB::table('model_has_roles')->insert([
+            'role_id' => "2",
+            'model_type' => "App\Models\User",
+            'model_id' => "2"
+        ]);
+
+        // usuario test
+        DB::table('users')->insert([
+            'name' => "test",
+            'email' => "test@test.com",
+            'password' => Hash::make('test')
         ]);
     }
 }

@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    public function __construct(){
+        $this->middleware('can:orders.index')->only('index');
+        $this->middleware('can:orders.edit')->only('edit', 'update');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -92,6 +96,10 @@ class OrderController extends Controller
                 $card_controller->store($request->user_id);
             }
 
+        if($user->id == 1){
+            return redirect()->route('orders.index')->banner('Reserva añadida correctamente.');
+        }
+        else{
             return redirect()->route('user_orders')->banner('Reserva añadida correctamente.');
         }
     }

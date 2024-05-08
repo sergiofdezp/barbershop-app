@@ -91,7 +91,7 @@
             @endrole
         </div>
 
-        @role('Peluquero')
+        @hasanyrole('Admin|Peluquero')
             <div class="row">
                 <div class="col-sm-2">
                     <div class="card rounded">
@@ -182,7 +182,7 @@
                     </div>
                 </div>
             </div>
-        @endrole
+        @endhasanyrole
     </div>
 @stop
 

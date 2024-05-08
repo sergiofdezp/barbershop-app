@@ -42,7 +42,13 @@ class OrderController extends Controller
             ->orWhere('order_status_id', 4)
             ->get();
 
-        return view('orders.user_orders', compact('orders_in_progress', 'orders_completed'));
+        // Información de la tarjeta de fidelización.
+        $max_services = 8;
+        $cards = DB::table('cards')
+            ->where('user_id', auth()->id())
+            ->get();
+
+        return view('orders.user_orders', compact('orders_in_progress', 'orders_completed', 'max_services', 'cards'));
     }
 
     /**

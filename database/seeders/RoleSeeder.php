@@ -68,12 +68,15 @@ class RoleSeeder extends Seeder
 
         // Permisos del rol 'peluquero'.
         $peluquero->givePermissionTo($orders_index);
+        $peluquero->givePermissionTo($orders_create);
         $peluquero->givePermissionTo($orders_edit);
 
         $peluquero->givePermissionTo($services_index);
+        $peluquero->givePermissionTo($services_create);
         $peluquero->givePermissionTo($services_edit);
 
         $peluquero->givePermissionTo($coupons_index);
+        $peluquero->givePermissionTo($coupons_create);
         $peluquero->givePermissionTo($coupons_edit);
 
         $peluquero->givePermissionTo($users_index);

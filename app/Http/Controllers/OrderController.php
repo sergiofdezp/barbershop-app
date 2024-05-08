@@ -30,11 +30,19 @@ class OrderController extends Controller
     }
 
     public function userOrders(){
-        $orders = DB::table('orders')
+        $orders_in_progress = DB::table('orders')
             ->where('user_id', auth()->id())
+            ->where('order_status_id', 1)
             ->get();
 
-        return view('orders.user_orders', compact('orders'));
+        $orders_completed = DB::table('orders')
+            ->where('user_id', auth()->id())
+            ->where('order_status_id', 2)
+            ->orWhere('order_status_id', 3)
+            ->orWhere('order_status_id', 4)
+            ->get();
+
+        return view('orders.user_orders', compact('orders_in_progress', 'orders_completed'));
     }
 
     /**
@@ -189,6 +197,8 @@ class OrderController extends Controller
 
     public function cancel_order(Request $request, Order $order)
     {
+        $user = Auth::user();
+
         // Obtenemos la fecha y hora actual y la fecha y hora de la reserva.
         $hora_actual = new DateTime();//fecha inicial
         $hora_reserva = new DateTime($order->order_date . $order->order_hour);//fecha de cierre
@@ -203,13 +213,20 @@ class OrderController extends Controller
 
             return redirect()->route('user_orders')->with('error', $message);
         } else{
-            $new_order = $request->all();
-            $order->update($new_order);
-        
-            $card_controller = new CardController;
-            $card_controller->cancel_order_update_num_services($request->user_id);
+            if($user->id == 1 || $user->id == 2){
+                $new_order = $request->all();
+                $order->update($new_order);
+                
+                return redirect()->route('user_orders')->banner('Reserva "' . $request->order_ref . '" cancelada.');
+            } else{
+                $new_order = $request->all();
+                $order->update($new_order);
             
-            return redirect()->route('user_orders')->banner('Reserva "' . $request->order_ref . '" cancelada.');
+                $card_controller = new CardController;
+                $card_controller->cancel_order_update_num_services($request->user_id);
+                
+                return redirect()->route('user_orders')->banner('Reserva "' . $request->order_ref . '" cancelada.');
+            }
         }
     }
 

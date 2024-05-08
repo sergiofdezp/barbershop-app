@@ -34,8 +34,8 @@
                 <hr>
             </div>
         </div>
-        @foreach ($orders as $order)
-            @if($order->order_status_id == 1)
+        @if(!$orders_in_progress->isEmpty())
+            @foreach ($orders_in_progress as $order)
                 <div class="row d-flex justify-content-center pt-1">
                     <div class="col-6">
                         <div class="card">
@@ -72,14 +72,14 @@
                         </div>
                     </div>
                 </div>
-            @else
-                <div class="row d-flex justify-content-center pt-1">
-                    <div class="col-6">
-                        <p>No hay reservas en curso.</p>
-                    </div>
+            @endforeach
+        @else
+            <div class="row d-flex justify-content-center pt-1">
+                <div class="col-6">
+                    <p>No hay reservas en curso.</p>
                 </div>
-            @endif
-        @endforeach
+            </div>
+        @endif
 
         <div class="row d-flex justify-content-center pt-4">
             <div class="col-6">
@@ -87,8 +87,8 @@
                 <hr>
             </div>
         </div>
-        @foreach ($orders as $order)
-            @if(($order->order_status_id == 2) || $order->order_status_id == 3 || $order->order_status_id == 4)
+        @if(!$orders_completed->isEmpty())
+            @foreach ($orders_completed as $order)
                 <div class="row d-flex justify-content-center pt-1">
                     <div class="col-6">
                         <div class="card">
@@ -110,8 +110,14 @@
                         </div>
                     </div>
                 </div>
-            @endif
-        @endforeach
+            @endforeach
+        @else
+            <div class="row d-flex justify-content-center pt-1">
+                <div class="col-6">
+                    <p>No hay reservas finalizadas.</p>
+                </div>
+            </div>
+        @endif
     </div>
 @stop
 

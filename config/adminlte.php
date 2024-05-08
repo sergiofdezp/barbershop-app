@@ -315,6 +315,8 @@ return [
         //     'url' => 'admin/blog',
         //     'can' => 'manage-blog',
         // ],
+
+        // Dashboard
         ['header' => 'INICIO', 'can' => 'dashboard.index'],
         [
             'text' => 'Dashboard',
@@ -322,19 +324,8 @@ return [
             'icon' => 'fas fa-tachometer-alt',
             'can' => 'dashboard.index',
         ],
-        // Ajustes de cuenta
-        ['header' => 'MI CUENTA'],
-        [
-            'text' => 'Mis reservas',
-            'url' => '/user_orders',
-            'icon' => 'fa fa-folder-open',
-        ],
-        [
-            'text' => 'Mi perfil',
-            'url' => 'user/profile',
-            'icon' => 'fas fa-fw fa-user',
-            'icon_color' => 'primary',
-        ],
+    
+        // Reservas
         ['header' => 'RESERVAS', 'can' => 'orders.index'],
         [
             'text' => 'Nueva reserva',
@@ -349,6 +340,8 @@ return [
             'icon' => 'fa fa-folder-open',
             'can' => 'orders.index',
         ],
+
+        // Servicios
         ['header' => 'SERVICIOS', 'can' => 'services.index'],
         [
             'text' => 'Nuevo servicio',
@@ -363,6 +356,8 @@ return [
             'icon' => 'fa fa-folder-open',
             'can' => 'services.index',
         ],
+
+        // Cupones
         ['header' => 'CUPONES', 'can' => 'coupons.index'],
         [
             'text' => 'Nuevo cupón',
@@ -377,6 +372,8 @@ return [
             'icon' => 'fa fa-tag',
             'can' => 'coupons.index',
         ],
+
+        // Usuarios
         ['header' => 'USUARIOS', 'can' => 'users.index'],
         [
             'text' => 'Usuarios',
@@ -384,6 +381,8 @@ return [
             'icon' => 'fas fa fa-users',
             'can' => 'users.index',
         ],
+
+        // Roles
         ['header' => 'ROLES', 'can' => 'roles.index'],
         [
             'text' => 'Nuevo rol',
@@ -397,6 +396,20 @@ return [
             'url' => '/roles',
             'icon' => 'fa fa-unlock-alt',
             'can' => 'roles.index',
+        ],
+
+        // Ajustes de cuenta
+        ['header' => 'MI CUENTA'],
+        [
+            'text' => 'Mis reservas',
+            'url' => '/user_orders',
+            'icon' => 'fa fa-folder-open',
+        ],
+        [
+            'text' => 'Mi perfil',
+            'url' => 'user/profile',
+            'icon' => 'fas fa-fw fa-user',
+            'icon_color' => 'primary',
         ],
         // [
         //     'text' => 'pages',

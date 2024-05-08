@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 use App\Models\Order;
 use App\Models\Coupon;
 
 class DashboardController extends Controller
 {
+    public function __construct(){
+        $this->middleware('can:dashboard.index')->only('index');
+    }
+
     /**
      * Manda a la vista la información de todas las reservas, el total de reservas en bd y el dinero total consguido.
      *
@@ -17,6 +22,8 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        
         // Reservas.
         $orders = Order::orderBy('created_at', 'desc')
             ->where('order_status_id', 0)
@@ -33,12 +40,6 @@ class DashboardController extends Controller
         foreach($orders as $order){
             $total_money+=$order->total_price;
         }
-
-        // Información de la tarjeta de fidelización.
-        $max_services = 8;
-        $cards = DB::table('cards')
-            ->where('user_id', auth()->id())
-            ->get();
 
         // Servicio más demandado.
         $services = DB::table('orders')
@@ -76,7 +77,6 @@ class DashboardController extends Controller
             $coupon_code = 'Sin datos';
         }
 
-
-        return view('dashboard', compact('orders', 'total_orders', 'total_money', 'max_services', 'cards', 'service_type', 'total_coupons', 'coupon_code'));
+        return view('dashboard', compact('orders', 'total_orders', 'total_money', 'service_type', 'total_coupons', 'coupon_code'));
     }
 }

@@ -315,32 +315,33 @@ return [
         //     'url' => 'admin/blog',
         //     'can' => 'manage-blog',
         // ],
-        ['header' => 'INICIO'],
+        ['header' => 'INICIO', 'can' => 'dashboard.index'],
         [
             'text' => 'Dashboard',
             'url' => '/dashboard',
             'icon' => 'fas fa-tachometer-alt',
+            'can' => 'dashboard.index',
         ],
         // Ajustes de cuenta
         ['header' => 'MI CUENTA'],
+        [
+            'text' => 'Mis reservas',
+            'url' => '/user_orders',
+            'icon' => 'fa fa-folder-open',
+        ],
         [
             'text' => 'Mi perfil',
             'url' => 'user/profile',
             'icon' => 'fas fa-fw fa-user',
             'icon_color' => 'primary',
         ],
-        ['header' => 'RESERVAS'],
+        ['header' => 'RESERVAS', 'can' => 'orders.index'],
         [
             'text' => 'Nueva reserva',
             'url' => '/orders/create',
             'icon' => 'fa fa-plus-circle',
             'icon_color' => 'success',
             'can' => 'orders.create',
-        ],
-        [
-            'text' => 'Mis reservas',
-            'url' => '/user_orders',
-            'icon' => 'fa fa-folder-open',
         ],
         [
             'text' => 'Reservas',
@@ -380,7 +381,7 @@ return [
         [
             'text' => 'Usuarios',
             'url' => '/users',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa fa-users',
             'can' => 'users.index',
         ],
         ['header' => 'ROLES', 'can' => 'roles.index'],
@@ -394,7 +395,7 @@ return [
         [
             'text' => 'Roles',
             'url' => '/roles',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fa fa-unlock-alt',
             'can' => 'roles.index',
         ],
         // [

@@ -40,6 +40,8 @@ class RoleSeeder extends Seeder
         $roles_edit = Permission::create(['name' => 'roles.edit', 'description'=> 'Editar un rol.']);
         $roles_destroy = Permission::create(['name' => 'roles.destroy', 'description'=> 'Eliminar roles.']);
 
+        $dashboard = Permission::create(['name' => 'dashboard.index', 'description'=> 'Ver el dashboard administrativo.']);
+
         // Permisos del rol 'admin'.
         $admin->givePermissionTo($orders_index);
         $admin->givePermissionTo($orders_create);
@@ -62,6 +64,8 @@ class RoleSeeder extends Seeder
         $admin->givePermissionTo($roles_edit);
         $admin->givePermissionTo($roles_destroy);
 
+        $admin->givePermissionTo($dashboard);
+
         // Permisos del rol 'peluquero'.
         $peluquero->givePermissionTo($orders_index);
         $peluquero->givePermissionTo($orders_edit);
@@ -74,5 +78,7 @@ class RoleSeeder extends Seeder
 
         $peluquero->givePermissionTo($users_index);
         $peluquero->givePermissionTo($users_edit);
+
+        $peluquero->givePermissionTo($dashboard);
     }
 }

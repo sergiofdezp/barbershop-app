@@ -95,6 +95,7 @@ class OrderController extends Controller
                 $card_controller->update_available_card($request->user_id);
                 $card_controller->store($request->user_id);
             }
+        }
 
         if($user->id == 1){
             return redirect()->route('orders.index')->banner('Reserva añadida correctamente.');

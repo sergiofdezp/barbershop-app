@@ -36,24 +36,30 @@
             <div class="col-sm-2">
                 <div class="card rounded">
                     <div class="card-body">
-                        <p class="card-text text-muted text-sm">Reservas totales</p>
-                        <h5 class="card-title">{{$total_orders}}</h5>
+                        <p class="card-text text-muted text-sm">Reservas</p>
+                        <h5 class="card-title">
+                            <p class="mb-0">{{$count_last_month_orders}} | <span class="text-{{$order_text_color}}">{{$count_month_orders}} <i class="fas {{$order_ico}}"></i></span></p>
+                        </h5>
                     </div>
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="card rounded">
                     <div class="card-body">
-                        <p class="card-text text-muted text-sm">Dinero total</p>
-                        <h5 class="card-title">{{$total_money}}€</h5>
+                        <p class="card-text text-muted text-sm">Dinero</p>
+                        <h5 class="card-title">
+                            <p class="mb-0">{{$last_month_money}}€ | <span class="text-{{$money_text_color}}">{{$month_money}}€ <i class="fas {{$money_ico}}"></i></span></p>
+                        </h5>
                     </div>
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="card rounded">
                     <div class="card-body">
-                        <p class="card-text text-muted text-sm">Cupones utilizados</p>
-                        <h5 class="card-title">{{$total_coupons}}</h5>
+                        <p class="card-text text-muted text-sm">Cupones</p>
+                        <h5 class="card-title">
+                            <p class="mb-0">{{$count_last_month_coupons}} | <span class="text-{{$coupon_text_color}}">{{$count_month_coupons}} <i class="fas {{$coupon_ico}}"></i></span></p>
+                        </h5>
                     </div>
                 </div>
             </div>
@@ -61,7 +67,7 @@
                 <div class="card rounded">
                     <div class="card-body">
                         <p class="card-text text-muted text-sm">Servicio más demandado</p>
-                        <h5 class="card-title">{{$service_type}}</h5>
+                        <h5 class="card-title">{{$service_month_type}}</h5>
                     </div>
                 </div>
             </div>
@@ -69,19 +75,19 @@
                 <div class="card rounded">
                     <div class="card-body">
                         <p class="card-text text-muted text-sm">Cupón más utilizado</p>
-                        <h5 class="card-title">{{$coupon_code}}</h5>
+                        <h5 class="card-title">{{$coupon_month_code}}</h5>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row o-scroll">
             <div class="col-12">
                 <div class="card rounded">
                     <div class="card-body">
-                        <p class="card-text fw-bold">Últimas reservas</p>
+                        <p class="card-text fw-bold">Reservas de hoy</p>
                         <?php
-                            if(!$orders->isEmpty()){
+                            if(!$today_orders->isEmpty()){
                         ?>
                                 <table class="table" id="orders_table" class="display">
                                     <thead>
@@ -89,26 +95,14 @@
                                             <th scope="col" class="text-sm text-muted">Hora de reserva</th>
                                             <th scope="col" class="text-sm text-muted">Servicio</th>
                                             <th scope="col" class="text-sm text-muted">Fecha</th>
-                                            <th scope="col" class="text-sm text-muted">Estado del pago</th>
-                                            <th scope="col" class="text-sm text-muted">Cliente</th>
-                                            <th scope="col" class="text-sm text-muted">Teléfono</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($orders as $order)
+                                        @foreach ($today_orders as $order)
                                         <tr>
                                             <td>{{$order->created_at}}</td>
                                             <td>{{$order->service->type}}</td>
                                             <td>{{$order->order_date}} {{$order->order_hour}}</td>
-                                            <td>
-                                                @if($order->pay_status == 0) Pendiente
-
-                                                @elseif($order->pay_status == 1) Pagado
-
-                                                @endif
-                                            </td>
-                                            <td>{{$order->name}}</td>
-                                            <td>{{$order->phone}}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -127,8 +121,8 @@
 
 @section('css')
     @livewireStyles
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 @stop
 
 @section('js')

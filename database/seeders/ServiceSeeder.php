@@ -14,7 +14,7 @@ class ServiceSeeder extends Seeder
     public function run(): void
     {
         DB::table('services')->insert([
-            'type' => "Corte de pelo",
+            'type' => "Pelo",
             'price' => "10",
             'image' => "pelo.png",
             'created_at' => now(),
@@ -22,7 +22,7 @@ class ServiceSeeder extends Seeder
         ]);
 
         DB::table('services')->insert([
-            'type' => "Arreglo de barba",
+            'type' => "Barba",
             'price' => "7",
             'image' => "barba.png",
             'created_at' => now(),

@@ -23,60 +23,129 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
-        // Reservas.
-        $orders = Order::orderBy('created_at', 'desc')
-            ->where('order_status_id', 0)
+        $day = date('d');
+        $month = date('m');
+        $last_month = date('m') - 1;
+
+        // Datos mes anterior
+
+        // Numero de reservas realizadas el mes anterior
+        $last_month_orders = DB::table('orders')
+            ->whereMonth('order_date', '=', $last_month)
             ->get();
-            
-        // Número total de reservas
-        $total_orders = DB::table('orders')
-            ->where('order_status_id', 0)
+
+        $count_last_month_orders = DB::table('orders')
+            ->whereMonth('order_date', '=', $last_month)
             ->count();
+
+        // Dinero generado el mes anterior
+        $last_month_money = 0;
     
-        // Dinero total generado.
-        $total_money = 0;
-    
-        foreach($orders as $order){
-            $total_money+=$order->total_price;
+        foreach($last_month_orders as $last_month_order){
+            $last_month_money+=$last_month_order->total_price;
         }
 
-        // Servicio más demandado.
-        $services = DB::table('orders')
-            ->join('services', 'orders.service_id', '=', 'services.id')
-            ->select('services.type')
-            ->where('orders.order_status_id', 0)
-            ->get();
-
-        if(!$services->isEmpty()){
-            foreach($services as $service){
-                $service_type = $service->type;
-            }
-        } else{
-            $service_type = 'Sin datos';
-        }
-
-        // Cupón más utilizado y número total de cupones utilizados.
-        $total_coupons = Order::orderBy('coupon_id', 'desc')
+        // Número de cupones utilizados este mes
+        $count_last_month_coupons = Order::orderBy('coupon_id', 'desc')
             ->where('coupon_id', '!=', null)
-            ->where('order_status_id', 0)
+            ->whereMonth('order_date', '=', $last_month)
             ->groupBy('coupon_id')
             ->count();
 
-        $coupons = DB::table('orders')
-            ->join('coupons', 'orders.coupon_id', '=', 'coupons.id')
-            ->select('coupons.code')
-            ->where('orders.order_status_id', 0)
+        // Datos actuales
+        //
+        // Reservas de hoy
+        $today_orders = Order::orderBy('created_at', 'desc')->whereDay('created_at', $day)->get();
+
+        // Número de reservas realizadas este mes
+        $month_orders = DB::table('orders')
+            ->whereMonth('order_date', '=', $month)
             ->get();
 
-        if(!$coupons->isEmpty()){
-            foreach($coupons as $coupon){
-                $coupon_code = $coupon->code;
-            }
-        } else{
-            $coupon_code = 'Sin datos';
+        $count_month_orders = DB::table('orders')
+            ->whereMonth('order_date', '=', $month)
+            ->count();
+
+        // Dinero generado este mes
+        $month_money = 0;
+    
+        foreach($month_orders as $m_order){
+            $month_money+=$m_order->total_price;
         }
 
-        return view('dashboard', compact('orders', 'total_orders', 'total_money', 'service_type', 'total_coupons', 'coupon_code'));
+        // Número de cupones utilizados este mes
+        $count_month_coupons = Order::orderBy('coupon_id', 'desc')
+            ->where('coupon_id', '!=', null)
+            ->whereMonth('order_date', '=', $month)
+            ->groupBy('coupon_id')
+            ->count();
+
+        // Servicio más demandado.
+        $services_month = DB::table('orders')
+            ->join('services', 'orders.service_id', '=', 'services.id')
+            ->select('services.type')
+            ->get();
+
+        if(!$services_month->isEmpty()){
+            foreach($services_month as $service_month){
+                $service_month_type = $service_month->type;
+            }
+        } else{
+            $service_month_type = 'Sin datos';
+        }
+
+        // Cupón más utilizado
+        $coupons_month = DB::table('orders')
+            ->join('coupons', 'orders.coupon_id', '=', 'coupons.id')
+            ->select('coupons.code')
+            ->whereMonth('orders.order_date', '=', $month)
+            ->get();
+
+        if(!$coupons_month->isEmpty()){
+            foreach($coupons_month as $coupon_month){
+                $coupon_month_code = $coupon_month->code;
+            }
+        } else{
+            $coupon_month_code = 'Sin datos';
+        }
+
+        // Calculos de diferencia para mandar a la vista el color del texto y el icono
+        // Número de reservas
+        if ($count_month_orders > $count_last_month_orders) {
+            $order_text_color = 'green';
+            $order_ico = 'fa-arrow-up';
+        } elseif ($count_month_orders < $count_last_month_orders) {
+            $order_text_color = 'red';
+            $order_ico = 'fa-arrow-down';
+        } else {
+            $order_text_color = 'blue';
+            $order_ico = 'fa-equals';
+        }
+
+        // Dinero
+        if ($month_money > $last_month_money) {
+            $money_text_color = 'green';
+            $money_ico = 'fa-arrow-up';
+        } elseif ($month_money < $last_month_money) {
+            $money_text_color = 'red';
+            $money_ico = 'fa-arrow-down';
+        } else {
+            $money_text_color = 'blue';
+            $money_ico = 'fa-equals';
+        }
+
+        // Cupones
+        if ($count_month_coupons > $count_last_month_coupons) {
+            $coupon_text_color = 'green';
+            $coupon_ico = 'fa-arrow-up';
+        } elseif ($count_month_coupons < $count_last_month_coupons) {
+            $coupon_text_color = 'red';
+            $coupon_ico = 'fa-arrow-down';
+        } else {
+            $coupon_text_color = 'blue';
+            $coupon_ico = 'fa-equals';
+        }
+
+    return view('dashboard', compact('today_orders', 'count_month_orders', 'count_last_month_orders', 'month_money', 'last_month_money', 'count_month_coupons', 'count_last_month_coupons', 'service_month_type', 'coupon_month_code', 'order_text_color', 'order_ico', 'money_text_color', 'money_ico', 'coupon_text_color', 'coupon_ico'));
     }
 }

@@ -1,7 +1,9 @@
-/* RESERVAS */
-.cancelada{
-    background-color: red !important;
-    color: white;
+
+/* Dahboard */
+.o-scroll{
+    overflow-y: scroll;
+    height:450px;
+    display:block;
 }
 
 /* SERVICIOS */

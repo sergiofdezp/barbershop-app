@@ -320,7 +320,7 @@ return [
         ['header' => 'INICIO', 'can' => 'dashboard.index'],
         [
             'text' => 'Dashboard',
-            'url' => '/admin',
+            'url' => '/admin/dashboard',
             'icon' => 'fas fa-tachometer-alt',
             'can' => 'dashboard.index',
         ],

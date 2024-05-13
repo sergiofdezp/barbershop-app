@@ -17,7 +17,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', ])->group(function () {
     // Dashboard
-    Route::get('/admin', [DashboardController::class, 'index'])->name('admin');
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin');
 
     // Reservas
     Route::resource('/admin/orders', OrderController::class)->names('orders');

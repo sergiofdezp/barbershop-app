@@ -6,102 +6,118 @@
     <h1><span class="fw-bold">Reserva:</span> {{$order->order_ref}}</h1>
 @stop
 @section('content')
-    <div class="container pt-5">
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    <div class="d-flex justify-content-center pt-5">
+        <form action="{{ route('orders.update', $order->id) }}" id="form_update" class="col-10" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            
+            <div class="mb-3" hidden>
+                <input type="text" name="total_price" id="total_price" class="form-control" value="{{$order->total_price}}">
+                <input type="text" name="is_online" id="is_online" class="form-control" value="{{$order->is_online}}">
+                <input type="text" name="order_status_id" id="order_status_id" class="form-control" value="{{$order->order_status_id}}">
+                <input type="text" name="user_id" id="user_id" value="{{$order->user_id}}" class="form-control">
+                <input type="text" name="order_ref" id="order_ref" value="{{$order->order_ref}}" class="form-control">
             </div>
-        @endif
-        <div class="d-flex justify-content-center pt-5">
-            <form action="{{ route('orders.update', $order->id) }}" id="form_update" class="col-10" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                
-                <div class="mb-3" hidden>
-                    <input type="text" name="total_price" id="total_price" class="form-control" value="{{$order->total_price}}">
-                    <input type="text" name="is_online" id="is_online" class="form-control" value="{{$order->is_online}}">
-                    <input type="text" name="order_status_id" id="order_status_id" class="form-control" value="{{$order->order_status_id}}">
-                    <input type="text" name="user_id" id="user_id" value="{{$order->user_id}}" class="form-control">
-                    <input type="text" name="order_ref" id="order_ref" value="{{$order->order_ref}}" class="form-control">
-                </div>
 
-                <!-- Informacion del cliente -->
-                <h2>Información del cliente</h2>
-                <div class="row mb-4">
-                    <div class="col-6">
-                        <div class="border rounded p-3">
-                            <label for="name" class="form-label">Nombre</label>
-                            <input type="text" name="name" id="name" class="form-control" value="{{$order->name}}" placeholder="Introduce el nombre del cliente">
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="border rounded p-3">
-                            <label for="phone" class="form-label">Teléfono de contacto</label>
-                            <input type="text" name="phone" id="phone" class="form-control" value="{{$order->phone}}" placeholder="Introduce el teléfono del cliente">
-                        </div>
+            <!-- Informacion del cliente -->
+            <h5>Información del cliente</h5>
+            <hr>
+            <div class="row mb-4">
+                <div class="col-sm-6 col-xs-6">
+                    <div class="border rounded p-3">
+                        <label for="name" class="form-label">Nombre</label>
+                        <input type="text" name="name" id="name" class="form-control" value="{{$order->name}}" placeholder="Introduce el nombre del cliente">
                     </div>
                 </div>
-    
-                <!-- Información de la reserva -->
-                <h2>Información de la reserva</h2>
-                <div class="row gx-4 mb-4">
-                    <div class="col-6">
-                        <div class="border rounded p-3">
-                            <label for="order_date" class="form-label">Día de la reserva</label>
-                            <input type="date" name="order_date" id="order_date" value="{{$order->order_date}}" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="border rounded p-3">
-                            <label for="order_hour" class="form-label">Hora de la reserva</label>
-                            <select name="order_hour" id="order_hour" class="form-control">
-                                @foreach ($hours as $hour)
-                                    <option value="{{$hour->order_hour}}" @if($order->order_hour == $hour->order_hour)selected @endif>{{$hour->order_hour}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                <div class="col-sm-6 col-xs-6">
+                    <div class="border rounded p-3">
+                        <label for="phone" class="form-label">Teléfono de contacto</label>
+                        <input type="text" name="phone" id="phone" class="form-control" value="{{$order->phone}}" placeholder="Introduce el teléfono del cliente">
                     </div>
                 </div>
-    
-                <div class="row gx-4">
-                    <div class="col-6 mb-3">
-                        <div class="border rounded p-3">
-                            <label for="service_id" class="form-label">Servicio</label>
-                            <select name="service_id" id="service_id" class="form-control">
-                                @foreach ($services as $service)
-                                    <option value="{{$service->id}}" @if($order->service_id == $service->id)selected @endif>{{$service->type}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+            </div>
+
+            <!-- Información de la reserva -->
+            <h5>Información de la reserva</h5>
+            <hr>
+            <div class="row gx-4 mb-4">
+                <div class="col-sm-6 col-xs-6">
+                    <div class="border rounded p-3">
+                        <label for="order_date" class="form-label">Día de la reserva</label>
+                        <input type="date" name="order_date" id="order_date" value="{{$order->order_date}}" class="form-control">
                     </div>
-                    <div class="col-4">
-                        <div class="border rounded p-3">
-                            <label for="discount" class="form-label">Cupón de descuento</label>
-                            <input type="text" name="discount" id="discount" class="form-control" value="@if($order->coupon_id != null) $order->coupon->code @endif" placeholder="Introduce un código de descuento">
-                        </div>
+                </div>
+                <div class="col-sm-6 col-xs-6">
+                    <div class="border rounded p-3">
+                        <label for="order_hour" class="form-label">Hora de la reserva</label>
+                        <select name="order_hour" id="order_hour" class="form-control">
+                            @foreach ($hours as $hour)
+                                <option value="{{$hour->order_hour}}" @if($order->order_hour == $hour->order_hour)selected @endif>{{$hour->order_hour}}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <div class="col-2 d-flex align-items-end">
-                        <input type="button" class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
-                                text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
-                                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                                id="aplicar_cod" value="Aplicar cupón">
+                </div>
+            </div>
+
+            <div class="row gx-4">
+                <div class="col-sm-6 col-xs-6">
+                    <div class="border rounded p-3 h-100">
+                        <label for="service_id" class="form-label">Servicio</label>
+                        <select name="service_id" id="service_id" class="form-control">
+                            @foreach ($services as $service)
+                                <option value="{{$service->id}}" @if($order->service_id == $service->id)selected @endif>{{$service->type}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-12">
-                        <p id="error-message" class="bg-danger text-white rounded"></p>
+                <div class="col-sm-6 col-xs-4">
+                    <div class="border rounded p-3">
+                        <div class="d-flex justify-content-between">
+                            <div class="c-left">
+                                <label for="discount" class="form-label">Cupón de descuento</label>
+                            </div>
+                            <div class="c-right d-none d-md-block d-lg-block">
+                                <input type="button" class="aplicar_cod inline-flex items-center mb-1 px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
+                                    text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                                    focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                                    value="Aplicar cupón">
+                            </div>
+                        </div>
+                        <input type="text" name="discount" id="discount" class="form-control" value="@if($order->coupon_id != null) $order->coupon->code @endif" placeholder="Introduce un código de descuento">
                     </div>
                 </div>
 
-                <!-- Información del pago -->
-                <h2>Información del pago</h2>
-                <div class="row">
-                    <div class="col-6 mb-3">
+                <div class="col-xs-12 d-block d-sm-none d-flex justify-content-center pt-2">
+                    <input type="button" class="aplicar_cod inline-flex items-center mb-1 px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
+                        text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                        value="Aplicar cupón">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <p id="error-message" class="bg-danger text-white rounded mt-2"></p>
+                </div>
+            </div>
+
+            <!-- Información del pago -->
+            <h5>Información del pago</h5>
+            <hr>
+            <div class="row">
+                <div class="col-sm-6 col-xs-6 mb-3">
+                    <div class="border rounded p-3">
+                        <label for="">Estado del pago</label>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="pay_status" id="flexRadioDefault1" value="0" @if($order->pay_status == 0)checked @endif>
                             <label class="form-check-label" for="flexRadioDefault1">
@@ -115,23 +131,23 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col-6 mb-3 d-flex justify-content-end align-items-end bg-dark text-white rounded">
-                        <div class="text-end">
-                            <span class="total_price h1">0€</span>
-                            <h5>Precio total</h5>
-                        </div>
+                </div>
+                <div class="col-sm-6 col-xs-6 mb-3 d-flex justify-content-end align-items-end bg-dark text-white rounded">
+                    <div class="text-end">
+                        <span class="total_price h1">0€</span>
+                        <h5>Precio total</h5>
                     </div>
                 </div>
+            </div>
 
-                <div class="text-end">
-                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
-                                text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
-                                focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                        Guardar cambios
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div class="text-end">
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
+                            text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    Guardar cambios
+                </button>
+            </div>
+        </form>
     </div>
 @stop
 
@@ -169,7 +185,7 @@
             });
 
             // Verificar el código del cupón al hacer click en el botón.
-            $('#aplicar_cod').click(function(){
+            $('.aplicar_cod').click(function(){
                 checkDiscountCode();
             });
         });

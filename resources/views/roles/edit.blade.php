@@ -7,8 +7,8 @@
 @stop
 
 @section('content')
-    <div class="container d-flex justify-content-center pt-5">
-        <form action="{{ route('roles.update', $role->id) }}" id="form_store" class="row" method="POST" enctype="multipart/form-data">
+    <div class="d-flex justify-content-center pt-5">
+        <form action="{{ route('roles.update', $role->id) }}" id="form_store" class="col-md-10 col-sm-12 col-xs-12" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             

@@ -100,89 +100,93 @@
                         <hr>
                     </div>
                 </div>
-                @if(!$orders_in_progress->isEmpty())
-                    @foreach ($orders_in_progress as $order)
-                        <div class="row d-flex justify-content-center pt-1">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between">
-                                            <a href="{{ route('orders.show', $order->id)}}" class="card-title btn btn-dark btn-sm" style="background-color: #33BEFF; border: none;">
-                                                Ver reserva
-                                            </a>
-                                            <div class="order_status_id">
-                                                <form action="{{ route('orders.cancel_order', $order->id) }}" id="form_update" method="POST" enctype="multipart/form-data">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div hidden>
-                                                        <input type="text" name="order_ref" id="order_ref" class="form-control" value="{{$order->order_ref}}">
-                                                        <input type="text" name="order_date" id="order_date" class="form-control" value="{{$order->order_date}}">
-                                                        <input type="text" name="order_hour" id="order_hour" class="form-control" value="{{$order->order_hour}}">
-                                                        <input type="number" name="user_id" id="user_id" class="form-control" value="{{$order->user_id}}">
-                                                        <input type="text" name="name" id="name" class="form-control" value="{{$order->name}}">
-                                                        <input type="text" name="phone" id="phone" class="form-control" value="{{$order->phone}}" placeholder="Introduce el teléfono del cliente">
-                                                        <input type="number" name="service_id" id="service_id" class="form-control" value="{{$order->service_id}}">
-                                                        <input type="number" name="is_online" id="is_online" class="form-control" value="{{$order->is_online}}">
-                                                        <input type="number" name="order_status_id" id="order_status_id" class="form-control" value="3">
-                                                        <input type="number" name="total_price" id="total_price" class="form-control" value="{{$order->total_price}}">
-                                                        <input type="number" name="pay_status" id="pay_status" class="form-control" value="{{$order->pay_status}}">
-                                                        <input type="number" name="coupon_id" id="coupon_id" class="form-control" value="{{$order->coupon_id}}">
-                                                    </div>
-                                                    <button type="submit" class="card-title btn btn-dark btn-sm" style="background-color: #33BEFF; border: none;">Cancelar reserva</button>
-                                                </form>
+                <section class="uo-scroll">
+                    @if(!$orders_in_progress->isEmpty())
+                        @foreach ($orders_in_progress as $order)
+                            <div class="row d-flex justify-content-center pt-1">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <a href="{{ route('orders.show', $order->id)}}" class="card-title btn btn-dark btn-sm" style="background-color: #33BEFF; border: none;">
+                                                    Ver reserva
+                                                </a>
+                                                <div class="order_status_id">
+                                                    <form action="{{ route('orders.cancel_order', $order->id) }}" id="form_update" method="POST" enctype="multipart/form-data">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <div hidden>
+                                                            <input type="text" name="order_ref" id="order_ref" class="form-control" value="{{$order->order_ref}}">
+                                                            <input type="text" name="order_date" id="order_date" class="form-control" value="{{$order->order_date}}">
+                                                            <input type="text" name="order_hour" id="order_hour" class="form-control" value="{{$order->order_hour}}">
+                                                            <input type="number" name="user_id" id="user_id" class="form-control" value="{{$order->user_id}}">
+                                                            <input type="text" name="name" id="name" class="form-control" value="{{$order->name}}">
+                                                            <input type="text" name="phone" id="phone" class="form-control" value="{{$order->phone}}" placeholder="Introduce el teléfono del cliente">
+                                                            <input type="number" name="service_id" id="service_id" class="form-control" value="{{$order->service_id}}">
+                                                            <input type="number" name="is_online" id="is_online" class="form-control" value="{{$order->is_online}}">
+                                                            <input type="number" name="order_status_id" id="order_status_id" class="form-control" value="3">
+                                                            <input type="number" name="total_price" id="total_price" class="form-control" value="{{$order->total_price}}">
+                                                            <input type="number" name="pay_status" id="pay_status" class="form-control" value="{{$order->pay_status}}">
+                                                            <input type="number" name="coupon_id" id="coupon_id" class="form-control" value="{{$order->coupon_id}}">
+                                                        </div>
+                                                        <button type="submit" class="card-title btn btn-dark btn-sm" style="background-color: #33BEFF; border: none;">Cancelar reserva</button>
+                                                    </form>
+                                                </div>
                                             </div>
+                                            <p class="card-text m-0">Fecha de la reserva: {{$order->order_date}} | {{$order->order_hour}}h.</p>
                                         </div>
-                                        <p class="card-text m-0">Fecha de la reserva: {{$order->order_date}} | {{$order->order_hour}}h.</p>
                                     </div>
                                 </div>
                             </div>
+                        @endforeach
+                    @else
+                        <div class="row d-flex justify-content-center pt-1">
+                            <div class="col-12">
+                                <p>No hay reservas en curso.</p>
+                            </div>
                         </div>
-                    @endforeach
-                @else
-                    <div class="row d-flex justify-content-center pt-1">
-                        <div class="col-12">
-                            <p>No hay reservas en curso.</p>
-                        </div>
-                    </div>
-                @endif
-
+                    @endif
+                </section>
+                
                 <div class="row d-flex justify-content-center pt-4">
                     <div class="col-12">
                         <h5>Reservas finalizadas</h5>
                         <hr>
                     </div>
                 </div>
-                @if(!$orders_completed->isEmpty())
-                    @foreach ($orders_completed as $order)
-                        <div class="row d-flex justify-content-center pt-1">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between">
-                                            <a href="{{ route('orders.show', $order->id)}}" class="card-title btn btn-dark btn-sm" style="background-color: #33BEFF; border: none;">
-                                                Ver reserva
-                                            </a>
-                                            @if($order->order_status_id == 2)
-                                                <p class="card-title btn btn-dark btn-sm" style="background-color: #72CA34; border: none;">Terminada</p>
-                                            @elseif($order->order_status_id == 3)
-                                                <p class="card-title btn btn-dark btn-sm" style="background-color: #EC3431; border: none;">Cancelada</p>
-                                            @elseif($order->order_status_id == 4)
-                                                <p class="card-title btn btn-dark btn-sm" style="background-color: #A9A9A9; border: none;">No asistida</p>
-                                            @endif
+                <section class="uo-scroll">
+                    @if(!$orders_completed->isEmpty())
+                        @foreach ($orders_completed as $order)
+                            <div class="row d-flex justify-content-center pt-1">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <a href="{{ route('orders.show', $order->id)}}" class="card-title btn btn-dark btn-sm" style="background-color: #33BEFF; border: none;">
+                                                    Ver reserva
+                                                </a>
+                                                @if($order->order_status_id == 2)
+                                                    <p class="card-title btn btn-dark btn-sm" style="background-color: #72CA34; border: none;">Terminada</p>
+                                                @elseif($order->order_status_id == 3)
+                                                    <p class="card-title btn btn-dark btn-sm" style="background-color: #EC3431; border: none;">Cancelada</p>
+                                                @elseif($order->order_status_id == 4)
+                                                    <p class="card-title btn btn-dark btn-sm" style="background-color: #A9A9A9; border: none;">No asistida</p>
+                                                @endif
+                                            </div>
+                                            <p class="card-text m-0">Fecha de la reserva: {{$order->order_date}} | {{$order->order_hour}}h.</p>
                                         </div>
-                                        <p class="card-text m-0">Fecha de la reserva: {{$order->order_date}} | {{$order->order_hour}}h.</p>
                                     </div>
                                 </div>
                             </div>
+                        @endforeach
+                    @else
+                        <div class="row d-flex justify-content-center pt-1">
+                            <div class="col-12">
+                                <p>No hay reservas finalizadas.</p>
+                            </div>
                         </div>
-                    @endforeach
-                @else
-                    <div class="row d-flex justify-content-center pt-1">
-                        <div class="col-12">
-                            <p>No hay reservas finalizadas.</p>
-                        </div>
-                    </div>
-                @endif
+                    @endif
+                </section>
             </div>
         </div>
 

@@ -1,5 +1,5 @@
 
-/* Dahboard */
+/* Dashboard */
 .o-scroll{
     overflow-y: scroll;
     height:450px;
@@ -17,4 +17,11 @@
 .service-hover:hover{
     transform:scale(1.025);
     transition: 0.3s;
+}
+
+/* User orders */
+.uo-scroll{
+    overflow-y: scroll;
+    height:300px;
+    display:block;
 }

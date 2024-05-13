@@ -6,87 +6,93 @@
     <h1><span class="fw-bold">Cupón:</span> {{$coupon->code}}</h1>
 @stop
 @section('content')
-    <div class="container pt-5">
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        <div class="d-flex justify-content-center pt-5">
-            <form action="{{ route('coupons.update', $coupon->id) }}" id="form_store" class="col-10" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                
-                <div class="mb-3" hidden>
-                    
-                </div>
-
-                <!-- Informacion del cliente -->
-                <h2>Información del cupón</h2>
-                <div class="row mb-4">
-                    <div class="col-6">
-                        <div class="border rounded p-3">
-                            <label for="code" class="form-label">Código</label>
-                            <input type="text" name="code" id="code" class="form-control" value="{{$coupon->code}}" required>
-                        </div>
-                    </div>
-                    <div class="col-6 d-flex align-items-end">
-                        <input type="button" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold
-                                text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
-                                focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150 no-underline" id="generar_cod" value="Generar código">
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-6">
-                        <div class="border rounded p-3">
-                            <label for="discount" class="form-label">Descuento</label>
-                            <input type="number" name="discount" id="discount" class="form-control" value="{{$coupon->discount}}" required>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="border rounded p-3">
-                            <label for="service" class="form-label">Servicios</label>
-                            <select name="service" id="service" class="form-control" required>
-                                <option value="0">Todos los servicios</option>
-                                @foreach ($services as $service)
-                                <option value="{{$service->id}}" @if($coupon->service == $service->id)selected @endif>{{$service->type}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div> 
-                </div>
-    
-                <!-- Información de la reserva -->
-                <h2>Información de fechas</h2>
-                <div class="row gx-4 mb-4">
-                    <div class="col-6">
-                        <div class="border rounded p-3">
-                            <label for="start_date" class="form-label">Fecha de inicio</label>
-                            <input type="date" name="start_date" id="start_date" class="form-control" value="{{$coupon->start_date}}" required>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="border rounded p-3">
-                            <label for="end_date" class="form-label">Fecha de fin</label>
-                            <input type="date" name="end_date" id="end_date" class="form-control" value="{{$coupon->end_date}}" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="text-end">
-                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold
-                                text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
-                                focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150 no-underline">
-                        Guardar cambios
-                    </button>
-                </div>
-            </form>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
+    @endif
+    <div class="d-flex justify-content-center pt-5">
+        <form action="{{ route('coupons.update', $coupon->id) }}" id="form_store" class="col-10" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            
+            <div class="mb-3" hidden>
+                
+            </div>
+
+            <!-- Informacion del cliente -->
+            <h5>Información del cupón</h5>
+            <hr>
+            <div class="row mb-4">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="border rounded p-3">
+                        <label for="code" class="form-label">Código</label>
+                        <input type="text" name="code" id="code" class="form-control" value="{{$coupon->code}}" required>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 d-block d-sm-none d-flex justify-content-center align-items-end pt-2">
+                    <input type="button" class="generar_cod inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold
+                            text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150 no-underline" id="" value="Generar código">
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6 d-flex align-items-end pt-2">
+                    <input type="button" class="generar_cod d-none d-sm-block inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold
+                            text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150 no-underline" id="" value="Generar código">
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="border rounded p-3">
+                        <label for="discount" class="form-label">Descuento</label>
+                        <input type="number" name="discount" id="discount" class="form-control" value="{{$coupon->discount}}" required>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="border rounded p-3">
+                        <label for="service" class="form-label">Servicios</label>
+                        <select name="service" id="service" class="form-control" required>
+                            <option value="0">Todos los servicios</option>
+                            @foreach ($services as $service)
+                            <option value="{{$service->id}}" @if($coupon->service == $service->id)selected @endif>{{$service->type}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div> 
+            </div>
+
+            <!-- Información de la reserva -->
+            <h5>Información de fechas</h5>
+            <hr>
+            <div class="row gx-4 mb-4">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="border rounded p-3">
+                        <label for="start_date" class="form-label">Fecha de inicio</label>
+                        <input type="date" name="start_date" id="start_date" class="form-control" value="{{$coupon->start_date}}" required>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="border rounded p-3">
+                        <label for="end_date" class="form-label">Fecha de fin</label>
+                        <input type="date" name="end_date" id="end_date" class="form-control" value="{{$coupon->end_date}}" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold
+                            text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150 no-underline">
+                    Guardar cambios
+                </button>
+            </div>
+        </form>
     </div>
 @stop
 
@@ -109,7 +115,7 @@
 @section('js')
     <script>
         $(document).ready(function(){
-            $('#generar_cod').click(function(){
+            $('.generar_cod').click(function(){
                 genDiscountCode();
             });
 

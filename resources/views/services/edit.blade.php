@@ -6,41 +6,42 @@
     <h1><span class="fw-bold">Servicio:</span> {{$service->type}}</h1>
 @stop
 @section('content')
-    <div class="container pt-5">
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        <div class="d-flex justify-content-center pt-5">
-            <form action="{{ route('services.update', $service->id) }}" id="form_store" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    <div class="d-flex justify-content-center pt-5">
+        <form action="{{ route('services.update', $service->id) }}" id="form_store" class="col-10" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
 
-                <!-- Informacion del cliente -->
-                <h2>Información del servicio</h2>
-                <div class="row mb-4">
-                    <div>
-                        <div class="border rounded p-3">
-                            <label for="type" class="form-label">Servicio</label>
-                            <input type="text" name="type" id="type" class="form-control" value="{{$service->type}}" required>
-                        </div>
+            <!-- Informacion del cliente -->
+            <h5>Información del servicio</h5>
+            <hr>
+            <div class="row mb-4">
+                <div>
+                    <div class="border rounded p-3">
+                        <label for="type" class="form-label">Servicio</label>
+                        <input type="text" name="type" id="type" class="form-control" value="{{$service->type}}" required>
                     </div>
                 </div>
-                <div class="row mb-4">
-                    <div>
-                        <div class="border rounded p-3">
-                            <label for="price" class="form-label">Precio</label>
-                            <input type="number" name="price" id="price" class="form-control" value="{{$service->price}}" required>
-                        </div>
+            </div>
+            <div class="row mb-4">
+                <div>
+                    <div class="border rounded p-3">
+                        <label for="price" class="form-label">Precio</label>
+                        <input type="number" name="price" id="price" class="form-control" value="{{$service->price}}" required>
                     </div>
                 </div>
-                <div class="row">
-                    <div>
+            </div>
+            <div class="row">
+                <div>
+                    <div class="border rounded p-3">
                         <!-- IMAGEN -->
                         <label for="imagen" class="block text-base font-medium text-[#07074D]">Imagen</label>
                         <div class="">
@@ -60,15 +61,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-end">
-                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold
-                                text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
-                                focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                        Guardar cambios
-                    </button>
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="text-end">
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold
+                            text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    Guardar cambios
+                </button>
+            </div>
+        </form>
     </div>
 @stop
 

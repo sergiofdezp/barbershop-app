@@ -320,7 +320,7 @@ return [
         ['header' => 'INICIO', 'can' => 'dashboard.index'],
         [
             'text' => 'Dashboard',
-            'url' => '/dashboard',
+            'url' => '/admin',
             'icon' => 'fas fa-tachometer-alt',
             'can' => 'dashboard.index',
         ],
@@ -329,14 +329,14 @@ return [
         ['header' => 'RESERVAS', 'can' => 'orders.index'],
         [
             'text' => 'Nueva reserva',
-            'url' => '/orders/create',
+            'url' => '/admin/orders/create',
             'icon' => 'fa fa-plus-circle',
             'icon_color' => 'success',
             'can' => 'orders.create',
         ],
         [
             'text' => 'Reservas',
-            'url' => '/orders',
+            'url' => '/admin/orders',
             'icon' => 'fa fa-folder-open',
             'can' => 'orders.index',
         ],
@@ -345,14 +345,14 @@ return [
         ['header' => 'SERVICIOS', 'can' => 'services.index'],
         [
             'text' => 'Nuevo servicio',
-            'url' => '/services/create',
+            'url' => '/admin/services/create',
             'icon' => 'fa fa-plus-circle',
             'icon_color' => 'success',
             'can' => 'services.create',
         ],
         [
             'text' => 'Servicios',
-            'url' => '/services',
+            'url' => '/admin/services',
             'icon' => 'fa fa-folder-open',
             'can' => 'services.index',
         ],
@@ -361,14 +361,14 @@ return [
         ['header' => 'CUPONES', 'can' => 'coupons.index'],
         [
             'text' => 'Nuevo cupón',
-            'url' => '/coupons/create',
+            'url' => '/admin/coupons/create',
             'icon' => 'fa fa-plus-circle',
             'icon_color' => 'success',
             'can' => 'coupons.create',
         ],
         [
             'text' => 'Cupones',
-            'url' => '/coupons',
+            'url' => '/admin/coupons',
             'icon' => 'fa fa-tag',
             'can' => 'coupons.index',
         ],
@@ -377,7 +377,7 @@ return [
         ['header' => 'USUARIOS', 'can' => 'users.index'],
         [
             'text' => 'Usuarios',
-            'url' => '/users',
+            'url' => '/admin/users',
             'icon' => 'fas fa fa-users',
             'can' => 'users.index',
         ],
@@ -386,14 +386,14 @@ return [
         ['header' => 'ROLES', 'can' => 'roles.index'],
         [
             'text' => 'Nuevo rol',
-            'url' => '/roles/create',
+            'url' => '/admin/roles/create',
             'icon' => 'fa fa-plus-circle',
             'icon_color' => 'success',
             'can' => 'roles.create',
         ],
         [
             'text' => 'Roles',
-            'url' => '/roles',
+            'url' => '/admin/roles',
             'icon' => 'fa fa-unlock-alt',
             'can' => 'roles.index',
         ],
@@ -402,7 +402,7 @@ return [
         ['header' => 'MI CUENTA'],
         [
             'text' => 'Mis reservas',
-            'url' => '/user_orders',
+            'url' => '/admin/user_orders',
             'icon' => 'fa fa-folder-open',
         ],
         [

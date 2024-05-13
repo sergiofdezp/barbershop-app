@@ -146,6 +146,6 @@ class DashboardController extends Controller
             $coupon_ico = 'fa-equals';
         }
 
-    return view('dashboard', compact('today_orders', 'count_month_orders', 'count_last_month_orders', 'month_money', 'last_month_money', 'count_month_coupons', 'count_last_month_coupons', 'service_month_type', 'coupon_month_code', 'order_text_color', 'order_ico', 'money_text_color', 'money_ico', 'coupon_text_color', 'coupon_ico'));
+    return view('admin.dashboard', compact('today_orders', 'count_month_orders', 'count_last_month_orders', 'month_money', 'last_month_money', 'count_month_coupons', 'count_last_month_coupons', 'service_month_type', 'coupon_month_code', 'order_text_color', 'order_ico', 'money_text_color', 'money_ico', 'coupon_text_color', 'coupon_ico'));
     }
 }

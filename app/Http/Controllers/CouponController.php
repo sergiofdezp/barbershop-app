@@ -24,7 +24,7 @@ class CouponController extends Controller
     {
         $coupons = Coupon::all();
 
-        return view('coupons.index', compact('coupons'));
+        return view('admin.coupons.index', compact('coupons'));
     }
 
     /**
@@ -33,7 +33,7 @@ class CouponController extends Controller
     public function create()
     {
         $services = Service::all();
-        return view('coupons.create', compact('services'));
+        return view('admin.coupons.create', compact('services'));
     }
 
     /**
@@ -69,7 +69,7 @@ class CouponController extends Controller
     public function edit(Coupon $coupon)
     {
         $services = Service::all();
-        return view('coupons.edit', compact('coupon', 'services'));
+        return view('admin.coupons.edit', compact('coupon', 'services'));
     }
 
     /**

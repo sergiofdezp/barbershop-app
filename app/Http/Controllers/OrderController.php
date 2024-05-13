@@ -26,7 +26,7 @@ class OrderController extends Controller
     {
         $orders = Order::all();
 
-        return view('orders.index', compact('orders'));
+        return view('admin.orders.index', compact('orders'));
     }
 
     public function user_orders(){
@@ -48,7 +48,7 @@ class OrderController extends Controller
             ->where('user_id', auth()->id())
             ->get();
 
-        return view('orders.user_orders', compact('orders_in_progress', 'orders_completed', 'max_services', 'cards'));
+        return view('admin.orders.user_orders', compact('orders_in_progress', 'orders_completed', 'max_services', 'cards'));
     }
 
     /**
@@ -63,7 +63,7 @@ class OrderController extends Controller
         // Para la futura implementación del pago con tarjeta de fidelización para clientes en el front
         // $fid_card = Card::where('user_id', '=', $user->id)->where('available', '=', 1)->where('used', '=', 0)->count();
 
-        return view('orders.create', compact('user', 'services', 'hours'));
+        return view('admin.orders.create', compact('user', 'services', 'hours'));
     }
 
     /**
@@ -129,7 +129,7 @@ class OrderController extends Controller
             ->orderBy('updated_at', 'desc')
             ->get();
 
-        return view('orders.show', compact('order', 'logs'));
+        return view('admin.orders.show', compact('order', 'logs'));
     }
 
     /**
@@ -141,7 +141,7 @@ class OrderController extends Controller
         $services = Service::all();
         $hours = Hour::all();
 
-        return view('orders.edit', compact('order', 'user', 'services', 'hours'));
+        return view('admin.orders.edit', compact('order', 'user', 'services', 'hours'));
     }
 
     /**

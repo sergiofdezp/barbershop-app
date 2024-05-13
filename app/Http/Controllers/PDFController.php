@@ -20,7 +20,7 @@ class PDFController extends Controller
 
         $today = date("d/m/Y", strtotime($today));
 
-        $pdf = PDF::loadView('pdf/today_orders', compact('today_orders', 'today'));
+        $pdf = PDF::loadView('admin.pdf/today_orders', compact('today_orders', 'today'));
 
         return $pdf->download('today_orders.pdf');
     }

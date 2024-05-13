@@ -117,7 +117,7 @@
             <div class="row">
                 <div class="col-sm-6 col-xs-6 mb-3">
                     <div class="border rounded p-3">
-                        <label for="">Estado del pago</label>
+                        <label for="order_status">Estado del pago</label>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="pay_status" id="flexRadioDefault1" value="0" @if($order->pay_status == 0)checked @endif>
                             <label class="form-check-label" for="flexRadioDefault1">

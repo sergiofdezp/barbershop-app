@@ -29,7 +29,7 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
-    public function userOrders(){
+    public function user_orders(){
         $orders_in_progress = DB::table('orders')
             ->where('user_id', auth()->id())
             ->where('order_status_id', 1)

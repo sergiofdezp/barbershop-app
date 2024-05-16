@@ -54,7 +54,7 @@
                 <div class="col-sm-6 col-xs-6">
                     <div class="border rounded p-3">
                         <label for="order_date" class="form-label">Día de la reserva</label>
-                        <input type="date" name="order_date" id="order_date" class="form-control" required>
+                        <input type="date" name="order_date" id="order_date" class="form-control" min="<?php echo date('Y-m-d'); ?>" required>
                     </div>
                 </div>
                 <div class="col-sm-6 col-xs-6" id="order_hours"></div>

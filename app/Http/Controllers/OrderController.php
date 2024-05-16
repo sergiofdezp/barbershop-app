@@ -240,13 +240,15 @@ class OrderController extends Controller
      * @return void
      */
     public function bloqueosHoras(Request $order_date){
+        $now = date('G:i');
+
         $order_date = $order_date->get('order_date');
 
         $orders = DB::table('orders')
             ->where('order_date', '=', $order_date)
             ->get();
 
-        $hours = Hour::all();
+        $hours = Hour::all()->where('order_hour', '>', $now);
 
         return response()->json([
             'orders'=>$orders,

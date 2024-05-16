@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
+use App\Http\Requests\OrderRequest;
+
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\Hour;
@@ -73,23 +75,9 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(OrderRequest $request): RedirectResponse
     {
         $user = Auth::user();
-        
-        $validated = $request->validate([
-            'order_ref' => 'required | string',
-            'order_date' => 'required | date',
-            'order_hour' => 'required | string',
-            'user_id' => 'required',
-            'name' => 'required | string',
-            'phone' => 'required | integer',
-            'service_id' => 'required',
-            'is_online' => 'required',
-            'order_status_id' => 'required',
-            'total_price' => 'required',
-            'pay_status' => 'required',
-        ]);
 
         $order = $request->all();
         Order::create($order);
@@ -153,51 +141,9 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order): RedirectResponse
     {
-        $validated = $request->validate([
-            'order_ref' => 'required | string',
-            'order_date' => 'required | date',
-            'order_hour' => 'required | string',
-            'user_id' => 'required',
-            'name' => 'required | string',
-            'phone' => 'required | integer',
-            'service_id' => 'required',
-            'is_online' => 'required',
-            'order_status_id' => 'required',
-            'total_price' => 'required',
-            'pay_status' => 'required',
-        ]);
-
-        /**
-         * Implementación de sistema de logs en actualización de reservas
-         */
-
-        // Array de traducción de claves
-        $keyTranslations = [
-            'order_date' => 'La fecha de la reserva',
-            'order_hour' => 'La hora de la reserva',
-            'name' => 'El nombre',
-            'phone' => 'El teléfono',
-            'service_id' => 'El servicio',
-            'is_online' => 'El lugar de reserva',
-            'order_status_id' => 'El estado',
-            'total_price' => 'El precio',
-            'pay_status' => 'El pago',
-        ];
-
-        foreach ($validated as $key => $value) {
-            if ($order->$key != $value) {
-                $translatedKey = $keyTranslations[$key] ?? $key; // Obtener la traducción de la clave o usar la clave original si no hay traducción
-                $message = "$translatedKey ha cambiado de '{$order->$key}' a '$value'. ";
-
-                $log = array(
-                    "order_id" => $order->id,
-                    "message" => $message,
-                    "user_id" => $order->user_id,
-                );
-            
-                Log::create($log);
-            }
-        }
+        // Creación de logs al hacer el update.
+        $new_log = new LogController;
+        $new_log->store($request, $order);
 
         $new_order = $request->all();
         $order->update($new_order);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\CouponRequest;
 
 use App\Models\Coupon;
 use App\Models\Service;
@@ -41,16 +42,8 @@ class CouponController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CouponRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'code' => 'required | string',
-            'discount' => 'required | integer',
-            'start_date' => 'required | date',
-            'end_date' => 'required | date',
-            'service' => 'required | integer',
-        ]);
-
         $coupon = $request->all();
         Coupon::create($coupon);
 
@@ -69,16 +62,8 @@ class CouponController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Coupon $coupon): RedirectResponse
-    {
-        $validated = $request->validate([
-            'code' => 'required | string',
-            'discount' => 'required | integer',
-            'start_date' => 'required | date',
-            'end_date' => 'required | date',
-            'service' => 'required | integer',
-        ]);
-        
+    public function update(CouponRequest $request, Coupon $coupon): RedirectResponse
+    {        
         $new_coupon = $request->all();
         $coupon->update($new_coupon);
         

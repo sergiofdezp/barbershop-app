@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\Hour;
 use App\Models\Log;
 use App\Models\Card;
-use Illuminate\Http\Request;
+
 use Auth;
 use DateTime;
-use DateTimeZone;
-use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -22,14 +25,15 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $orders = Order::all();
 
         return view('admin.orders.index', compact('orders'));
     }
 
-    public function user_orders(){
+    public function user_orders(): View
+    {
         $orders_in_progress = DB::table('orders')
             ->where('user_id', auth()->id())
             ->where('order_status_id', 1)
@@ -54,7 +58,7 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {        
         $user = Auth::user();
         $services = Service::all();
@@ -69,7 +73,7 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $user = Auth::user();
         
@@ -122,7 +126,7 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(Order $order): View
     {
         $logs = DB::table('logs')
             ->where('order_id', $order->id)
@@ -135,7 +139,7 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Order $order)
+    public function edit(Order $order): View
     {
         $user = Auth::user();
         $services = Service::all();
@@ -147,7 +151,7 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Order $order): RedirectResponse
     {
         $validated = $request->validate([
             'order_ref' => 'required | string',
@@ -201,7 +205,7 @@ class OrderController extends Controller
         return redirect()->route('orders.index')->banner('Reserva editada correctamente.');
     }
 
-    public function cancel_order(Request $request, Order $order)
+    public function cancel_order(Request $request, Order $order): RedirectResponse
     {
         $user = Auth::user();
 
@@ -234,14 +238,6 @@ class OrderController extends Controller
                 return redirect()->route('user_orders')->banner('Reserva "' . $request->order_ref . '" cancelada.');
             }
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
     }
 
     /**

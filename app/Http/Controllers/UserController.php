@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -16,7 +18,7 @@ class UserController extends Controller
         $this->middleware('can:users.destroy')->only('destroy');
     }
 
-    public function index()
+    public function index(): View
     {
         $users = User::all();
 
@@ -29,7 +31,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(User $user): View
     {
         $roles = Role::all();
         return view('admin.users.edit', compact('user', 'roles'));
@@ -42,7 +44,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): RedirectResponse
     {
         $user->roles()->sync($request->roles);
         $user->permissions()->sync($request->permissions);
@@ -59,7 +61,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
         $user->delete();
         

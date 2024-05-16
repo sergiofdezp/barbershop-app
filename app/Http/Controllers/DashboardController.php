@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Auth;
 
 use App\Models\Order;
@@ -20,7 +21,7 @@ class DashboardController extends Controller
      *
      * @return void
      */
-    public function index()
+    public function index(): View
     {
         $user = Auth::user();
         $day = date('d');

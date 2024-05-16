@@ -100,7 +100,7 @@
                         <hr>
                     </div>
                 </div>
-                <section class="uo-scroll p-3">
+                <section class="uo-scroll p-lg-3">
                     @forelse($orders_in_progress as $order)
                         <div class="row d-flex justify-content-center pt-1">
                             <div class="col-12">
@@ -152,7 +152,7 @@
                         <hr>
                     </div>
                 </div>
-                <section class="uo-scroll p-3">
+                <section class="uo-scroll p-lg-3">
                     @forelse($orders_completed as $order)
                             <div class="row d-flex justify-content-center pt-1">
                                 <div class="col-12">

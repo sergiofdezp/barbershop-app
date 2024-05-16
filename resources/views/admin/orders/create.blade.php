@@ -302,6 +302,8 @@
                         if(response.coupon == 0){
                             $('#error-message').html('¡Este cupón no existe! Por favor introduce un código válido.');
                             $('#error-message').addClass('p-2');
+
+                            servicesPrices();
                         } else if(response.coupon == "noservice"){
                             $('#error-message').html('Este cupón no puede aplicarse a este servicio.');
                             $('#error-message').addClass('p-2');
@@ -310,7 +312,9 @@
                             $('#error-message').addClass('p-2');
                         } else{
                             $.each(response.coupon, function (key_c, coupon){
-                                var final_price = (total_price * coupon.discount) / 100;
+                                var discount_value = (total_price * coupon.discount) / 100;
+
+                                final_price = total_price - discount_value;
             
                                 $('#coupon_id').val(coupon.id);
                                 $('#total_price').val(final_price);

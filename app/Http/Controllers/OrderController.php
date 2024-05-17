@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+
+use App\Http\Requests\OrderRequest;
+
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\Hour;
 use App\Models\Log;
 use App\Models\Card;
-use Illuminate\Http\Request;
+
 use Auth;
 use DateTime;
-use DateTimeZone;
-use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -22,14 +27,15 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $orders = Order::all();
 
         return view('admin.orders.index', compact('orders'));
     }
 
-    public function user_orders(){
+    public function user_orders(): View
+    {
         $orders_in_progress = DB::table('orders')
             ->where('user_id', auth()->id())
             ->where('order_status_id', 1)
@@ -54,7 +60,7 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {        
         $user = Auth::user();
         $services = Service::all();
@@ -69,23 +75,9 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(OrderRequest $request): RedirectResponse
     {
         $user = Auth::user();
-        
-        $validated = $request->validate([
-            'order_ref' => 'required | string',
-            'order_date' => 'required | date',
-            'order_hour' => 'required | string',
-            'user_id' => 'required',
-            'name' => 'required | string',
-            'phone' => 'required | integer',
-            'service_id' => 'required',
-            'is_online' => 'required',
-            'order_status_id' => 'required',
-            'total_price' => 'required',
-            'pay_status' => 'required',
-        ]);
 
         $order = $request->all();
         Order::create($order);
@@ -122,7 +114,7 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(Order $order): View
     {
         $logs = DB::table('logs')
             ->where('order_id', $order->id)
@@ -135,7 +127,7 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Order $order)
+    public function edit(Order $order): View
     {
         $user = Auth::user();
         $services = Service::all();
@@ -147,53 +139,11 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Order $order): RedirectResponse
     {
-        $validated = $request->validate([
-            'order_ref' => 'required | string',
-            'order_date' => 'required | date',
-            'order_hour' => 'required | string',
-            'user_id' => 'required',
-            'name' => 'required | string',
-            'phone' => 'required | integer',
-            'service_id' => 'required',
-            'is_online' => 'required',
-            'order_status_id' => 'required',
-            'total_price' => 'required',
-            'pay_status' => 'required',
-        ]);
-
-        /**
-         * Implementación de sistema de logs en actualización de reservas
-         */
-
-        // Array de traducción de claves
-        $keyTranslations = [
-            'order_date' => 'La fecha de la reserva',
-            'order_hour' => 'La hora de la reserva',
-            'name' => 'El nombre',
-            'phone' => 'El teléfono',
-            'service_id' => 'El servicio',
-            'is_online' => 'El lugar de reserva',
-            'order_status_id' => 'El estado',
-            'total_price' => 'El precio',
-            'pay_status' => 'El pago',
-        ];
-
-        foreach ($validated as $key => $value) {
-            if ($order->$key != $value) {
-                $translatedKey = $keyTranslations[$key] ?? $key; // Obtener la traducción de la clave o usar la clave original si no hay traducción
-                $message = "$translatedKey ha cambiado de '{$order->$key}' a '$value'. ";
-
-                $log = array(
-                    "order_id" => $order->id,
-                    "message" => $message,
-                    "user_id" => $order->user_id,
-                );
-            
-                Log::create($log);
-            }
-        }
+        // Creación de logs al hacer el update.
+        $new_log = new LogController;
+        $new_log->store($request, $order);
 
         $new_order = $request->all();
         $order->update($new_order);
@@ -201,7 +151,7 @@ class OrderController extends Controller
         return redirect()->route('orders.index')->banner('Reserva editada correctamente.');
     }
 
-    public function cancel_order(Request $request, Order $order)
+    public function cancel_order(Request $request, Order $order): RedirectResponse
     {
         $user = Auth::user();
 
@@ -234,14 +184,6 @@ class OrderController extends Controller
                 return redirect()->route('user_orders')->banner('Reserva "' . $request->order_ref . '" cancelada.');
             }
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
     }
 
     /**
@@ -298,13 +240,15 @@ class OrderController extends Controller
      * @return void
      */
     public function bloqueosHoras(Request $order_date){
+        $now = date('G:i');
+
         $order_date = $order_date->get('order_date');
 
         $orders = DB::table('orders')
             ->where('order_date', '=', $order_date)
             ->get();
 
-        $hours = Hour::all();
+        $hours = Hour::all()->where('order_hour', '>', $now);
 
         return response()->json([
             'orders'=>$orders,

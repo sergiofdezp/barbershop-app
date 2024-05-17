@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\CouponRequest;
+
 use App\Models\Coupon;
 use App\Models\Service;
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\DB;
 
 
 class CouponController extends Controller
@@ -20,7 +23,7 @@ class CouponController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $coupons = Coupon::all();
 
@@ -30,7 +33,7 @@ class CouponController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         $services = Service::all();
         return view('admin.coupons.create', compact('services'));
@@ -39,16 +42,8 @@ class CouponController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CouponRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'code' => 'required | string',
-            'discount' => 'required | integer',
-            'start_date' => 'required | date',
-            'end_date' => 'required | date',
-            'service' => 'required | integer',
-        ]);
-
         $coupon = $request->all();
         Coupon::create($coupon);
 
@@ -56,17 +51,9 @@ class CouponController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Coupon $coupon)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Coupon $coupon)
+    public function edit(Coupon $coupon): View
     {
         $services = Service::all();
         return view('admin.coupons.edit', compact('coupon', 'services'));
@@ -75,16 +62,8 @@ class CouponController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Coupon $coupon)
-    {
-        $validated = $request->validate([
-            'code' => 'required | string',
-            'discount' => 'required | integer',
-            'start_date' => 'required | date',
-            'end_date' => 'required | date',
-            'service' => 'required | integer',
-        ]);
-        
+    public function update(CouponRequest $request, Coupon $coupon): RedirectResponse
+    {        
         $new_coupon = $request->all();
         $coupon->update($new_coupon);
         
@@ -92,13 +71,11 @@ class CouponController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Genera un código aleatorio.
+     *
+     * @param [type] $longitud
+     * @return void
      */
-    public function destroy(Coupon $coupon)
-    {
-        //
-    }
-
     public function generarCodigo($longitud){
         $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $codigo = '';
@@ -110,6 +87,12 @@ class CouponController extends Controller
         return $codigo;
     }
 
+    /**
+     * Verifica si el código que recibe existe en la bd.
+     *
+     * @param [type] $coupon_code
+     * @return void
+     */
     public function verificarCodUnico($coupon_code){
         $cod_dispo = DB::table('coupons')
             ->where('code', '=', $coupon_code)
@@ -118,6 +101,11 @@ class CouponController extends Controller
         return $cod_dispo > 0;
     }
 
+    /**
+     * Genera un código aleatorio y único, en caso de que el código generado ya exista en la bd, generará otro hasta devolver uno único.
+     *
+     * @return void
+     */
     public function generarDiscountCode(){
         do {
             $long_ref = 7;
@@ -129,6 +117,12 @@ class CouponController extends Controller
         ]);
     }
 
+    /**
+     * Comprueba si el código introducido existe en la bd, en caso de que exista devolverá un error tratado en la vista.
+     *
+     * @param Request $code
+     * @return void
+     */
     public function verificarCodManualUnico(Request $code){
         $code = $code->get('code');
 

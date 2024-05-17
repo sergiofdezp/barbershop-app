@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\OrderFrontController;
 use App\Http\Controllers\RoleController;
 
 // Home
@@ -26,6 +27,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/check_discount_code', [OrderController::class, 'checkDiscountCode']);
     Route::get('/admin/user_orders', [OrderController::class, 'user_orders'])->name('user_orders');
     Route::put('/cancel_order/{order}', OrderController::class .'@cancel_order')->name('orders.cancel_order');
+
+    // Reservas front
+    Route::resource('/front/orders', OrderFrontController::class)->names('front.orders');
     
     // Servicios
     Route::resource('/admin/services', ServiceController::class)->names('services');

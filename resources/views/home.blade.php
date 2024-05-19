@@ -38,106 +38,125 @@
                         </section>
 
                         <section id="new_order" class="border-dark rounded p-3 bg-dark">
-                            <div class="row">
-                                <h5 class="h5 text-white">Crea tu nueva reserva</h5>
-                            </div>
-
-                            <div class="row mb-2">
-                                <div class="col-sm-6 col-xs-6">
-                                    <div class="">
-                                        <input type="text" name="name" id="name" class="form-control" placeholder="Introduce tu nombre" required>
+                            @if (session()->has('error')) {{-- comprueba si existe el valor en sesión --}}
+                                <div class="error d-flex flex-row justify-content-center">
+                                    <div class="col-12">
+                                        <p class="bg-danger text-white rounded p-2"> {{ session('error') }} </p> {{-- devuelve e imprime el valor de la sesión --}}
                                     </div>
                                 </div>
-                                <div class="col-sm-6 col-xs-6">
-                                    <div class="">
-                                        <input type="text" name="phone" id="phone" class="form-control" placeholder="Introduce tu telefono" required>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <h5 class="h5 text-white">Elige tu servicio</h5>
-                            </div>
-                            <div class="row d-flex justify-content-center mb-2">
-                                @foreach ($services as $service)
-                                <div class="card-container d-flex justify-content-center col-4 p-0">
-                                    <div class="card">
-                                        <div class="card__image" id="card-1">
-                                            <div class="image-overlay"></div>
-                                            <img src="{{ asset('/images/services/' . $service->image) }}" alt="" />
-                                        </div>
+                                {!! session()->forget('error') !!} {{-- borrar el error de sesión --}}
+                            @endif
+                            <form action="{{ route('front.orders.store') }}" id="form_store" class="col-12" method="POST" enctype="multipart/form-data">
+                                @csrf
+
+                                <div class="mb-3" hidden>
+                                    <input type="text" name="service_id" id="service_id" value="0" class="form-control" required>
+
+                                    <input type="text" name="coupon_id" id="coupon_id" class="form-control">
+                                </div>
+
+                                <div class="row">
+                                    <h5 class="h5 text-white">Crea tu nueva reserva</h5>
+                                </div>
     
-                                        <div class="card-body text-center">
-                                            <p class="card-text">{{ $service->type }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-
-                            <div class="row">
-                                <h5 class="h5 text-white">Elige la fecha y la hora</h5>
-                            </div>
-
-                            <div class="row mb-2">
-                                <div class="col-sm-6 col-xs-6">
-                                    <div class="">
-                                        <input type="date" name="order_date" id="order_date" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-xs-6" id="order_hours">
-                                    <div class="">
-                                        <select name="order_hour" id="order_hour" class="form-control" required disabled>
-                                            <option value="0" selected disabled>Selecciona primero un día</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <h5 class="h5 text-white">¿Tienes un cupón de descuento?</h5>
-                            </div>
-
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <div class="">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="c-left w-100">
-                                                <input type="text" name="discount" id="discount" class="form-control" placeholder="Introduce un código de descuento">
-                                            </div>
-                                            <div class="c-right d-none d-md-block d-lg-block px-1">
-                                                <input type="button" class="aplicar_cod inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
-                                                    text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
-                                                    focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                                                    value="Aplicar cupón">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-2">
-                                <div class="col-12 d-flex justify-content-between align-items-center">
-                                    <div class="col-12 d-flex justify-content-between align-items-center border rounded text-white p-2">
+                                <div class="row mb-2">
+                                    <div class="col-sm-6 col-xs-6">
                                         <div class="">
-                                            <h5 class="mb-0">Precio total</h5>    
+                                            <input type="text" name="name" id="name" class="form-control" placeholder="Introduce tu nombre" required>
                                         </div>
-                                        <div class="">    
-                                            <span class="total_price h1">0€</span>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-6">
+                                        <div class="">
+                                            <input type="text" name="phone" id="phone" class="form-control" placeholder="Introduce tu telefono" required>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="text-end">
-                                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
-                                                text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
-                                                focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                        Guardar
-                                    </button>
+    
+                                <div class="row pt-3">
+                                    <h5 class="h5 text-white">Elige tu servicio</h5>
                                 </div>
-                            </div>
+                                <div class="row d-flex justify-content-center mb-2">
+                                    @foreach ($services as $service)
+                                    <div class="card-container d-flex justify-content-center col-4 p-0">
+                                        <div class="card" value="{{ $service->id }}">
+                                            <div class="card__image" id="card-1">
+                                                <div class="image-overlay"></div>
+                                                <img src="{{ asset('/images/services/' . $service->image) }}" class="service_img" alt="service_image"/>
+                                            </div>
+        
+                                            <div class="card-body text-center">
+                                                <p class="card-text">{{ $service->type }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+    
+                                <div class="row pt-3">
+                                    <h5 class="h5 text-white">Elige la fecha y la hora</h5>
+                                </div>
+    
+                                <div class="row mb-2">
+                                    <div class="col-sm-6 col-xs-6">
+                                        <div class="">
+                                            <input type="date" name="order_date" id="order_date" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-6" id="order_hours">
+                                        <div class="">
+                                            <select name="order_hour" id="order_hour" class="form-control" required disabled>
+                                                <option value="0" selected disabled>Selecciona primero un día</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="row pt-3">
+                                    <h5 class="h5 text-white">¿Tienes un cupón de descuento?</h5>
+                                </div>
+    
+                                <div class="row mb-2">
+                                    <div class="col-12">
+                                        <div class="">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="c-left w-100">
+                                                    <input type="text" name="discount" id="discount" class="form-control" placeholder="Introduce un código de descuento">
+                                                </div>
+                                                <div class="c-right d-none d-md-block d-lg-block px-1">
+                                                    <input type="button" class="aplicar_cod inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
+                                                        text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                                                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                                                        value="Aplicar cupón">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="row pt-4 pb-2">
+                                    <div class="col-12 d-flex justify-content-between align-items-center">
+                                        <div class="col-12 d-flex justify-content-between align-items-center border rounded text-white p-2">
+                                            <div class="">
+                                                <h5 class="mb-0">Precio total</h5>    
+                                            </div>
+                                            <div class="">    
+                                                <span id="total_price" class="h1">0€</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="row">
+                                    <div class="text-end">
+                                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
+                                                    text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                                                    focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                            Guardar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </section>
 
                     @else
@@ -179,30 +198,44 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
 
-        // Obtén todas las elementos con la clase 'card'
+        // Obtén todos las elementos con la clase 'card'
         var services = document.querySelectorAll('.card');
+        var service_id = document.getElementById('service_id');
 
         // Itera sobre cada elemento y añade un event listener para 'click'
         services.forEach(function(card) {
             card.addEventListener('click', function() {
                 // Obtenemos el elemento que tiene la clase actualmente
-                var currentChecked = document.querySelector('.is-checked');
+                var currentChecked = document.querySelector('.service-checked');
                 
                 // Si el elemento clicado ahora no es el mismo que el de antes se le quita la clase al anterior
                 if (currentChecked && currentChecked !== this) {
-                    currentChecked.classList.remove('is-checked');
+                    currentChecked.classList.remove('service-checked');
                 }
                 
                 // Alternar la clase en el elemento clicado
-                if (this.classList.contains('is-checked')) {
-                    this.classList.remove('is-checked');
+                if (this.classList.contains('service-checked')) {
+                    this.classList.remove('service-checked');
+
+                    // El elemento se deselecciona por lo tanto debemos mostrar el precio como 0.
+                    var price_zero = document.getElementById('total_price');
+                    price_zero.innerHTML = "0€";
                 } else {
-                    this.classList.add('is-checked');
+                    this.classList.add('service-checked');
+
+                    var selected_service = document.getElementsByClassName('service-checked');
+
+                    for (let i = 0; i < selected_service.length; i++) {
+                        service_id.value = selected_service[i].attributes.value.value;
+                        selected_service_id = service_id.value;
+                    }
+
+                    total_price(selected_service_id);
                 }
             });
         });
 
-                /**
+        /**
          * Esta función bloqueará las sesiones donde ya hay una reserva.
          *
          * @return void
@@ -220,6 +253,7 @@
                 dataType: "json",
 
                 success: function(response){
+                    console.log(response)
                     // Creamos el div donde generaremos el select.
                     order_hours += '<option value="0" selected disabled>Selecciona una hora</option>';
 
@@ -246,5 +280,31 @@
                 }
             });
         };
+
+        function total_price(selected_service_id){                
+            $.ajax({
+                type: "GET",
+                url: "/services_prices",
+                data: {
+                    service_id : selected_service_id,
+                },
+                dataType: "json",
+
+                success: function(response){
+                    // console.log(response)
+                    $.each(response.services, function (key, item){
+                        // console.log(item.price)
+                        $('#total_price').text(item.price + '€');
+                        // Debemos resetear el input del código descuento al cambiar el servicio
+                        $('#coupon_id').val("");
+                    });
+                }
+            });
+        }
+
+        // Verificaciones de codigo de descuento
+        function check_discount_code(){
+
+        }
     </script>
 </html>

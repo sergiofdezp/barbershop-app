@@ -228,9 +228,11 @@ class OrderController extends Controller
             $order_ref = $this->generarCodigo($long_ref);
         } while ($this->verificarOrderRefUnica($order_ref));
 
-        return response()->json([
-            'order_ref'=>$order_ref,
-        ]);
+        return $order_ref;
+
+        // return response()->json([
+        //     'order_ref'=>$order_ref,
+        // ]);
     }
 
     /**
@@ -248,7 +250,7 @@ class OrderController extends Controller
             ->where('order_date', '=', $order_date)
             ->get();
 
-        $hours = Hour::all()->where('order_hour', '>', $now);
+        $hours = Hour::all();
 
         return response()->json([
             'orders'=>$orders,

@@ -66,7 +66,7 @@
                     <span class="fw-normal">
                         @if($order->is_online == 0) Barbería.
     
-                        @elseif($order->pay_status == 1) Web.
+                        @elseif($order->is_online == 1) Web.
     
                         @endif
                     </span>

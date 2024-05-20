@@ -264,7 +264,7 @@ class OrderController extends Controller
         $order_date = $request->order_date;
 
         // Verificar si llega id del servicio seleccionado
-        if($service_id == null){
+        if($service_id == null || $service_id == 0){
             return response()->json([
                 'coupon'=>"noserviceid",
             ]);

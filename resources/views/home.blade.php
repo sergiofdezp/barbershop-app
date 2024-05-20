@@ -47,12 +47,17 @@
 
                                 {!! session()->forget('error') !!} {{-- borrar el error de sesión --}}
                             @endif
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <p id="error-message" class="bg-danger text-white rounded mt-2"></p>
+                                </div>
+                            </div>
                             <form action="{{ route('front.orders.store') }}" id="form_store" class="col-12" method="POST" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="mb-3" hidden>
                                     <input type="text" name="service_id" id="service_id" value="0" class="form-control" required>
-
+                                    <input type="text" name="total_price" id="total_price" class="form-control" value="0" required>
                                     <input type="text" name="coupon_id" id="coupon_id" class="form-control">
                                 </div>
 
@@ -141,7 +146,7 @@
                                                 <h5 class="mb-0">Precio total</h5>    
                                             </div>
                                             <div class="">    
-                                                <span id="total_price" class="h1">0€</span>
+                                                <span id="show_total_price" class="h1">0€</span>
                                             </div>
                                         </div>
                                     </div>
@@ -190,6 +195,10 @@
             $('#order_date').change(function(){
                 bloqueosHoras();
             });
+
+            $('.aplicar_cod').click(function(){
+                check_discount_code();
+            });
         });
 
         // Implementación de tooltips para los btns
@@ -218,7 +227,7 @@
                     this.classList.remove('service-checked');
 
                     // El elemento se deselecciona por lo tanto debemos mostrar el precio como 0.
-                    var price_zero = document.getElementById('total_price');
+                    var price_zero = document.getElementById('show_total_price');
                     price_zero.innerHTML = "0€";
                 } else {
                     this.classList.add('service-checked');
@@ -294,7 +303,8 @@
                     // console.log(response)
                     $.each(response.services, function (key, item){
                         // console.log(item.price)
-                        $('#total_price').text(item.price + '€');
+                        $('#show_total_price').text(item.price + '€');
+                        $('#total_price').val(item.price);
                         // Debemos resetear el input del código descuento al cambiar el servicio
                         $('#coupon_id').val("");
                     });
@@ -304,7 +314,59 @@
 
         // Verificaciones de codigo de descuento
         function check_discount_code(){
+            var coupon_code = $('#discount').val();
+            var service_id = $('#service_id').val();
+            var total_price = $('#total_price').val();
+            var order_date = $('#order_date').val();
 
+            // Limpiamos el mensaje de error
+            $('#error-message').html('');
+            $('#error-message').removeClass('p-2');
+
+            $.ajax({
+                type: "GET",
+                url: "/check_discount_code",
+                data: {
+                    coupon_code : coupon_code,
+                    service_id : service_id,
+                    order_date : order_date,
+                },
+                dataType: "json",
+
+                success: function(response){
+                    $("#error-message").show();
+                    // Verificar que se ha elegido una fecha y un servicio
+                    if(response.coupon == "noorderdate"){
+                        $('#error-message').html('Debes elegir una fecha antes de aplicar un código.');
+                        $('#error-message').addClass('p-2');
+                    } else if(response.coupon == "noserviceid"){
+                        $('#error-message').html('Debes elegir un servicio antes de aplicar un código.');
+                        $('#error-message').addClass('p-2');
+                    } else{
+                        // Verificación de existencia de cupón
+                        if(response.coupon == 0){
+                            $('#error-message').html('¡Este cupón no existe! Por favor introduce un código válido.');
+                            $('#error-message').addClass('p-2');
+                        } else if(response.coupon == "noservice"){
+                            $('#error-message').html('Este cupón no puede aplicarse a este servicio.');
+                            $('#error-message').addClass('p-2');
+                        } else if(response.coupon == "nodates"){
+                            $('#error-message').html('Este cupón no puede aplicarse para esta fecha.');
+                            $('#error-message').addClass('p-2');
+                        } else{
+                            $.each(response.coupon, function (key_c, coupon){
+                                var discount_value = (total_price * coupon.discount) / 100;
+
+                                final_price = total_price - discount_value;
+            
+                                $('#coupon_id').val(coupon.id);
+                                $('#total_price').val(final_price);
+                                $('#show_total_price').text(final_price + '€');
+                            });
+                        }
+                    }
+                }
+            });
         }
     </script>
 </html>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Order;
 use App\Models\Service;
+use App\Models\Coupon;
 
 class OrderFrontController extends Controller
 {
@@ -53,7 +54,44 @@ class OrderFrontController extends Controller
         }
 
         // Verificación del precio
-        $service_total_price = Service::select('price')->where('id', $request->service_id)->first()->price;
+        $final_order_price = Service::select('price')->where('id', $request->service_id)->first()->price;
+
+        // Verifiación de cupón
+        if($request->coupon_id){
+            $coupon_exists = Coupon::where('id', $request->coupon_id)->count();
+    
+            if($coupon_exists <= 0){
+                $message = 'Este cupón no existe.';
+                return redirect()->route('home')->with('error', $message);
+            }
+    
+            // Verificación de aplicación para el servicio elegido
+            $coupon_service = Coupon::where('id', $request->coupon_id)->value('service');
+    
+            if($coupon_service != 0){
+                if($coupon_service != $service_selected){
+                    $message = 'Este cupón no puede utilizarse con este servicio.';
+                    return redirect()->route('home')->with('error', $message);
+                }
+            }
+    
+            $coupon_dates = Coupon::where('id', $request->coupon_id)
+                ->where('start_date', '<=', $request->order_date)
+                ->where('end_date', '>=', $request->order_date)
+                ->count();
+    
+            if($coupon_dates < 0){
+                $message = 'Este cupón no puede utilizarse en estas fechas.';
+                return redirect()->route('home')->with('error', $message);
+            }
+    
+            // Calculo del precio post cupon
+            $coupon_discount = Coupon::where('id', $request->coupon_id)->first()->discount;
+
+            $discount = ($final_order_price * $coupon_discount) / 100;
+
+            $final_order_price = $final_order_price - $discount;
+        }
 
         $order = [
             'order_ref' => $order_ref,
@@ -65,8 +103,9 @@ class OrderFrontController extends Controller
             'service_id' => $service_selected,
             'is_online' => 1,
             'order_status_id' => 1,
-            'total_price' => $service_total_price,
+            'total_price' => $final_order_price,
             'pay_status' => 0,
+            'coupon_id' => $request->coupon_id,
         ];
 
         Order::create($order);

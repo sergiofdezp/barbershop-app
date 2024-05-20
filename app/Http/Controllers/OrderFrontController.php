@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+
+use App\Http\Requests\OrderFrontRequest;
 
 use App\Models\Order;
 use App\Models\Service;
@@ -13,7 +16,7 @@ class OrderFrontController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(OrderFrontRequest $request): RedirectResponse
     {
         $order = $this->manual_order_validations($request);
 
@@ -22,6 +25,12 @@ class OrderFrontController extends Controller
         return redirect()->route('user_orders');
     }
 
+    /**
+     * Comprueba y valida la correcta inserción de los datos antes de hacer un save en la bd.
+     *
+     * @param [type] $request
+     * @return void
+     */
     public function manual_order_validations($request){
         // Creación de order_ref.
         $order_controller = new OrderController;

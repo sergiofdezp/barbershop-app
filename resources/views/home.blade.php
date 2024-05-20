@@ -38,6 +38,15 @@
                         </section>
 
                         <section id="new_order" class="border-dark rounded p-3 bg-dark">
+                            @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
                             @if (session()->has('error')) {{-- comprueba si existe el valor en sesión --}}
                                 <div class="error d-flex flex-row justify-content-center">
                                     <div class="col-12">

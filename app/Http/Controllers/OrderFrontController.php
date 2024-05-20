@@ -15,6 +15,14 @@ class OrderFrontController extends Controller
      */
     public function store(Request $request)
     {
+        $order = $this->manual_order_validations($request);
+
+        Order::create($order);
+
+        return redirect()->route('user_orders');
+    }
+
+    public function manual_order_validations($request){
         // Creación de order_ref.
         $order_controller = new OrderController;
         $order_ref = $order_controller->generarOrderRef();
@@ -46,7 +54,7 @@ class OrderFrontController extends Controller
 
         // Verificación de existencia del servicio en la bd.
         $service_exists = Service::all()->where('id', $request->service_id)->count();
-        
+
         if($service_exists == 0){
             // Devolver el error de que no existe el servicio
             $message = 'No se ha podido guardar la reserva porque has introducido un servicio que no existe.';
@@ -59,32 +67,32 @@ class OrderFrontController extends Controller
         // Verifiación de cupón
         if($request->coupon_id){
             $coupon_exists = Coupon::where('id', $request->coupon_id)->count();
-    
+
             if($coupon_exists <= 0){
                 $message = 'Este cupón no existe.';
                 return redirect()->route('home')->with('error', $message);
             }
-    
+
             // Verificación de aplicación para el servicio elegido
             $coupon_service = Coupon::where('id', $request->coupon_id)->value('service');
-    
+
             if($coupon_service != 0){
                 if($coupon_service != $service_selected){
                     $message = 'Este cupón no puede utilizarse con este servicio.';
                     return redirect()->route('home')->with('error', $message);
                 }
             }
-    
+
             $coupon_dates = Coupon::where('id', $request->coupon_id)
                 ->where('start_date', '<=', $request->order_date)
                 ->where('end_date', '>=', $request->order_date)
                 ->count();
-    
+
             if($coupon_dates < 0){
                 $message = 'Este cupón no puede utilizarse en estas fechas.';
                 return redirect()->route('home')->with('error', $message);
             }
-    
+
             // Calculo del precio post cupon
             $coupon_discount = Coupon::where('id', $request->coupon_id)->first()->discount;
 
@@ -93,7 +101,7 @@ class OrderFrontController extends Controller
             $final_order_price = $final_order_price - $discount;
         }
 
-        $order = [
+        return $order = [
             'order_ref' => $order_ref,
             'order_date' => $request->order_date,
             'order_hour' => $request->order_hour,
@@ -107,9 +115,5 @@ class OrderFrontController extends Controller
             'pay_status' => 0,
             'coupon_id' => $request->coupon_id,
         ];
-
-        Order::create($order);
-
-        return redirect()->route('user_orders');
     }
 }

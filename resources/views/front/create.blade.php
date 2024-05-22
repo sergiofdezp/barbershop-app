@@ -77,7 +77,7 @@
                                 <input type="text" name="name" id="name" class="form-control" placeholder="Nombre" required>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-xs-6">
+                        <div class="col-sm-6 col-xs-6 mt-2 mt-lg-0 mt-md-0 mt-sm-0">
                             <div class="">
                                 <input type="text" name="phone" id="phone" class="form-control" placeholder="Teléfono" required>
                             </div>
@@ -89,7 +89,7 @@
                     </div>
                     <div class="row d-flex justify-content-center mb-2">
                         @foreach ($services as $service)
-                        <div class="card-container d-flex justify-content-center col-4 p-0">
+                        <div class="card-container d-flex justify-content-center col-4 p-1 p-lg-0 p-md-0 p-sm-0">
                             <div class="card" value="{{ $service->id }}">
                                 <div class="card__image" id="card-1">
                                     <div class="image-overlay"></div>
@@ -114,7 +114,7 @@
                                 <input type="date" name="order_date" id="order_date" min="<?php echo date('Y-m-d'); ?>" class="form-control" required>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-xs-6" id="order_hours">
+                        <div class="col-sm-6 col-xs-6 col-xs-6 mt-2 mt-lg-0 mt-md-0 mt-sm-0" id="order_hours">
                             <div class="">
                                 <select name="order_hour" id="order_hour" class="form-control" required disabled>
                                     <option value="0" selected disabled>Selecciona un día</option>
@@ -160,13 +160,13 @@
 
                     <div class="row">
                         <div class="text-end">
-                            <a href="/" class="inline-flex text-decoration-none items-center px-4 py-2 bg-red-500 border border-transparent rounded-md font-semibold
+                            <a href="/" class="inline-flex text-decoration-none items-center px-2 py-2 bg-red-500 border border-transparent rounded-md font-semibold
                                 text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900
                                 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                 Volver atrás
                             </a>
 
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
+                            <button type="submit" class="inline-flex items-center px-2 py-2 bg-green-500 border border-transparent rounded-md font-semibold
                                 text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
                                 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                 Guardar

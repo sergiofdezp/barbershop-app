@@ -30,28 +30,28 @@
                     </button>
                     <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
                         <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a href="/" class="nav-link active" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Inicio">Inicio</a>
+                            <li class="nav-item px-3">
+                                <a href="/" class="nav-link text-light" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Inicio">Inicio</a>
                             </li>
                             @if (Route::has('login'))
                                 @auth
-                                    <li class="nav-item">
-                                        <a href="{{ route('user_orders') }}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ver mis reservas">
+                                    <li class="nav-item px-3">
+                                        <a href="{{ route('user_orders') }}" class="nav-link text-light" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ver mis reservas">
                                             Mis reservas
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="{{ route('front.create') }}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nueva reserva">
+                                    <li class="nav-item px-3">
+                                        <a href="{{ route('front.create') }}" class="nav-link text-light" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nueva reserva">
                                             Reservar
                                         </a>
                                     </li>
                                 @else
-                                    <li class="nav-item">
+                                    <li class="nav-item px-3">
                                         <a href="{{ route('login') }}" class="nav-link">Inicia sesión</a>
                                     </li>
 
                                     @if (Route::has('register'))
-                                        <li class="nav-item">
+                                        <li class="nav-item px-3">
                                             <a href="{{ route('register') }}" class="nav-link">Crea una cuenta</a>
                                         </li>
                                     @endif

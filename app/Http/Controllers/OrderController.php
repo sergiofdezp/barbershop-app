@@ -242,6 +242,7 @@ class OrderController extends Controller
      * @return void
      */
     public function bloqueosHoras(Request $order_date){
+        $today = date('Y-m-d');
         $now = date('G:i');
 
         $order_date = $order_date->get('order_date');
@@ -250,7 +251,13 @@ class OrderController extends Controller
             ->where('order_date', '=', $order_date)
             ->get();
 
-        $hours = Hour::all();
+        if($order_date == $today){
+            // Si el día seleccionado es hoy, verifica la hora actual y devuelve únicamente las próximas horas.
+            $hours = Hour::all()->where('order_hour','>=', $now);
+        } else{
+            // Si el día seleccionado no es hoy, devuelve todas las horas de la bd.
+            $hours = Hour::all();
+        }
 
         return response()->json([
             'orders'=>$orders,

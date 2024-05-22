@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\View;
 
 use App\Http\Requests\OrderFrontRequest;
 
@@ -13,16 +13,28 @@ use App\Models\Coupon;
 
 class OrderFrontController extends Controller
 {
+    public function create(): View
+    {
+        $services = Service::all();
+        return view('front.create', compact('services'));
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(OrderFrontRequest $request): RedirectResponse
     {
-        $order = $this->manual_order_validations($request);
-
-        Order::create($order);
-
-        return redirect()->route('user_orders');
+        try {
+            // Llama a manual_order_validations y almacena el resultado en $order
+            $order = $this->manual_order_validations($request);
+    
+            Order::create($order);
+    
+            return redirect()->route('user_orders')->with('success', 'Orden creada exitosamente.');
+        } catch (\Exception $e) {
+            // Maneja las excepciones y redirige con un mensaje de error
+            return redirect()->route('front.create')->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -31,86 +43,73 @@ class OrderFrontController extends Controller
      * @param [type] $request
      * @return void
      */
-    public function manual_order_validations($request){
+    public function manual_order_validations($request)
+    {
         // Creación de order_ref.
         $order_controller = new OrderController;
         $order_ref = $order_controller->generarOrderRef();
 
-        // Verificación de fecha de la reserva
         $today = date('Y-m-d');
+        $now = date('G:i:s');
+        $service_selected = $request->service_id;
+        $service_exists = Service::where('id', $request->service_id)->exists();
 
-        if($today > $request->order_date){
-            $message = 'La fecha de la reserva debe ser igual o posterior a la fecha de hoy.';
-            return redirect()->route('home')->with('error', $message);
+        // Obtener el precio del servicio seleccionado desde el front.
+        $final_order_price = Service::where('id', $request->service_id)->value('price');
+
+        // Verificación de fecha de la reserva
+        if ($today > $request->order_date) {
+            throw new \Exception('La fecha de la reserva debe ser igual o posterior a la fecha de hoy.');
         }
 
         // Verificación de hora de la reserva
-        $now = date('G:i:s');
-
-        if($now > $request->order_hour){
-            $message = 'La hora de la reserva debe ser posterior a la hora actual.';
-            return redirect()->route('home')->with('error', $message);
+        if ($now > $request->order_hour) {
+            throw new \Exception('La hora de la reserva debe ser posterior a la hora actual.');
         }
 
         // Verificación de selección de servicio
-        $service_selected = $request->service_id;
-
-        if($service_selected == 0){
-            // Devolver el error de que no se ha seleccionado ningún servicio.
-            $message = 'No se ha podido guardar la reserva porque no has seleccionado ningún servicio.';
-            return redirect()->route('home')->with('error', $message);
+        if ($service_selected == 0) {
+            throw new \Exception('No se ha podido guardar la reserva porque no has seleccionado ningún servicio.');
         }
 
         // Verificación de existencia del servicio en la bd.
-        $service_exists = Service::all()->where('id', $request->service_id)->count();
-
-        if($service_exists == 0){
-            // Devolver el error de que no existe el servicio
-            $message = 'No se ha podido guardar la reserva porque has introducido un servicio que no existe.';
-            return redirect()->route('home')->with('error', $message);
+        if (!$service_exists) {
+            throw new \Exception('No se ha podido guardar la reserva porque has introducido un servicio que no existe.');
         }
 
-        // Verificación del precio
-        $final_order_price = Service::select('price')->where('id', $request->service_id)->first()->price;
+        // Verificación de cupón
+        if ($request->coupon_id) {
+            $coupon_exists = Coupon::where('id', $request->coupon_id)->exists();
 
-        // Verifiación de cupón
-        if($request->coupon_id){
-            $coupon_exists = Coupon::where('id', $request->coupon_id)->count();
-
-            if($coupon_exists <= 0){
-                $message = 'Este cupón no existe.';
-                return redirect()->route('home')->with('error', $message);
+            if (!$coupon_exists) {
+                throw new \Exception('Este cupón no existe.');
             }
 
             // Verificación de aplicación para el servicio elegido
             $coupon_service = Coupon::where('id', $request->coupon_id)->value('service');
 
-            if($coupon_service != 0){
-                if($coupon_service != $service_selected){
-                    $message = 'Este cupón no puede utilizarse con este servicio.';
-                    return redirect()->route('home')->with('error', $message);
-                }
+            if ($coupon_service != 0 && $coupon_service != $service_selected) {
+                throw new \Exception('Este cupón no puede utilizarse con este servicio.');
             }
 
             $coupon_dates = Coupon::where('id', $request->coupon_id)
                 ->where('start_date', '<=', $request->order_date)
                 ->where('end_date', '>=', $request->order_date)
-                ->count();
+                ->exists();
 
-            if($coupon_dates < 0){
-                $message = 'Este cupón no puede utilizarse en estas fechas.';
-                return redirect()->route('home')->with('error', $message);
+            if (!$coupon_dates) {
+                throw new \Exception('Este cupón no puede utilizarse en estas fechas.');
             }
 
-            // Calculo del precio post cupon
-            $coupon_discount = Coupon::where('id', $request->coupon_id)->first()->discount;
+            // Calculo del precio post cupón
+            $coupon_discount = Coupon::where('id', $request->coupon_id)->value('discount');
 
             $discount = ($final_order_price * $coupon_discount) / 100;
 
-            $final_order_price = $final_order_price - $discount;
+            $final_order_price -= $discount;
         }
 
-        return $order = [
+        $order = [
             'order_ref' => $order_ref,
             'order_date' => $request->order_date,
             'order_hour' => $request->order_hour,
@@ -124,5 +123,7 @@ class OrderFrontController extends Controller
             'pay_status' => 0,
             'coupon_id' => $request->coupon_id,
         ];
+
+        return $order;
     }
 }

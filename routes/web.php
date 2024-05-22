@@ -14,7 +14,11 @@ use App\Http\Controllers\OrderFrontController;
 use App\Http\Controllers\RoleController;
 
 // Home
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/')->name('home');
+
+Route::get('/', function () {
+    return view('home');
+});
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', ])->group(function () {
     // Dashboard
@@ -30,6 +34,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
     // Reservas front
     Route::resource('/front/orders', OrderFrontController::class)->names('front.orders');
+    Route::get('/front/create_order', [OrderFrontController::class, 'create'])->name('front.create');
     
     // Servicios
     Route::resource('/admin/services', ServiceController::class)->names('services');

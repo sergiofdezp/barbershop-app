@@ -11965,7 +11965,7 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-.container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
+.container-img {
   background-image: url("/images/home/pelo.jpg");
   height: 100vh;
 }

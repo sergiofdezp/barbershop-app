@@ -48,7 +48,7 @@
                     <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card service-hover d-flex align-items-center text-center rounded h-100 mb-0">
                             <div class="card-body  d-flex flex-column justify-content-center align-items-center">
-                                <a href="{{ route('orders.create')}}" class="text-decoration-none link-dark">Nueva reserva</a>
+                                <a href="{{ route('front.create')}}" class="text-decoration-none link-dark">Nueva reserva</a>
                                 <p class="card-text text-muted text-sm">Añade una nueva reserva en el sistema.</p>
                             </div>
                         </div>

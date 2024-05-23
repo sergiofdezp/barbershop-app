@@ -1,5 +1,13 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
+.carousel-item {
+  height: 100vh;
+}
+.carousel-item img {
+  height: 100%;
+  object-fit: cover;
+}
+
 .container-img {
   background-image: url("/images/home/pelo.jpg");
   height: 100vh;

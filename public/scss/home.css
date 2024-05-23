@@ -11965,6 +11965,16 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.carousel-item {
+  height: 100vh;
+}
+
+.carousel-item img {
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 .container-img {
   background-image: url("/images/home/pelo.jpg");
   height: 100vh;

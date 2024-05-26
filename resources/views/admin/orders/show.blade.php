@@ -92,24 +92,6 @@
                 </p>
             </div>
         </div>
-        <div class="row border p-4 mt-3">
-            <ul>
-                <li>
-                    @foreach($logs as $log)
-                        <div class="d-flex justify-content-between">
-                            <p>{{$log->message}}</p>
-                            <p>{{$log->updated_at}}</p>
-                        </div>
-                    @endforeach  
-                </li>
-                <li>
-                    <div class="d-flex justify-content-between">
-                        <p>La reserva se ha creado.</p>
-                        <p>{{$order->created_at}}</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
     </div>
 @stop
 

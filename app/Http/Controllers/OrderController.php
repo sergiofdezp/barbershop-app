@@ -14,6 +14,7 @@ use App\Models\Service;
 use App\Models\Hour;
 use App\Models\Log;
 use App\Models\Card;
+use App\Models\Coupon;
 
 use Auth;
 use DateTime;
@@ -77,30 +78,39 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request): RedirectResponse
     {
-        $user = Auth::user();
-
-        $order = $request->all();
-        Order::create($order);
-
-        if($user->id == 1 || $user->id == 2){
-            return redirect()->route('orders.index')->banner('Reserva añadida correctamente.');
-        } else{
-            // Implementación de sistema de fidelización.
-            $card_controller = new CardController;
+        try {
+            $user = Auth::user();
+            // Llama a manual_order_validations y almacena el resultado en $order
+            $order = $this->manual_order_validations($request);
+            $order['is_online'] = 0;
     
-            // Obtenemos la tarjeta en curso.
-            $num_services = Card::where('user_id', '=', $request->user_id)->where('available', '=', 0)->first();
+            Order::create($order);
+
+            if($user->id == 1 || $user->id == 2){
+                return redirect()->route('orders.index')->banner('Reserva añadida correctamente.');
+            } else{
+                // Implementación de sistema de fidelización.
+                $card_controller = new CardController;
+        
+                // Obtenemos la tarjeta en curso.
+                $num_services = Card::where('user_id', '=', $request->user_id)->where('available', '=', 0)->first();
+        
+                // Update de tarjeta en curso o creación de nueva tarjeta.
+                // Si la tarjeta no ha completado los 8 servicios se seguirán incrementando hasta ser 8.
+                if($num_services->num_services < 8) {
+                    $card_controller->update_num_services($request->user_id);
+                }
+                // En el caso de que la tarjeta tenga 8 servicios, se cambiará su estado 'available' a 1 y se generará una nueva.
+                else{
+                    $card_controller->update_available_card($request->user_id);
+                    $card_controller->store($request->user_id);
+                }
+            }
     
-            // Update de tarjeta en curso o creación de nueva tarjeta.
-            // Si la tarjeta no ha completado los 8 servicios se seguirán incrementando hasta ser 8.
-            if($num_services->num_services < 8) {
-                $card_controller->update_num_services($request->user_id);
-            }
-            // En el caso de que la tarjeta tenga 8 servicios, se cambiará su estado 'available' a 1 y se generará una nueva.
-            else{
-                $card_controller->update_available_card($request->user_id);
-                $card_controller->store($request->user_id);
-            }
+            return redirect()->route('user_orders')->with('success', 'Orden creada exitosamente.');
+        } catch (\Exception $e) {
+            // Maneja las excepciones y redirige con un mensaje de error
+            return redirect()->route('front.create')->with('error', $e->getMessage());
         }
 
         if($user->id == 1){
@@ -321,5 +331,97 @@ class OrderController extends Controller
                 'coupon'=>0,
             ]);
         }
+    }
+
+    /**
+     * Comprueba y valida la correcta inserción de los datos antes de hacer un save en la bd.
+     *
+     * @param [type] $request
+     * @return void
+     */
+    public function manual_order_validations($request)
+    {
+        // Creación de order_ref.
+        $order_controller = new OrderController;
+        $order_ref = $order_controller->generarOrderRef();
+
+        $today = date('Y-m-d');
+        $now = date('G:i:s');
+        $service_selected = $request->service_id;
+        $service_exists = Service::where('id', $request->service_id)->exists();
+
+        // Obtener el precio del servicio seleccionado desde el front.
+        $final_order_price = Service::where('id', $request->service_id)->value('price');
+
+        // Verificación de fecha de la reserva
+        if ($today > $request->order_date) {
+            throw new \Exception('La fecha de la reserva debe ser igual o posterior a la fecha de hoy.');
+        }
+
+        // Verificación de hora de la reserva
+        if ($today == $request->order_date) {
+            if ($now > $request->order_hour) {
+                throw new \Exception('La hora de la reserva debe ser posterior a la hora actual.');
+            }
+        }
+
+        // Verificación de selección de servicio
+        if ($service_selected == 0) {
+            throw new \Exception('No se ha podido guardar la reserva porque no has seleccionado ningún servicio.');
+        }
+
+        // Verificación de existencia del servicio en la bd.
+        if (!$service_exists) {
+            throw new \Exception('No se ha podido guardar la reserva porque has introducido un servicio que no existe.');
+        }
+
+        // Verificación de cupón
+        if ($request->coupon_id) {
+            $coupon_exists = Coupon::where('id', $request->coupon_id)->exists();
+
+            if (!$coupon_exists) {
+                throw new \Exception('Este cupón no existe.');
+            }
+
+            // Verificación de aplicación para el servicio elegido
+            $coupon_service = Coupon::where('id', $request->coupon_id)->value('service');
+
+            if ($coupon_service != 0 && $coupon_service != $service_selected) {
+                throw new \Exception('Este cupón no puede utilizarse con este servicio.');
+            }
+
+            $coupon_dates = Coupon::where('id', $request->coupon_id)
+                ->where('start_date', '<=', $request->order_date)
+                ->where('end_date', '>=', $request->order_date)
+                ->exists();
+
+            if (!$coupon_dates) {
+                throw new \Exception('Este cupón no puede utilizarse en estas fechas.');
+            }
+
+            // Calculo del precio post cupón
+            $coupon_discount = Coupon::where('id', $request->coupon_id)->value('discount');
+
+            $discount = ($final_order_price * $coupon_discount) / 100;
+
+            $final_order_price -= $discount;
+        }
+
+        $order = [
+            'order_ref' => $order_ref,
+            'order_date' => $request->order_date,
+            'order_hour' => $request->order_hour,
+            'user_id' => auth()->id(),
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'service_id' => $service_selected,
+            'is_online' => 1,
+            'order_status_id' => 1,
+            'total_price' => $final_order_price,
+            'pay_status' => $request->pay_status,
+            'coupon_id' => $request->coupon_id,
+        ];
+
+        return $order;
     }
 }

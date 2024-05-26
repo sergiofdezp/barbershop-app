@@ -22,10 +22,7 @@
             
             <div class="mb-3" hidden>
                 <input type="text" name="total_price" id="total_price" class="form-control" value="0" required>
-                <input type="text" name="is_online" id="is_online" class="form-control" value="0" required>
                 <input type="text" name="order_status_id" id="order_status_id" class="form-control" value="1" required>
-                <input type="text" name="user_id" id="user_id" value="{{$user->id}}" class="form-control" required>
-                <input type="text" name="order_ref" id="order_ref" class="form-control" required>
                 <input type="text" name="coupon_id" id="coupon_id" class="form-control">
             </div>
 
@@ -162,7 +159,6 @@
 @section('js')
     <script>
         $(document).ready(function(){
-            newOrderRef();
             $('#service_id').change(function(){
                 servicesPrices();
             });
@@ -198,22 +194,6 @@
                         // Debemos resetear el input del código descuento al cambiar el servicio
                         $('#coupon_id').val("");
                     });
-                }
-            });
-        }
-        /**
-         * Esta función genera una referencia única para la nueva reserva.
-         *
-         * @return void
-         */
-        function newOrderRef(){
-            $.ajax({
-                type: "GET",
-                url: "/new_order_ref",
-                dataType: "json",
-
-                success: function(response){
-                    $('#order_ref').val(response.order_ref);
                 }
             });
         }

@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
 
-use App\Http\Requests\OrderFrontRequest;
+use App\Http\Requests\OrderRequest;
 
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\Coupon;
+use App\Models\Card;
+
+use Auth;
 
 class OrderFrontController extends Controller
 {
@@ -22,15 +25,37 @@ class OrderFrontController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(OrderFrontRequest $request): RedirectResponse
+    public function store(OrderRequest $request): RedirectResponse
     {
         try {
             // Llama a manual_order_validations y almacena el resultado en $order
             $order = $this->manual_order_validations($request);
+            $user = Auth::user();
     
             Order::create($order);
-    
-            return redirect()->route('user_orders')->with('success', 'Orden creada exitosamente.');
+
+            if($user->id == 1 || $user->id == 2){
+                return redirect()->route('user_orders')->with('success', 'Orden creada exitosamente.');
+            } else{
+                // Implementación de sistema de fidelización.
+                $card_controller = new CardController;
+        
+                // Obtenemos la tarjeta en curso.
+                $num_services = Card::where('user_id', '=', $user->id)->where('available', '=', 0)->first();
+        
+                // Update de tarjeta en curso o creación de nueva tarjeta.
+                // Si la tarjeta no ha completado los 8 servicios se seguirán incrementando hasta ser 8.
+                if($num_services->num_services < 8) {
+                    $card_controller->update_num_services($user->id);
+                }
+                // En el caso de que la tarjeta tenga 8 servicios, se cambiará su estado 'available' a 1 y se generará una nueva.
+                else{
+                    $card_controller->update_available_card($user->id);
+                    $card_controller->store($user->id);
+                }
+
+                return redirect()->route('user_orders')->with('success', 'Orden creada exitosamente.');
+            }
         } catch (\Exception $e) {
             // Maneja las excepciones y redirige con un mensaje de error
             return redirect()->route('front.create')->with('error', $e->getMessage());
@@ -63,8 +88,10 @@ class OrderFrontController extends Controller
         }
 
         // Verificación de hora de la reserva
-        if ($now > $request->order_hour) {
-            throw new \Exception('La hora de la reserva debe ser posterior a la hora actual.');
+        if ($today == $request->order_date) {
+            if ($now > $request->order_hour) {
+                throw new \Exception('La hora de la reserva debe ser posterior a la hora actual.');
+            }
         }
 
         // Verificación de selección de servicio

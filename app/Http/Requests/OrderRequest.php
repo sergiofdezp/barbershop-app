@@ -22,17 +22,12 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order_ref' => 'required | string',
             'order_date' => 'required | date',
             'order_hour' => 'required | string',
-            'user_id' => 'required',
             'name' => 'required | string',
             'phone' => 'required | integer',
             'service_id' => 'required | integer',
-            'is_online' => 'required | integer',
-            'order_status_id' => 'required | integer',
             'total_price' => 'required | integer | min:0 | max:100',
-            'pay_status' => 'required | integer',
         ];
     }
 }

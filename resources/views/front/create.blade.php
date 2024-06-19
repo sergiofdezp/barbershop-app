@@ -129,30 +129,27 @@
 
                     <div class="row mb-2">
                         <div class="col-12">
-                            <div class="">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="c-left w-100">
-                                        <input type="text" name="discount" id="discount" class="form-control" placeholder="Introduce un código">
-                                    </div>
-                                    <div class="c-right d-none d-md-block d-lg-block px-1">
-                                        <input type="button" class="aplicar_cod inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
-                                            text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
-                                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                                            value="Aplicar cupón">
-                                    </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="c-left w-100">
+                                    <input type="text" name="discount" id="discount" class="form-control" placeholder="Introduce un código">
+                                </div>
+                                <div class="c-right d-none d-md-block d-lg-block px-1">
+                                    <input type="button" class="aplicar_cod inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
+                                        text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                                        value="Aplicar cupón">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row pt-4 pb-2">
-                        <div class="col-12 d-flex justify-content-between align-items-center">
-                            <div class="col-12 d-flex justify-content-between align-items-center border rounded text-white p-2">
-                                <div class="">
-                                    <h5 class="mb-0">Precio total</h5>    
-                                </div>
-                                <div class="">    
-                                    <span id="show_total_price" class="h1">0€</span>
+                    <div class="row pt-3 pb-2">
+                        <div class="col-12 text-white">
+                            <div id="show_prices" class="border rounded p-2">
+                                <div class="d-flex flex-row justify-content-between align-items-center">
+                                    <h5 class="mb-0">Precio total</h5>
+                                   
+                                    <span id="show_total_price" class="h1 mb-0">0€</span>
                                 </div>
                             </div>
                         </div>
@@ -346,8 +343,26 @@
                                 final_price = total_price - discount_value;
             
                                 $('#coupon_id').val(coupon.id);
-                                $('#total_price').val(final_price);
-                                $('#show_total_price').text(final_price + '€');
+
+                                let list =
+                                    '<div class="d-flex flex-row justify-content-between align-items-center">' +
+                                        '<p class="mb-0">Precio sin descuento</p>' +
+                                        '<span>' + total_price + '€</span>' +
+                                    '</div>' +
+
+                                    '<div class="d-flex flex-row justify-content-between align-items-center">' +
+                                        '<p class="mb-0">Descuento</p>' +
+                                        '<span>-' + discount_value + '€</span>' +
+                                    '</div>' +
+
+                                    '<hr>' +
+
+                                    '<div class="d-flex flex-row justify-content-between align-items-center">' +
+                                        '<h5 class="mb-0">Precio final</h5>' +
+                                        '<span id="show_total_price" class="h1">' + final_price + '€</span>' +
+                                    '</div>'
+
+                                $('#show_prices').html(list)
                             });
                         }
                     }

@@ -27,7 +27,7 @@ class OrderRequest extends FormRequest
             'name' => 'required | string',
             'phone' => 'required | integer',
             'service_id' => 'required | integer',
-            'total_price' => 'required | integer | min:0 | max:100',
+            'total_price' => 'required | min:0 | max:100',
         ];
     }
 }

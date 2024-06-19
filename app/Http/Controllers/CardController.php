@@ -58,6 +58,7 @@ class CardController extends Controller
         ]);
     }
 
+    // Habilita una tarjeta para su uso en la próxima reserva.
     public function update_available_card($user_id)
     {
         $card = Card::where('user_id', '=', $user_id)->where('available', '=', 0)->first();
@@ -66,6 +67,18 @@ class CardController extends Controller
             'num_services' => $card->num_services,
             'available' => 1,
             'used' => $card->used,
+        ]);
+    }
+
+    // Actualiza el estado de una tarjeta a usada cuando se utiliza en una reserva.
+    public function update_used_card($user_id)
+    {
+        $card = Card::where('user_id', '=', $user_id)->where('available', '=', 1)->first();
+
+        return $card->update([
+            'num_services' => $card->num_services,
+            'available' => 0,
+            'used' => 1,
         ]);
     }
 }

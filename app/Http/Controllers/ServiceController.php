@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Service;
-use App\Models\Hour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+
+use App\Models\Service;
+use App\Models\Card;
+
+use Auth;
 
 class ServiceController extends Controller
 {
@@ -30,12 +33,17 @@ class ServiceController extends Controller
     {
         $service_id = $service_id->get('service_id');
 
+        // Implementación de tarjeta de fidelización.
+        $user = Auth::user();
+        $available_card = Card::where('user_id', '=', $user->id)->where('available', '=', 1)->count();
+
         $services = DB::table('services')
             ->where('id', '=', $service_id)
             ->get();
 
         return response()->json([
-            'services'=>$services,
+            'services' => $services,
+            'card'     => $available_card
         ]);
     }
 

@@ -283,13 +283,38 @@
                 dataType: "json",
 
                 success: function(response){
-                    // console.log(response)
+                    console.log(response)
                     $.each(response.services, function (key, item){
-                        // console.log(item.price)
-                        $('#show_total_price').text(item.price + '€');
-                        $('#total_price').val(item.price);
-                        // Debemos resetear el input del código descuento al cambiar el servicio
-                        $('#coupon_id').val("");
+                        if(response.card == 1){
+                            $('#show_total_price').text('0€');
+                            $('#total_price').val(0);
+
+                            let list =
+                                '<div class="d-flex flex-row justify-content-between align-items-center">' +
+                                    '<p class="mb-0">Precio sin descuento</p>' +
+                                    '<span>' + item.price + '€</span>' +
+                                '</div>' +
+
+                                '<div class="d-flex flex-row justify-content-between align-items-center">' +
+                                    '<p class="mb-0">Descuento (tarjeta fidelización)</p>' +
+                                    '<span>-' + item.price + '€</span>' +
+                                '</div>' +
+
+                                '<hr>' +
+
+                                '<div class="d-flex flex-row justify-content-between align-items-center">' +
+                                    '<h5 class="mb-0">Precio final</h5>' +
+                                    '<span id="show_total_price" class="h1">0€</span>' +
+                                '</div>'
+
+                            $('#show_prices').html(list)
+                        } else{
+                            $('#show_total_price').text(item.price + '€');
+                            $('#total_price').val(item.price);
+    
+                            // Debemos resetear el input del código descuento al cambiar el servicio
+                            $('#coupon_id').val("");
+                        }
                     });
                 }
             });

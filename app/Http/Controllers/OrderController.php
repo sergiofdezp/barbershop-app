@@ -53,6 +53,7 @@ class OrderController extends Controller
         $max_services = 8;
         $cards = DB::table('cards')
             ->where('user_id', auth()->id())
+            ->where('used', 0)
             ->get();
 
         return view('admin.orders.user_orders', compact('orders_in_progress', 'orders_completed', 'max_services', 'cards'));

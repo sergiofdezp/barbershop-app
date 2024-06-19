@@ -31,28 +31,45 @@ class OrderFrontController extends Controller
             // Llama a manual_order_validations y almacena el resultado en $order
             $order = $this->manual_order_validations($request);
             $user = Auth::user();
-    
-            Order::create($order);
+
+            // Obtenemos la tarjeta en curso del usuario.
+            $user_card = Card::where('user_id', '=', $user->id)->where('available', '=', 0)->first();
 
             if($user->id == 1 || $user->id == 2){
                 return redirect()->route('user_orders')->with('success', 'Orden creada exitosamente.');
             } else{
                 // Implementación de sistema de fidelización.
                 $card_controller = new CardController;
-        
-                // Obtenemos la tarjeta en curso.
-                $num_services = Card::where('user_id', '=', $user->id)->where('available', '=', 0)->first();
-        
-                // Update de tarjeta en curso o creación de nueva tarjeta.
-                // Si la tarjeta no ha completado los 8 servicios se seguirán incrementando hasta ser 8.
-                if($num_services->num_services < 8) {
-                    $card_controller->update_num_services($user->id);
-                }
-                // En el caso de que la tarjeta tenga 8 servicios, se cambiará su estado 'available' a 1 y se generará una nueva.
-                else{
-                    $card_controller->update_available_card($user->id);
+
+                // Buscamos si ya hay una card en la que es hayan completado las 8 reservas.
+                $available_card = Card::where('user_id', '=', $user->id)->where('available', '=', 1)->count();
+
+                // En ese caso, el precio de la order será 0.
+                if($available_card > 0){
+                    $order['total_price'] = 0;
+
+                    // Cambiamos el estado de la card a utilizada.
+                    $card_controller->update_used_card($user->id);
+
+                    // Creamos una nueva tarjeta.
                     $card_controller->store($user->id);
+                } else{            
+                    // Si el número de servicios aún no ha llegado al límite se seguirán incrementando.
+                    if($user_card->num_services < 8) {
+                        $card_controller->update_num_services($user->id);
+                    }
+    
+                    // Después de incrementar los servicios se volverá a obtener la tarjeta en curso.
+                    $user_card = Card::where('user_id', '=', $user->id)->where('available', '=', 0)->first();
+    
+                    // Si ya se han completado el máximo de servicios se habilitará la tarjeta para la siguiente reserva.
+                    if($user_card->num_services == 8) {
+                        $card_controller->update_available_card($user->id);
+                    }
                 }
+
+                // Creamos la order
+                Order::create($order);
 
                 return redirect()->route('user_orders')->with('success', 'Orden creada exitosamente.');
             }

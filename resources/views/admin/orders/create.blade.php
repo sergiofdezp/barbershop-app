@@ -160,13 +160,13 @@
     <script>
         $(document).ready(function(){
             $('#service_id').change(function(){
-                servicesPrices();
+                services_prices();
             });
             $('#order_date').change(function(){
-                bloqueosHoras();
+                block_hours();
             });
             $('.aplicar_cod').click(function(){
-                checkDiscountCode();
+                check_discount_code();
             });
         });
         /**
@@ -174,7 +174,7 @@
          *
          * @return void
          */
-        function servicesPrices(){
+        function services_prices(){
             var service_id = $('#service_id').val();
                 
             $.ajax({
@@ -203,7 +203,7 @@
          *
          * @return void
          */
-        function bloqueosHoras(){
+        function block_hours(){
             var order_date = $('#order_date').val();
 
             // Reiniciamos el estado del div, limpiamos el div (order_hours) para despues regenerarlo.
@@ -249,7 +249,7 @@
             });
         }
 
-        function checkDiscountCode(){
+        function check_discount_code(){
             $('#error-message').html('');
             $('#error-message').removeClass('p-2');
 
@@ -283,7 +283,7 @@
                             $('#error-message').html('¡Este cupón no existe! Por favor introduce un código válido.');
                             $('#error-message').addClass('p-2');
 
-                            servicesPrices();
+                            services_prices();
                         } else if(response.coupon == "noservice"){
                             $('#error-message').html('Este cupón no puede aplicarse a este servicio.');
                             $('#error-message').addClass('p-2');

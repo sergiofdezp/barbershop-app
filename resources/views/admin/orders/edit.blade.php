@@ -86,14 +86,8 @@
                             <div class="c-left">
                                 <label for="discount" class="form-label">Cupón de descuento</label>
                             </div>
-                            <div class="c-right d-none d-md-block d-lg-block">
-                                <input type="button" class="aplicar_cod inline-flex items-center mb-1 px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
-                                    text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
-                                    focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                                    value="Aplicar cupón">
-                            </div>
                         </div>
-                        <input type="text" name="discount" id="discount" class="form-control" value="@if($order->coupon_id != null) $order->coupon->code @endif" placeholder="Introduce un código de descuento">
+                        <input type="text" name="discount" id="discount" class="form-control" value="@if($order->coupon_id != null){{$order->coupon->code}} @endif" disabled>
                     </div>
                 </div>
 
@@ -176,17 +170,17 @@
 
             // Volvemos a ejecutar la función si se decide editar el servicio y así obtener el precio del nuevo servicio.
             $('#service_id').change(function(){
-                servicesPrices();
+                services_prices();
             });
 
             // Obtener los bloqueos de las horas que ya se han reservado.
             $('#order_date').change(function(){
-                bloqueosHoras();
+                block_hours();
             });
 
             // Verificar el código del cupón al hacer click en el botón.
             $('.aplicar_cod').click(function(){
-                checkDiscountCode();
+                check_discount_code();
             });
         });
 
@@ -195,7 +189,7 @@
          *
          * @return void
          */
-        function servicesPrices(){
+        function services_prices(){
             var service_id = $('#service_id').val();
                 
             $.ajax({
@@ -213,7 +207,7 @@
                     });
 
                     // Actualizamos el precio según el descuento que ya había antes aplicado en la reserva.
-                    checkDiscountCode();
+                    check_discount_code();
                 }
             });
         }
@@ -223,7 +217,7 @@
          *
          * @return void
          */
-        function bloqueosHoras(){
+        function block_hours(){
             var order_date = $('#order_date').val();
 
             // Reiniciamos el estado del div, limpiamos el div (order_hours) para despues regenerarlo.
@@ -269,7 +263,7 @@
             });
         }
 
-        function checkDiscountCode(){
+        function check_discount_code(){
             $('#error-message').html('');
             $('#error-message').removeClass('p-2');
 

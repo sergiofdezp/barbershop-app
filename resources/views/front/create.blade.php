@@ -185,7 +185,7 @@
     <script>
         $(document).ready(function(){
             $('#order_date').change(function(){
-                bloqueosHoras();
+                block_hours();
             });
 
             $('.aplicar_cod').click(function(){
@@ -235,7 +235,7 @@
          *
          * @return void
          */
-         function bloqueosHoras(){
+         function block_hours(){
             var order_date = $('#order_date').val();
             var order_hours = '';
                 

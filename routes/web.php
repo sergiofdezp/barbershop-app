@@ -27,8 +27,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     // Reservas
     Route::resource('/admin/orders', OrderController::class)->names('orders');
     Route::get('/new_order_ref', [OrderController::class, 'generarOrderRef']);
-    Route::get('/bloqueos_horas', [OrderController::class, 'bloqueosHoras']);
-    Route::get('/check_discount_code', [OrderController::class, 'checkDiscountCode']);
+    Route::get('/bloqueos_horas', [OrderController::class, 'block_hours']);
+    Route::get('/check_discount_code', [OrderController::class, 'check_discount_code']);
     Route::get('/admin/user_orders', [OrderController::class, 'user_orders'])->name('user_orders');
     Route::put('/cancel_order/{order}', OrderController::class .'@cancel_order')->name('orders.cancel_order');
 

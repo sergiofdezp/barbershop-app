@@ -156,6 +156,11 @@ class OrderController extends Controller
         $new_log->store($request, $order);
 
         $new_order = $request->all();
+
+        // Estos campos no se podrán modificar en la edición de la order por decisión personal
+        $new_order['coupon_id'] = $order->coupon_id;
+        $new_order['total_price'] = $order->total_price;
+
         $order->update($new_order);
         
         return redirect()->route('orders.index')->banner('Reserva editada correctamente.');
@@ -251,7 +256,7 @@ class OrderController extends Controller
      * @param Request $order_date
      * @return void
      */
-    public function bloqueosHoras(Request $order_date){
+    public function block_hours(Request $order_date){
         $today = date('Y-m-d');
         $now = date('G:i');
 
@@ -275,7 +280,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function checkDiscountCode(Request $request){
+    public function check_discount_code(Request $request){
         $code = $request->coupon_code;
         $service_id = $request->service_id;
         $order_date = $request->order_date;

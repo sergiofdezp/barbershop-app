@@ -129,11 +129,11 @@
 
                     <div class="row mb-2">
                         <div class="col-12">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="c-left w-100">
+                            <div class="row d-flex justify-content-between align-items-center">
+                                <div class="col-12">
                                     <input type="text" name="discount" id="discount" class="form-control" placeholder="Introduce un código">
                                 </div>
-                                <div class="c-right d-none d-md-block d-lg-block px-1">
+                                <div class="col-12 d-flex justify-content-end pt-2">
                                     <input type="button" class="aplicar_cod inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
                                         text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
                                         focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150"

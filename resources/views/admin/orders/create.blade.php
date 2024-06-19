@@ -299,6 +299,11 @@
                                 $('#coupon_id').val(coupon.id);
                                 $('#total_price').val(final_price);
                                 $('.total_price').text(final_price + '€');
+
+                                // Se esconde el botón de aplicar el código de descuento para que no se aplique más veces.
+                                $(".aplicar_cod").hide();
+                                // Se deshabilita el input para introducir códigos descuento.
+                                $("#discount").prop("disabled", true);
                             });
                         }
                     }

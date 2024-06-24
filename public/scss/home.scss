@@ -88,3 +88,22 @@
     }
   }
 }
+
+input{
+  cursor: pointer;
+}
+
+input:hover{
+  scale: 102%;
+  transition: 0.3s;
+}
+
+a:hover{
+  scale: 102% !important;
+  transition: 0.3s;
+}
+
+button:hover{
+  scale: 102% !important;
+  transition: 0.3s;
+}

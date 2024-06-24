@@ -15,7 +15,7 @@
 
         @livewireStyles
 
-        <link rel="stylesheet" href="{{ asset('/scss/home.css') }}">
+        <link rel="stylesheet" href="{{ asset('/css/home.css') }}">
 
         <!-- Bootstrap -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -62,86 +62,91 @@
                     </div>
 
                     <div class="row">
-                        <h5 class="h5 text-white">Crea tu nueva reserva</h5>
+                        <h4 class="h4 text-white text-center">NUEVA RESERVA</h4>
                     </div>
 
                     <hr class="border">
-
-                    <div class="row">
-                        <h5 class="h5 text-white">Tus datos</h5>
-                    </div>
-
-                    <div class="row mb-2">
-                        <div class="col-sm-6 col-xs-6">
-                            <div class="">
-                                <input type="text" name="name" id="name" class="form-control" placeholder="Nombre" required>
-                            </div>
+                    
+                    <section class="border rounded p-2 mb-3">
+                        <div class="row">
+                            <h5 class="h5 text-white">Tus datos</h5>
                         </div>
-                        <div class="col-sm-6 col-xs-6 mt-2 mt-lg-0 mt-md-0 mt-sm-0">
-                            <div class="">
-                                <input type="text" name="phone" id="phone" class="form-control" placeholder="Teléfono" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row pt-3">
-                        <h5 class="h5 text-white">Elige tu servicio</h5>
-                    </div>
-                    <div class="row d-flex justify-content-center mb-2">
-                        @foreach ($services as $service)
-                        <div class="card-container d-flex justify-content-center col-4 p-1 p-lg-0 p-md-0 p-sm-0">
-                            <div class="card" value="{{ $service->id }}">
-                                <div class="card__image" id="card-1">
-                                    <div class="image-overlay"></div>
-                                    <img src="{{ asset('/images/services/' . $service->image) }}" class="service_img" alt="service_image"/>
+    
+                        <div class="row mb-2">
+                            <div class="col-sm-6 col-xs-6">
+                                <div class="">
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Nombre" required>
                                 </div>
-
-                                <div class="card-body text-center">
-                                    <p class="card-text">{{ $service->type }}</p>
+                            </div>
+                            <div class="col-sm-6 col-xs-6 mt-2 mt-lg-0 mt-md-0 mt-sm-0">
+                                <div class="">
+                                    <input type="text" name="phone" id="phone" class="form-control" placeholder="Teléfono" required>
                                 </div>
                             </div>
                         </div>
-                        @endforeach
-                    </div>
+                    </section>
 
-                    <div class="row pt-3">
-                        <h5 class="h5 text-white">Elige la fecha y la hora</h5>
-                    </div>
+                    <section class="border rounded p-2 mb-3">
+                        <div class="row d-flex justify-content-center mb-2">
+                            @foreach ($services as $service)
+                            <div class="card-container d-flex justify-content-center col-4 p-1 p-lg-0 p-md-0 p-sm-0">
+                                <div class="card" value="{{ $service->id }}">
+                                    <div class="card__image" id="card-1">
+                                        <div class="image-overlay"></div>
+                                        <img src="{{ asset('/images/services/' . $service->image) }}" class="service_img" alt="service_image"/>
+                                    </div>
 
-                    <div class="row mb-2">
-                        <div class="col-sm-6 col-xs-6">
-                            <div class="">
-                                <input type="date" name="order_date" id="order_date" min="<?php echo date('Y-m-d'); ?>" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-xs-6 col-xs-6 mt-2 mt-lg-0 mt-md-0 mt-sm-0" id="order_hours">
-                            <div class="">
-                                <select name="order_hour" id="order_hour" class="form-control" required disabled>
-                                    <option value="0" selected disabled>Selecciona un día</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row pt-3">
-                        <h5 class="h5 text-white">¿Tienes un cupón de descuento?</h5>
-                    </div>
-
-                    <div class="row mb-2">
-                        <div class="col-12">
-                            <div class="row d-flex justify-content-between align-items-center">
-                                <div class="col-12">
-                                    <input type="text" name="discount" id="discount" class="form-control" placeholder="Introduce un código">
-                                </div>
-                                <div class="col-12 d-flex justify-content-end pt-2">
-                                    <input type="button" class="aplicar_cod inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
-                                        text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
-                                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                                        value="Aplicar cupón">
+                                    <div class="card-body text-center">
+                                        <p class="card-text">{{ $service->type }}</p>
+                                    </div>
                                 </div>
                             </div>
+                            @endforeach
                         </div>
-                    </div>
+                    </section>
+
+                    <section class="border rounded p-2 mb-3">
+                        <div class="row">
+                            <h5 class="h5 text-white">Fecha y hora</h5>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-sm-6 col-xs-6">
+                                <div class="">
+                                    <input type="date" name="order_date" id="order_date" min="<?php echo date('Y-m-d'); ?>" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-6 col-xs-6 mt-2 mt-lg-0 mt-md-0 mt-sm-0" id="order_hours">
+                                <div class="">
+                                    <select name="order_hour" id="order_hour" class="form-control" required disabled>
+                                        <option value="0" selected disabled>Selecciona un día</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="border rounded p-2 mb-3">
+                        <div class="row">
+                            <h5 class="h5 text-white">Descuento</h5>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-12">
+                                        <input type="text" name="discount" id="discount" class="form-control" placeholder="Código de descuento">
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-end pt-2">
+                                        <input type="button" class="aplicar_cod inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold
+                                            text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900
+                                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                                            value="Aplicar cupón">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
                     <div class="row pt-3 pb-2">
                         <div class="col-12 text-white">
